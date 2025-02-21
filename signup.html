@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | GluGuide</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 10;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Body */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffffff;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+
+        /* Logo */
+        .logo {
+            font-size: 50px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Form Groups */
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            padding-right: 40px; /* Space for the eye icon */
+            border: 1.5px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        /* Password Fields with Aligned Eye Icons */
+        .password-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .password-container input {
+            flex: 1;
+        }
+
+        .password-container .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            width: 22px;
+            height: 22px;
+            opacity: 0.6;
+        }
+
+        .toggle-password:hover {
+            opacity: 1;
+        }
+
+        /* Buttons */
+        .button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .signup-btn {
+            background: black;
+            color: white;
+            border: none;
+        }
+
+        .signup-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Login Link */
+        .login-link {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- App Name -->
+        <div class="logo">GluGuide</div>
+
+        <!-- Form -->
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-container">
+                <input type="password" id="password" required>
+                <img src="/Icons/eye-off.svg" alt="Toggle Password" class="toggle-password" onclick="togglePassword('password')">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <div class="password-container">
+                <input type="password" id="confirm-password" required>
+                <img src="/Icons/eye-off.svg" alt="Toggle Password" class="toggle-password" onclick="togglePassword('confirm-password')">
+            </div>
+        </div>
+
+        <button class="button signup-btn" onclick="signUp()">Sign Up</button>
+
+        <div class="login-link">
+            Already have an account? <a href="login.html">Login</a>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(fieldId) {
+            let field = document.getElementById(fieldId);
+            field.type = field.type === "password" ? "text" : "password";
+        }
+
+        function signUp() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+    // Store credentials in localStorage
+    localStorage.setItem("email", email);
+    localStorage.setItem("password", password);
+
+    alert("Sign up successful! You can now log in.");
+    window.location.href = "login.html"; // Redirect to login page
+}
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Calculator</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .back {
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin-top: 15px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Dropdown List */
+        .dropdown {
+            position: absolute;
+            width: 100%;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .dropdown div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .dropdown div:hover {
+            background: #f0f0f0;
+        }
+
+        /* Food List */
+        .food-list {
+            margin-top: 20px;
+        }
+
+        .food-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* Ensures consistent layout */
+        .food-name {
+            flex: 1;
+            text-align: left;
+        }
+
+        /* Quantity Controls */
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px; /* Fixed width to ensure alignment */
+            min-height: 40px;
+        }
+
+        .quantity-control img {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .quantity-value {
+            margin: 0 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* Calorie Display */
+        .calorie-value {
+            font-weight: bold;
+            text-align: right;
+            min-width: 80px;
+        }
+
+        /* Total Calories */
+        .total-container {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <span class="back" onclick="goBack()">←</span> Calorie Calculator
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="Search food" onclick="showDropdown()" oninput="filterDropdown()">
+        <div class="dropdown" id="dropdown"></div>
+    </div>
+
+    <!-- Selected Food List -->
+    <div class="food-list" id="food-list"></div>
+
+    <!-- Total Calories -->
+    <div class="total-container">
+        Total: <span id="totalCalories">0</span> kcal
+    </div>
+
+    <script>
+        // Food Data (Name and Calories per serving)
+        const foodData = [
+            { name: "Jollof Rice", calories: 110.04 },
+            { name: "Chicken", calories: 150.2 },
+            { name: "Salad", calories: 80.5 },
+            { name: "Pasta", calories: 130.0 },
+            { name: "Bread", calories: 90.3 },
+            { name: "Avocado Toast with Eggs", calories: 250.0 }
+        ];
+
+        let selectedFoods = {}; // Track selected food and quantity
+
+        // Show Dropdown List
+        function showDropdown() {
+            const dropdown = document.getElementById("dropdown");
+            dropdown.style.display = "block";
+            dropdown.innerHTML = "";
+
+            foodData.forEach(food => {
+                let div = document.createElement("div");
+                div.textContent = food.name;
+                div.onclick = () => addFood(food.name, food.calories);
+                dropdown.appendChild(div);
+            });
+        }
+
+        // Filter Dropdown Items based on input
+        function filterDropdown() {
+            const searchValue = document.querySelector(".search-bar").value.toLowerCase();
+            const dropdown = document.getElementById("dropdown");
+            dropdown.innerHTML = "";
+
+            foodData
+                .filter(food => food.name.toLowerCase().includes(searchValue))
+                .forEach(food => {
+                    let div = document.createElement("div");
+                    div.textContent = food.name;
+                    div.onclick = () => addFood(food.name, food.calories);
+                    dropdown.appendChild(div);
+                });
+        }
+
+        // Add Food to List
+        function addFood(foodName, foodCalories) {
+            if (!selectedFoods[foodName]) {
+                selectedFoods[foodName] = { quantity: 1, calories: foodCalories };
+
+                let foodItem = document.createElement("div");
+                foodItem.className = "food-item";
+                foodItem.id = `item-${foodName}`;
+
+                foodItem.innerHTML = `
+                    <span class="food-name">${foodName}</span>
+                    <div class="quantity-control">
+                        <img src="/icons/minus-icon.svg" onclick="updateQuantity('${foodName}', -1)">
+                        <span class="quantity-value" id="quantity-${foodName}">1</span>
+                        <img src="/icons/plus-icon.svg" onclick="updateQuantity('${foodName}', 1)">
+                    </div>
+                    <span class="calorie-value" id="calories-${foodName}">${foodCalories.toFixed(2)} kcal</span>
+                `;
+
+                document.getElementById("food-list").appendChild(foodItem);
+            } else {
+                updateQuantity(foodName, 1);
+            }
+
+            updateTotal();
+            document.getElementById("dropdown").style.display = "none"; // Hide dropdown after selecting
+        }
+
+        // Update Quantity
+        function updateQuantity(foodName, change) {
+            if (selectedFoods[foodName]) {
+                selectedFoods[foodName].quantity += change;
+
+                if (selectedFoods[foodName].quantity <= 0) {
+                    delete selectedFoods[foodName];
+                    document.getElementById(`item-${foodName}`).remove();
+                } else {
+                    document.getElementById(`quantity-${foodName}`).textContent = selectedFoods[foodName].quantity;
+                    document.getElementById(`calories-${foodName}`).textContent = 
+                        (selectedFoods[foodName].quantity * selectedFoods[foodName].calories).toFixed(2) + " kcal";
+                }
+            }
+
+            updateTotal();
+        }
+
+        // Update Total Calories
+        function updateTotal() {
+            let total = 0;
+            Object.values(selectedFoods).forEach(food => {
+                total += food.quantity * food.calories;
+            });
+            document.getElementById("totalCalories").textContent = total.toFixed(2);
+        }
+
+// Go Back Function (Redirect to home.html)
+function goBack() {
+    window.location.href = "home.html"; // Redirects to home.html
+}
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function(event) {
+            const dropdown = document.getElementById("dropdown");
+            const searchBar = document.querySelector(".search-bar");
+
+            if (!searchBar.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Form Styling */
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .form-container h2 {
+            text-align: center;
+        }
+
+        /* Ensuring consistent input field width */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* Styling radio buttons */
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Button Styling */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn {
+            width: 48%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            background: #ccc;
+            color: black;
+        }
+
+        .btn-submit {
+            background: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <form class="form-container" onsubmit="submitForm(event)">
+        <h2>Activity Tracker</h2>
+
+        <!-- Question 1 -->
+        <div class="form-group">
+            <p>1. Does your work involve vigorous-intensity activity for at least 10 minutes continuously?</p>
+            <div class="radio-group">
+                <label><input type="radio" name="vigorous_work" value="yes"> Yes</label>
+                <label><input type="radio" name="vigorous_work" value="no"> No</label>
+            </div>
+                    <!-- Question 2 -->
+        <p>2. In a typical week, how many days do you do vigorous-intensity activities?</p>
+        <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <!-- Question 3 -->
+        <p>3. How much time do you spend doing vigorous-intensity activities on a typical day?</p>
+        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <!-- Question 4 -->
+        <p>4. Does your work involve moderate-intensity activity for at least 10 minutes continuously?</p>
+        <label><input type="radio" name="moderate_work" value="yes"> Yes</label>
+        <label><input type="radio" name="moderate_work" value="no"> No</label>
+
+        <!-- Question 5 -->
+        <p>5. In a typical week, how many days do you do moderate-intensity activities?</p>
+        <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <!-- Question 6 -->
+        <p>6. How much time do you spend doing moderate-intensity activities on a typical day?</p>
+        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <!-- Question 7 -->
+        <p>7. Do you walk or use a bicycle for at least 10 minutes continuously to get to places?</p>
+        <label><input type="radio" name="walk_bike" value="yes"> Yes</label>
+        <label><input type="radio" name="walk_bike" value="no"> No</label>
+
+        <!-- Question 8 -->
+        <p>8. In a typical week, how many days do you walk or bicycle?</p>
+        <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <!-- Question 9 -->
+        <p>9. How much time do you spend walking or bicycling for travel on a typical day?</p>
+        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <!-- Question 10 -->
+        <p>10. Do you do any vigorous-intensity sports or fitness activities for at least 10 minutes continuously?</p>
+        <label><input type="radio" name="vigorous_sports" value="yes"> Yes</label>
+        <label><input type="radio" name="vigorous_sports" value="no"> No</label>
+
+        <!-- Question 11 -->
+        <p>11. In a typical week, how many days do you do vigorous-intensity sports?</p>
+        <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <!-- Question 12 -->
+        <p>12. How much time do you spend doing vigorous-intensity sports on a typical day?</p>
+        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <!-- Question 13 -->
+        <p>13. Do you do any moderate-intensity sports or recreational activities?</p>
+        <label><input type="radio" name="moderate_sports" value="yes"> Yes</label>
+        <label><input type="radio" name="moderate_sports" value="no"> No</label>
+
+        <!-- Question 14 -->
+        <p>14. In a typical week, how many days do you do moderate-intensity sports?</p>
+        <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <!-- Question 15 -->
+        <p>15. How much time do you spend doing moderate-intensity sports on a typical day?</p>
+        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <!-- Question 16 -->
+        <p>16. How much time do you usually spend sitting or reclining on a typical day (excluding sleep)?</p>
+        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        </div>
+
+        <!-- Other Questions Here (Same Structure) -->
+
+        <!-- Buttons -->
+        <div class="button-container">
+            <button type="button" class="btn btn-back" onclick="goBack()">Back</button>
+            <button type="submit" class="btn btn-submit">Submit</button>
+        </div>
+    </form>
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent form from refreshing the page
+
+            alert("Form submitted successfully! Redirecting to Home Page..."); // Optional confirmation
+
+            window.location.href = "home.html"; // Redirect to home.html
+        }
+
+        function goBack() {
+            window.location.href = "home.html"; // Redirects to home.html
+        }
+    </script>
+
+</body>
+</html>
