@@ -37,7 +37,7 @@
             border-bottom: 1px solid #ddd;
             position: fixed;
             width: 100%;
-            max-width: 350px;
+            max-width: 400px;
             top: 0;
             z-index: 10;
         }
@@ -111,8 +111,8 @@
     <div class="container">
         <!-- Header -->
         <header>
-            <a href="home.html" class="back-btn">&larr;</a>
-            <h1>Dietary Assessment</h1>
+            <a href="settings.html" class="back-btn">&larr;</a>
+            <h1>Activity Tracker</h1>
         </header>
 
         <!-- Scrollable Content -->
@@ -120,56 +120,56 @@
             <form>
                 <div class="question">
                     <p>1. How many times in a week did you eat fast food meals or snacks or eat at a canteen?</p>
-                    <label><input type="checkbox"> Less than 1 time</label>
+                    <label><input type="checkbox"> less than 3 times</label>
                     <label><input type="checkbox"> 3 times</label>
                     <label><input type="checkbox"> More than 4 times</label>
                 </div>
 
                 <div class="question">
                     <p>2. How many times did you eat at least a serving of fruits?</p>
-                    <label><input type="checkbox"> Less than 1 time</label>
+                    <label><input type="checkbox"> less than 3 times</label>
                     <label><input type="checkbox"> 3 times</label>
                     <label><input type="checkbox"> More than 4 times</label>
                 </div>
 
                 <div class="question">
                     <p>3. How many times did you eat two to three servings of vegetables?</p>
-                    <label><input type="checkbox"> Less than 1 time</label>
+                    <label><input type="checkbox"> less than 3 times</label>
                     <label><input type="checkbox"> 3 times</label>
                     <label><input type="checkbox"> More than 4 times</label>
                 </div>
 
                 <div class="question">
                     <p>4. How many times did you drink regular carbonated drinks (sodas), fruit juices, or glasses of sweet tea?</p>
-                    <label><input type="checkbox"> Less than 1 time</label>
+                    <label><input type="checkbox"> less than 3 times</label>
                     <label><input type="checkbox"> 3 times</label>
                     <label><input type="checkbox"> More than 4 times</label>
                 </div>
 
                 <div class="question">
                     <p>5. How many times did you eat beans, chicken without skin, or fish?</p>
-                    <label><input type="checkbox"> Less than 1 time</label>
+                    <label><input type="checkbox"> less than 3 times</label>
                     <label><input type="checkbox"> 3 times</label>
                     <label><input type="checkbox"> More than 4 times</label>
                 </div>
 
                 <div class="question">
                     <p>6. How many times did you eat regular chips or fried snacks (e.g., puff-puff, not low-fat)?</p>
-                    <label><input type="checkbox"> Less than 1 time</label>
+                    <label><input type="checkbox"> less than 3 times</label>
                     <label><input type="checkbox"> 3 times</label>
                     <label><input type="checkbox"> More than 4 times</label>
                 </div>
 
                 <div class="question">
                     <p>7. How many times did you eat ice cream and other sweets?</p>
-                    <label><input type="checkbox"> Less than 1 time</label>
+                    <label><input type="checkbox"> less than 3 times</label>
                     <label><input type="checkbox"> 3 times</label>
                     <label><input type="checkbox"> More than 4 times</label>
                 </div>
 
                 <div class="question">
                     <p>8. How much oil, butter, margarine, or meat fat do you use to season or cook or put on bread?</p>
-                    <label><input type="checkbox"> Less than 1 time</label>
+                    <label><input type="checkbox"> less than 3 times</label>
                     <label><input type="checkbox"> 3 times</label>
                     <label><input type="checkbox"> More than 4 times</label>
                 </div>
@@ -178,5 +178,12 @@
             </form>
         </div>
     </div>
+    <script>
+        document.querySelector("form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            window.location.href = "home.html"; // Redirect to home.html
+        });
+    </script>
+    
 </body>
 </html>

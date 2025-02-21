@@ -12,6 +12,20 @@
             justify-content: center;
             padding: 20px;
         }
+        .image-container {
+    text-align: center;
+    margin: 15px 0;
+    display: left;
+    justify-content: center;
+}
+
+.image-container img {
+    width: 100%;
+    max-width: 300px; /* Adjust size as needed */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
         /* Form Styling */
         .form-container {
@@ -19,7 +33,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 450px;
+            max-width: 4500px;
             width: 100%;
             text-align: center;
         }
@@ -35,31 +49,33 @@
         }
 
         .form-group input[type="text"],
-        .form-group input[type="number"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            display: block;
-            margin-top: 5px;
-        }
+.form-group input[type="number"] {
+    width: 100%; /* Makes textboxes fully responsive */
+    padding: 15px; /* Increases padding for a larger feel */
+    font-size: 16px; /* Makes text inside the textbox larger */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: block;
+    margin-top: 20px;
+    box-sizing: border-box; /* Ensures padding does not affect the width */
+}
 
         /* Styling radio buttons */
         .radio-group {
-            display: flex;
+            display: left;
             gap: 15px;
             margin-top: 5px;
         }
 
         .radio-group label {
-            display: flex;
-            align-items: center;
+            display: left;
+            align-items: left;
             gap: 5px;
         }
 
         /* Button Styling */
         .button-container {
-            display: flex;
+            display: left;
             justify-content: space-between;
             margin-top: 20px;
         }
@@ -90,26 +106,36 @@
         <h2>Activity Tracker</h2>
 
         <!-- Question 1 -->
-        <div class="form-group">
-            <p>1. Does your work involve vigorous-intensity activity for at least 10 minutes continuously?</p>
-            <div class="radio-group">
-                <label><input type="radio" name="vigorous_work" value="yes"> Yes</label>
-                <label><input type="radio" name="vigorous_work" value="no"> No</label>
+        <div class="image-container">
+            <img src="/images/Picture1.jpg" alt="Protein Portion">
+            <div class="form-group">
+        <p>1. Does your work involve vigorous-intensity activity for at least 10 minutes continuously?</p>
+        <div class="radio-group">
+            <label><input type="radio" name="vigorous_work" value="yes"> Yes</label>
+            <label><input type="radio" name="vigorous_work" value="no"> No</label>
             </div>
                     <!-- Question 2 -->
+        <div class="image-container">
+            <img src="/images/Picture2.jpg" alt="Protein Portion">
         <p>2. In a typical week, how many days do you do vigorous-intensity activities?</p>
         <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
 
         <!-- Question 3 -->
+        <div class="image-container">
+            <img src="/images/Picture3.jpg" alt="Protein Portion">
         <p>3. How much time do you spend doing vigorous-intensity activities on a typical day?</p>
         <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
 
         <!-- Question 4 -->
+        <div class="image-container">
+            <img src="/images/Picture4.jpg" alt="Protein Portion">
         <p>4. Does your work involve moderate-intensity activity for at least 10 minutes continuously?</p>
         <label><input type="radio" name="moderate_work" value="yes"> Yes</label>
         <label><input type="radio" name="moderate_work" value="no"> No</label>
 
         <!-- Question 5 -->
+        <div class="image-container">
+            <img src="/images/Picture12.png" alt="Protein Portion">
         <p>5. In a typical week, how many days do you do moderate-intensity activities?</p>
         <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
 
@@ -118,11 +144,15 @@
         <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
 
         <!-- Question 7 -->
+        <div class="image-container">
+            <img src="/images/Picture6.jpg" alt="Protein Portion">
         <p>7. Do you walk or use a bicycle for at least 10 minutes continuously to get to places?</p>
         <label><input type="radio" name="walk_bike" value="yes"> Yes</label>
         <label><input type="radio" name="walk_bike" value="no"> No</label>
 
         <!-- Question 8 -->
+            <div class="image-container">
+                <img src="/images/Picture11.png" alt="Protein Portion">
         <p>8. In a typical week, how many days do you walk or bicycle?</p>
         <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
 
@@ -131,11 +161,15 @@
         <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
 
         <!-- Question 10 -->
+        <div class="image-container">
+            <img src="/images/Picture10.png" alt="Protein Portion">
         <p>10. Do you do any vigorous-intensity sports or fitness activities for at least 10 minutes continuously?</p>
         <label><input type="radio" name="vigorous_sports" value="yes"> Yes</label>
         <label><input type="radio" name="vigorous_sports" value="no"> No</label>
 
         <!-- Question 11 -->
+        <div class="image-container">
+            <img src="/images/Picture10.png" alt="Protein Portion">
         <p>11. In a typical week, how many days do you do vigorous-intensity sports?</p>
         <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
 
@@ -144,11 +178,15 @@
         <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
 
         <!-- Question 13 -->
+        <div class="image-container">
+            <img src="/images/Picture9.png" alt="Protein Portion">
         <p>13. Do you do any moderate-intensity sports or recreational activities?</p>
         <label><input type="radio" name="moderate_sports" value="yes"> Yes</label>
         <label><input type="radio" name="moderate_sports" value="no"> No</label>
 
         <!-- Question 14 -->
+        <div class="image-container">
+            <img src="/images/Picture8.png" alt="Protein Portion">
         <p>14. In a typical week, how many days do you do moderate-intensity sports?</p>
         <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
 
@@ -157,6 +195,8 @@
         <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
 
         <!-- Question 16 -->
+        <div class="image-container">
+            <img src="/images/Picture7.png" alt="Protein Portion">
         <p>16. How much time do you usually spend sitting or reclining on a typical day (excluding sleep)?</p>
         <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
         </div>
