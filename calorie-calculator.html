@@ -190,9 +190,9 @@
                 foodItem.innerHTML = `
                     <span class="food-name">${foodName}</span>
                     <div class="quantity-control">
-                        <img src="/icons/minus-icon.svg" onclick="updateQuantity('${foodName}', -1)">
+                        <img src="/Icons/minus-icon.svg" onclick="updateQuantity('${foodName}', -1)">
                         <span class="quantity-value" id="quantity-${foodName}">1</span>
-                        <img src="/icons/plus-icon.svg" onclick="updateQuantity('${foodName}', 1)">
+                        <img src="/Icons/plus-icon.svg" onclick="updateQuantity('${foodName}', 1)">
                     </div>
                     <span class="calorie-value" id="calories-${foodName}">${foodCalories.toFixed(2)} kcal</span>
                 `;
