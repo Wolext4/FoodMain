@@ -4,47 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vegetables</title>
-</head>
-<body style="font-family: Arial, sans-serif; background-color: #f7f7f7; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+        }
 
-    <!-- Back Button -->
-    <a href="foodclasses.html" style="position: absolute; top: 20px; left: 20px; text-decoration: none; font-size: 24px;">⬅</a>
+        /* Back Button - Fixed & Always Visible */
+        .back-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.2s;
+            z-index: 999;
+        }
+
+        .back-button img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        /* Food Item Styling */
+        .food-item {
+            text-decoration: none;
+            color: inherit;
+            width: 90%;
+            max-width: 400px;
+            margin-bottom: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .food-item:hover {
+            background: #f4f4f4;
+            transform: scale(1.02);
+        }
+
+        .food-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .food-details {
+            flex-grow: 1;
+        }
+
+        .next-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 🔙 Back Button (Fixed & Always Visible) -->
+    <a href="foodclasses.html" class="back-button">
+        <img src="/Icons/back.svg" alt="Back">
+    </a>
 
     <!-- Page Title -->
-    <h2 style="text-align: center;">Vegetables</h2>
+    <h2>Vegetables</h2>
 
-    <!-- Carrot (Clickable Entirely) -->
-    <a href="carrot.html" style="text-decoration: none; color: inherit; width: 90%; max-width: 400px; margin-bottom: 10px;">
-        <div style="background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: flex; align-items: center; cursor: pointer;">
-            <img src="/Images/CarrotLarge.png" alt="Carrot" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;">
-            <div style="flex-grow: 1;">
-                <strong>Carrot</strong> <br>
-                <span style="color: gray;">Vegetable</span> <br>
-                <span style="color: black;"><strong>Cal:</strong> kcal</span>
-            </div>
+    <!-- Carrot -->
+    <a href="carrot.html" class="food-item">
+        <img src="/Images/CarrotLarge.png" alt="Carrot">
+        <div class="food-details">
+            <strong>Carrot</strong> <br>
+            <span style="color: gray;">Vegetable</span> <br>
+            <span style="color: black;"><strong>Cal:</strong> kcal</span>
         </div>
+        <img src="/Icons/next.svg" class="next-icon" alt="Next">
     </a>
 
-    <!-- Cucumber (Clickable Entirely) -->
-    <a href="cucumber.html" style="text-decoration: none; color: inherit; width: 90%; max-width: 400px;">
-        <div style="background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: flex; align-items: center; cursor: pointer;">
-            <img src="/Images/CucumberLarge.png" alt="Cucumber" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;">
-            <div style="flex-grow: 1;">
-                <strong>Cucumber</strong> <br>
-                <span style="color: gray;">Vegetable</span> <br>
-                <span style="color: black;"><strong>Cal:</strong> kcal</span>
-            </div>
+    <!-- Cucumber -->
+    <a href="cucumber.html" class="food-item">
+        <img src="/Images/CucumberLarge.png" alt="Cucumber">
+        <div class="food-details">
+            <strong>Cucumber</strong> <br>
+            <span style="color: gray;">Vegetable</span> <br>
+            <span style="color: black;"><strong>Cal:</strong> kcal</span>
         </div>
+        <img src="/Icons/next.svg" class="next-icon" alt="Next">
     </a>
-    <a href="gardenegg.html" style="text-decoration: none; color: inherit; width: 90%; max-width: 400px;">
-        <div style="background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: flex; align-items: center; cursor: pointer;">
-            <img src="/Images/GEggLarge.png" alt="Cucumber" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;">
-            <div style="flex-grow: 1;">
-                <strong>Garden Egg</strong> <br>
-                <span style="color: gray;">Vegetable</span> <br>
-                <span style="color: black;"><strong>Cal:</strong> kcal</span>
-            </div>
+
+    <!-- Garden Egg -->
+    <a href="gardenegg.html" class="food-item">
+        <img src="/Images/GEggLarge.png" alt="Garden Egg">
+        <div class="food-details">
+            <strong>Garden Egg</strong> <br>
+            <span style="color: gray;">Vegetable</span> <br>
+            <span style="color: black;"><strong>Cal:</strong> kcal</span>
         </div>
+        <img src="/Icons/next.svg" class="next-icon" alt="Next">
     </a>
 
 </body>

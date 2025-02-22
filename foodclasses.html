@@ -13,7 +13,7 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Body Styling - Fullscreen */
+        /* Body Styling */
         body {
             background-color: #ffffff;
             display: flex;
@@ -25,13 +25,13 @@
             position: relative;
         }
 
-        /* Back Button - Matches 'Move More' */
+        /* Back Button */
         .home-btn {
             position: absolute;
             top: 15px;
             left: 15px;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background-color: #ffffff;
             border-radius: 50%;
             display: flex;
@@ -44,60 +44,59 @@
         }
 
         .home-btn img {
-            width: 60%;
-            height: 60%;
-        }
-
-        .home-btn:hover {
-            background-color: #45a049;
+            width: 65%;
+            height: 65%;
         }
 
         /* Container */
         .container {
             background: white;
             width: 100%;
-            max-width: 500px;
+            max-width: 450px;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
-            text-align: center;
-            padding: 20px;
+            text-align: left;
+            padding: 25px;
         }
 
         /* Title */
         h1 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-top: 15px;
+            margin-bottom: 25px;
         }
 
         /* Subtitle */
         h2 {
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            align-self: flex-start;
+            margin-bottom: 25px;
         }
 
         /* Food Class Buttons */
         .food-card {
             background: white;
             border: 1px solid #ddd;
-            padding: 15px;
+            padding: 20px;
             width: 100%;
-            max-width: 300px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
+            max-width: 380px;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 18px;
+            font-weight: normal;
             cursor: pointer;
             transition: 0.3s ease;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
             text-decoration: none;
             color: black;
-            display: block;
+            display: flex;
+            align-items: center;
         }
 
         /* Hover Effect */
@@ -108,7 +107,7 @@
 </head>
 <body>
 
-    <!-- 🔙 Back Button (Styled Like 'Move More') -->
+    <!-- Back Button -->
     <a href="home.html" class="home-btn">
         <img src="/Icons/back.svg" alt="Back">
     </a>
@@ -117,7 +116,7 @@
         <h1>GluGuide</h1>
         <h2>Food Classes</h2>
 
-        <!-- Updated Buttons with Links -->
+        <!-- Buttons -->
         <a href="carbohydrates.html" class="food-card">Carbohydrates</a>
         <a href="proteins.html" class="food-card">Proteins</a>
         <a href="fruits.html" class="food-card">Fruits</a>
