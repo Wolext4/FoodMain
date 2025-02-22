@@ -78,7 +78,7 @@
     <div class="login-container">
         <h2>GluGuide</h2>
         
-        <!-- Phone number input (accepts only numbers, max 10 digits) -->
+        <!-- Phone number input (accepts only numbers, max 11 digits) -->
         <input type="tel" id="phone" placeholder="Phone Number" pattern="[0-9]{11}" maxlength="11" required oninput="validatePhone()">
 
         <input type="password" id="password" placeholder="Password" required>
@@ -104,16 +104,17 @@
             const phone = document.getElementById('phone').value;
             const password = document.getElementById('password').value;
 
-            // Get stored credentials from localStorage
-            const storedPhone = localStorage.getItem("phone");
-            const storedPassword = localStorage.getItem("password");
+            // Hardcoded credentials for instant login
+            const instantLoginPhone = "01234567891"; // Change this to your login number
+            const instantLoginPassword = "admin"; // Change this to your login password
 
             if (phone.length !== 11) {
                 alert("Phone number must be exactly 11 digits!");
                 return;
             }
 
-            if (phone === storedPhone && password === storedPassword) {
+            // If the entered phone and password match the hardcoded ones, login instantly
+            if (phone === instantLoginPhone && password === instantLoginPassword) {
                 window.location.href = "home.html"; // Redirect to home page
             } else {
                 alert("Invalid phone number or password!");

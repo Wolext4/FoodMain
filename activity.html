@@ -6,26 +6,12 @@
     <title>Activity Tracker</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #f7f7f7;
             display: flex;
             justify-content: center;
             padding: 20px;
         }
-        .image-container {
-    text-align: center;
-    margin: 15px 0;
-    display: left;
-    justify-content: center;
-}
-
-.image-container img {
-    width: 100%;
-    max-width: 300px; /* Adjust size as needed */
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
 
         /* Form Styling */
         .form-container {
@@ -33,102 +19,143 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 4500px;
-            width: 100%;
+            max-width: 500px;
+            width: 500px;
             text-align: center;
+            position: relative;
         }
 
         .form-container h2 {
             text-align: center;
+            margin-bottom: 50px;
         }
 
-        /* Ensuring consistent input field width */
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
+        /* Back Button - Fixed at the Top */
+        .back-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.2s;
+            z-index: 999;
         }
 
+        .back-button img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+
+        /* Image Styling */
+        .image-container {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .image-container img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Input Fields */
         .form-group input[type="text"],
-.form-group input[type="number"] {
-    width: 100%; /* Makes textboxes fully responsive */
-    padding: 15px; /* Increases padding for a larger feel */
-    font-size: 16px; /* Makes text inside the textbox larger */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: block;
-    margin-top: 20px;
-    box-sizing: border-box; /* Ensures padding does not affect the width */
-}
-
-        /* Styling radio buttons */
-        .radio-group {
-            display: left;
-            gap: 15px;
-            margin-top: 5px;
+        .form-group input[type="number"],
+        input[type="number"],
+        input[type="text"] {
+            width: calc(100% - 20px); /* Ensures input doesn't touch screen edges */
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .radio-group label {
-            display: left;
-            align-items: left;
-            gap: 5px;
+        /* Align checkboxes to the left while keeping them inline */
+        label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px; /* Space between checkbox and text */
+            margin-right: 15px; /* Space between options */
         }
 
         /* Button Styling */
-        .button-container {
-            display: left;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .btn {
-            width: 48%;
-            padding: 10px;
+        .btn-submit {
+            width: calc(100% - 20px);
+            padding: 12px;
             font-size: 16px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-        }
-
-        .btn-back {
-            background: #ccc;
-            color: black;
-        }
-
-        .btn-submit {
             background: black;
             color: white;
+            transition: 0.3s;
+            display: block;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
 
+    <!-- 🔙 Back Button (Fixed & Always Visible) -->
+    <a href="home.html" class="back-button">
+        <img src="/Icons/back.svg" alt="Back">
+    </a>
+
     <form class="form-container" onsubmit="submitForm(event)">
         <h2>Activity Tracker</h2>
 
         <!-- Question 1 -->
-        <div class="container">
+        <div class="image-container">
             <img src="./Images/Picture1.jpg">
-            <div class="form-group">
+        </div>
         <p>1. Does your work involve vigorous-intensity activity for at least 10 minutes continuously?</p>
-        <div class="radio-group">
-            <label><input type="radio" name="vigorous_work" value="yes"> Yes</label>
-            <label><input type="radio" name="vigorous_work" value="no"> No</label>
-            </div>
-                    <!-- Question 2 -->
+        <label><input type="radio" name="vigorous_work" value="yes"> Yes</label>
+        <label><input type="radio" name="vigorous_work" value="no"> No</label>
+
+       <!-- Question 2 -->
         <div class="image-container">
             <img src="./Images/Picture2.jpg">
+        </div>
         <p>2. In a typical week, how many days do you do vigorous-intensity activities?</p>
-        <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        <input type="number" placeholder="Number of days">
 
         <!-- Question 3 -->
         <div class="image-container">
             <img src="./Images/Picture3.jpg">
+        </div>
         <p>3. How much time do you spend doing vigorous-intensity activities on a typical day?</p>
-        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        <input type="text" placeholder="Hours : Minutes">
 
         <!-- Question 4 -->
         <div class="image-container">
             <img src="./Images/Picture4.jpg">
+        </div>
         <p>4. Does your work involve moderate-intensity activity for at least 10 minutes continuously?</p>
         <label><input type="radio" name="moderate_work" value="yes"> Yes</label>
         <label><input type="radio" name="moderate_work" value="no"> No</label>
@@ -136,91 +163,50 @@
         <!-- Question 5 -->
         <div class="image-container">
             <img src="./Images/Picture12.png">
+        </div>
         <p>5. In a typical week, how many days do you do moderate-intensity activities?</p>
-        <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        <input type="number" placeholder="Number of days">
 
         <!-- Question 6 -->
         <p>6. How much time do you spend doing moderate-intensity activities on a typical day?</p>
-        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        <input type="text" placeholder="Hours : Minutes">
 
         <!-- Question 7 -->
         <div class="image-container">
             <img src="./Images/Picture6.jpg">
+        </div>
         <p>7. Do you walk or use a bicycle for at least 10 minutes continuously to get to places?</p>
         <label><input type="radio" name="walk_bike" value="yes"> Yes</label>
         <label><input type="radio" name="walk_bike" value="no"> No</label>
 
         <!-- Question 8 -->
-            <div class="image-container">
-                <img src="./Images/Picture11.png" >
+        <div class="image-container">
+            <img src="./Images/Picture11.png">
+        </div>
         <p>8. In a typical week, how many days do you walk or bicycle?</p>
-        <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        <input type="number" placeholder="Number of days">
 
         <!-- Question 9 -->
         <p>9. How much time do you spend walking or bicycling for travel on a typical day?</p>
-        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        <input type="text" placeholder="Hours : Minutes">
 
         <!-- Question 10 -->
         <div class="image-container">
             <img src="./Images/Picture10.png">
+        </div>
         <p>10. Do you do any vigorous-intensity sports or fitness activities for at least 10 minutes continuously?</p>
         <label><input type="radio" name="vigorous_sports" value="yes"> Yes</label>
         <label><input type="radio" name="vigorous_sports" value="no"> No</label>
 
-        <!-- Question 11 -->
-        <div class="image-container">
-            <img src="./Images/Picture10.png">
-        <p>11. In a typical week, how many days do you do vigorous-intensity sports?</p>
-        <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
-
-        <!-- Question 12 -->
-        <p>12. How much time do you spend doing vigorous-intensity sports on a typical day?</p>
-        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
-
-        <!-- Question 13 -->
-        <div class="image-container">
-            <img src="./Images/Picture9.png">
-        <p>13. Do you do any moderate-intensity sports or recreational activities?</p>
-        <label><input type="radio" name="moderate_sports" value="yes"> Yes</label>
-        <label><input type="radio" name="moderate_sports" value="no"> No</label>
-
-        <!-- Question 14 -->
-        <div class="image-container">
-            <img src="./Images/Picture8.png">
-        <p>14. In a typical week, how many days do you do moderate-intensity sports?</p>
-        <input type="number" placeholder="Number of days" style="width: 100%; padding: 10px; margin-bottom: 10px;">
-
-        <!-- Question 15 -->
-        <p>15. How much time do you spend doing moderate-intensity sports on a typical day?</p>
-        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
-
-        <!-- Question 16 -->
-        <div class="image-container">
-            <img src="./Images/Picture7.png">
-        <p>16. How much time do you usually spend sitting or reclining on a typical day (excluding sleep)?</p>
-        <input type="text" placeholder="Hours : Minutes" style="width: 100%; padding: 10px; margin-bottom: 10px;">
-        </div>
-
-        <!-- Other Questions Here (Same Structure) -->
-
-        <!-- Buttons -->
-        <div class="button-container">
-            <button type="button" class="btn btn-back" onclick="goBack()">Back</button>
-            <button type="submit" class="btn btn-submit">Submit</button>
-        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn-submit">Submit</button>
     </form>
 
     <script>
         function submitForm(event) {
-            event.preventDefault(); // Prevent form from refreshing the page
-
-            alert("Form submitted successfully! Redirecting to Home Page..."); // Optional confirmation
-
+            event.preventDefault(); // Prevent form refresh
+            alert("Form submitted successfully! Redirecting to Home Page...");
             window.location.href = "home.html"; // Redirect to home.html
-        }
-
-        function goBack() {
-            window.location.href = "home.html"; // Redirects to home.html
         }
     </script>
 
