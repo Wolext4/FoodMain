@@ -4,27 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fruits</title>
-</head>
-<body style="font-family: Arial, sans-serif; background-color: #f7f7f7; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+        }
 
-    <!-- Back Button -->
-    <a href="foodclasses.html" style="position: absolute; top: 20px; left: 20px; text-decoration: none; font-size: 24px;">⬅</a>
+        /* Back Button - Matches 'Move More' */
+        .home-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .home-btn img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .home-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Food List */
+        .food-list {
+            width: 90%;
+            max-width: 400px;
+        }
+
+        /* Food Item */
+        .food-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: black;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .food-item:hover {
+            background: #d8dad8;
+            transform: scale(1.03);
+        }
+
+        /* Food Image */
+        .food-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        /* Food Details */
+        .food-details {
+            flex-grow: 1;
+        }
+
+        .food-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .food-type {
+            font-size: 14px;
+            color: gray;
+        }
+
+        /* Right-side 'Next' Icon */
+        .next-icon {
+            width: 24px;
+            height: 24px;
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🔙 Back Button -->
+    <a href="foodclasses.html" class="home-btn">
+        <img src="/Icons/back.svg" alt="Back">
+    </a>
 
     <!-- Page Title -->
     <h2 style="text-align: center;">Fruits</h2>
 
-    <!-- Food List (Clickable Entirely) -->
-    <a href="orange.html" style="text-decoration: none; color: inherit; width: 90%; max-width: 400px;">
-        <div style="background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: flex; align-items: center; cursor: pointer;">
-            <img src="/Images/OrangeLarge.png" alt="Orange" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;">
-            <div style="flex-grow: 1;">
-                <strong>Orange</strong> <br>
-                <span style="color: gray;">Fruit</span> <br>
-                <span style="color: black;"><strong>Cal:</strong> kcal</span>
+    <!-- Food List -->
+    <div class="food-list">
+        <a href="orange.html" class="food-item">
+            <img src="/Images/OrangeLarge.png" alt="Orange" class="food-image">
+            <div class="food-details">
+                <div class="food-name">Orange</div>
+                <div class="food-type">Fruit</div>
+                <div class="food-type"><strong>Cal:</strong> kcal</div>
             </div>
-        </div>
-    </a>
+            <img src="/Icons/next.svg" alt="Next" class="next-icon">
+        </a>
+    </div>
 
 </body>
 </html>
-

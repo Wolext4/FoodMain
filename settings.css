@@ -19,6 +19,7 @@ body {
     flex-direction: column;
     justify-content: center; /* Center everything */
     align-items: center;
+    position: relative;
 }
 
 /* Header */
@@ -38,13 +39,31 @@ header h1 {
     font-size: 24px;
 }
 
-/* Back Button */
-.back-btn {
+/* Back Button - Matches 'Move More' */
+.home-btn {
     position: absolute;
-    left: 10px;
+    top: 15px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
-    font-size: 26px;
-    color: black;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+    z-index: 10;
+}
+
+.home-btn img {
+    width: 60%;
+    height: 60%;
+}
+
+.home-btn:hover {
+    background-color: #45a049;
 }
 
 /* Settings List */
@@ -60,7 +79,6 @@ header h1 {
 .settings-item {
     display: flex;
     align-items: left;
-    justify-content: ;
     width: 320px; /* Adjusted for better centering */
     padding: 18px;
     background: white;

@@ -16,11 +16,32 @@
             align-items: center;
             font-size: 22px;
             font-weight: bold;
+            position: relative;
         }
 
-        .back {
-            cursor: pointer;
-            margin-right: 10px;
+        /* Back Button - Matches 'Move More' */
+        .back-button {
+            position: absolute;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .back-button img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
         }
 
         /* Search Bar */
@@ -70,6 +91,12 @@
             justify-content: space-between;
             padding: 10px;
             border-bottom: 1px solid #ccc;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .food-item:hover {
+            background: #f4f4f4;
+            transform: scale(1.03);
         }
 
         /* Ensures consistent layout */
@@ -118,7 +145,11 @@
 
     <!-- Header -->
     <div class="header">
-        <span class="back" onclick="goBack()">←</span> Calorie Calculator
+        <!-- 🔙 Back Button (Styled Like 'Move More') -->
+        <a href="home.html" class="back-button">
+            <img src="/Icons/back.svg" alt="Back">
+        </a>
+        <span style="margin-left: 50px;">Calorie Calculator</span>
     </div>
 
     <!-- Search Bar -->
@@ -232,21 +263,6 @@
             });
             document.getElementById("totalCalories").textContent = total.toFixed(2);
         }
-
-// Go Back Function (Redirect to home.html)
-function goBack() {
-    window.location.href = "home.html"; // Redirects to home.html
-}
-
-        // Hide dropdown when clicking outside
-        document.addEventListener("click", function(event) {
-            const dropdown = document.getElementById("dropdown");
-            const searchBar = document.querySelector(".search-bar");
-
-            if (!searchBar.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.style.display = "none";
-            }
-        });
     </script>
 
 </body>

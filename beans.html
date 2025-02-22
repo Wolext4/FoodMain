@@ -19,6 +19,7 @@
           display: flex;
           align-items: center;
           padding: 10px 16px;
+          position: relative;
         }
     
         header h1 {
@@ -27,12 +28,30 @@
           margin: 0 auto;
           text-align: center;
         }
-    
-        header img .back-button {
-          font-size: 24px;
-          cursor: pointer;
+
+        /* Back Button - Matches 'Move More' */
+        .back-button {
           position: absolute;
-          left: 16px;
+          left: 10px;
+          width: 40px;
+          height: 40px;
+          background-color: #ffffff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          transition: background 0.3s ease;
+        }
+
+        .back-button img {
+          width: 60%;
+          height: 60%;
+        }
+
+        .back-button:hover {
+          background-color: #45a049;
         }
     
         .container {
@@ -66,24 +85,27 @@
 </head>
 <body>
     <header>
-        <a href="/proteins.html"><span class="back-button"><img src="/Icons/arrow-narrow-left.svg" alt=""></span></a>
+        <!-- 🔙 Back Button (Styled Like 'Move More') -->
+        <a href="/proteins.html" class="back-button">
+            <img src="/Icons/back.svg" alt="Back">
+        </a>
         <h1>Beans</h1>
     </header>
       
-      <div class="container">
+    <div class="container">
         <div class="item">
-          <img src="/Images/BeansSmall.png" alt="1 Serving of Jollof Rice">
+          <img src="/Images/BeansSmall.png" alt="1 Serving of Beans">
           <div class="serving-info">1 Serving = 82.72kcal</div>
         </div>
         <div class="item">
-          <img src="/Images/BeansMedium.png" alt="2 Servings of Jollof Rice">
+          <img src="/Images/BeansMedium.png" alt="2 Servings of Beans">
           <div class="serving-info">2 Servings = 169.58kcal</div>
         </div>
         <div class="item">
-          <img src="/Images/BeansLarge.png" alt="3 Servings of Jollof Rice">
+          <img src="/Images/BeansLarge.png" alt="3 Servings of Beans">
           <div class="serving-info">3 Servings = 258.24kcal</div>
         </div>
-      </div>
+    </div>
       
 </body>
 </html>

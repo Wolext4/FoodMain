@@ -66,50 +66,68 @@
                 <p>Personalization and metrics</p>
             </div>
         </div>
+
         <!-- 🍽️ Measuring Your Food Portions -->
-<div class="feature-card" onclick="navigateTo('food-portions.html')">
-    <img src="/Icons/scale.svg" alt="Food Portions">
-    <div>
-        <h2>Measuring Your Food Portions</h2>
-        <p>Estimate your portion sizes</p>
-    </div>
-</div>
+        <div class="feature-card" onclick="navigateTo('food-portions.html')">
+            <img src="/Icons/scale.svg" alt="Food Portions">
+            <div>
+                <h2>Measuring Your Food Portions</h2>
+                <p>Estimate your portion sizes</p>
+            </div>
+        </div>
 
-
-<!-- 🚪 Logout Button -->
-<div class="feature-card logout" onclick="showLogoutModal()">
-    <img src="/Icons/logout.svg" alt="Logout">
-    <div>
-        <h2>Logout</h2>
-    </div>
-</div>
-
-<script>
-    function showLogoutModal() {
-        window.location.href = "logout.html"; // Open the logout confirmation modal
-    }
-</script>
-
+        <!-- 🚪 Logout Button -->
+        <div class="feature-card logout" onclick="showLogoutModal()">
+            <img src="/Icons/logout.svg" alt="Logout">
+            <div>
+                <h2>Logout</h2>
+            </div>
+        </div>
 
     </div> <!-- End of Feature Cards Container -->
 
+    <!-- 🔹 "Move More" Button (Bottom Right) -->
+    <a href="movemore.html" class="move-more-btn">
+        <img src="/Icons/movemore.svg" alt="Move More">
+    </a>
+
     <!-- 🔹 JavaScript Functions -->
     <script>
-        // Function to navigate to different pages
         function navigateTo(page) {
             window.location.href = page;
         }
 
-        // Function to log out user and redirect to login page
-        function logout() {
-            // Clear stored user credentials (optional)
-            localStorage.removeItem("email");
-            localStorage.removeItem("password");
-
-            // Redirect to login page
-            window.location.href = "login.html";
+        function showLogoutModal() {
+            window.location.href = "logout.html"; 
         }
     </script>
+
+    <!-- 🔹 CSS (Inline for Quick Changes) -->
+    <style>
+        .move-more-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #4CAF50; /* Green background */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .move-more-btn img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .move-more-btn:hover {
+            background-color: #45a049; /* Slightly darker green */
+        }
+    </style>
 
 </body>
 </html>

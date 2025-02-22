@@ -4,30 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Back Button - Matches 'Move More' */
+        .home-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .home-btn img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .home-btn:hover {
+            background-color: #45a049;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            text-align: center;
+        }
+
+        header h1 {
+            flex-grow: 1;
+            text-align: center;
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            background: gray;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: white;
+            margin: auto;
+        }
+
+        .input-group {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #f7f7f7; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <div style="width: 100%; max-width: 400px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-        <header style="display: flex; align-items: center;">
-            <a href="settings.html" style="text-decoration: none; font-size: 24px; color: black; margin-right: 10px;">&larr;</a>
-            <h1 style="flex-grow: 1; text-align: center; margin: 0; font-size: 22px;">Profile</h1>
+<body>
+
+    <!-- 🔙 Back Button (Styled Like 'Move More') -->
+    <a href="settings.html" class="home-btn">
+        <img src="/Icons/back.svg" alt="Back">
+    </a>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Profile</h1>
         </header>
 
         <div style="text-align: center; margin-top: 20px;">
-            <div style="width: 80px; height: 80px; background: gray; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; color: white; margin: auto;">
-                JO
-            </div>
+            <div class="profile-pic">JO</div>
         </div>
 
-        <div style="margin-top: 20px;">
-            <label for="name" style="display: block; font-weight: bold; margin-bottom: 5px;">Name</label>
-            <input type="text" id="name" placeholder="Name" style="width: calc(100% - 20px); padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        <div class="input-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Name">
+        </div>
 
-            <label for="email" style="display: block; font-weight: bold; margin-top: 15px; margin-bottom: 5px;">Email</label>
-            <input type="email" id="email" placeholder="Email" style="width: calc(100% - 20px); padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Email">
+        </div>
 
-            <label for="password" style="display: block; font-weight: bold; margin-top: 15px; margin-bottom: 5px;">Password</label>
-            <input type="password" id="password" placeholder="*********" style="width: calc(100% - 20px); padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="*********">
         </div>
     </div>
+
 </body>
 </html>

@@ -25,29 +25,31 @@
             position: relative;
         }
 
-        /* Back Button */
-        .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            color: #333;
-            font-weight: bold;
+        /* Back Button - Matches 'Move More' */
+        .home-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
             display: flex;
             align-items: center;
+            justify-content: center;
             text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+            z-index: 10;
         }
 
-        .back-button:hover {
-            color: #007bff;
+        .home-btn img {
+            width: 60%;
+            height: 60%;
         }
 
-        .back-button::before {
-            content: "←";
-            margin-right: 5px;
+        .home-btn:hover {
+            background-color: #45a049;
         }
 
         /* Container */
@@ -101,6 +103,7 @@
             height: 50px;
             border-radius: 50%;
             margin-right: 15px;
+            object-fit: cover;
         }
 
         /* Food Details */
@@ -118,18 +121,20 @@
             color: gray;
         }
 
-        /* Arrow Icon */
-        .arrow {
-            font-size: 18px;
-            color: gray;
+        /* Right-side non-clickable icon */
+        .right-icon {
+            width: 24px;
+            height: 24px;
+            margin-left: auto;
         }
-
     </style>
 </head>
 <body>
 
-    <!-- Back Button -->
-    <a href="foodclasses.html" class="back-button"></a>
+    <!-- 🔙 Back Button (Styled Like 'Move More') -->
+    <a href="foodclasses.html" class="home-btn">
+        <img src="/Icons/back.svg" alt="Back">
+    </a>
 
     <div class="container">
         <h1>Proteins</h1>
@@ -142,7 +147,7 @@
                     <div class="food-type">Protein</div>
                     <div class="food-type">Cal: kcal</div>
                 </div>
-                <div class="arrow">›</div>
+                <img src="icons/next.svg" alt="Right Icon" class="right-icon">
             </a>
         </div>
 

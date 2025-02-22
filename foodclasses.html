@@ -25,29 +25,31 @@
             position: relative;
         }
 
-        /* Back Button */
-        .back-button {
+        /* Back Button - Matches 'Move More' */
+        .home-btn {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            color: #333;
-            font-weight: bold;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
             display: flex;
             align-items: center;
+            justify-content: center;
             text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+            z-index: 10;
         }
 
-        .back-button:hover {
-            color: #007bff;
+        .home-btn img {
+            width: 60%;
+            height: 60%;
         }
 
-        .back-button::before {
-            content: "←";
-            margin-right: 5px;
+        .home-btn:hover {
+            background-color: #45a049;
         }
 
         /* Container */
@@ -102,13 +104,14 @@
         .food-card:hover {
             background: #f4f4f4;
         }
-
     </style>
 </head>
 <body>
 
-    <!-- Back Button (Redirects to Home Page) -->
-    <a href="home.html" class="back-button"></a>
+    <!-- 🔙 Back Button (Styled Like 'Move More') -->
+    <a href="home.html" class="home-btn">
+        <img src="/Icons/back.svg" alt="Back">
+    </a>
 
     <div class="container">
         <h1>GluGuide</h1>
@@ -117,9 +120,8 @@
         <!-- Updated Buttons with Links -->
         <a href="carbohydrates.html" class="food-card">Carbohydrates</a>
         <a href="proteins.html" class="food-card">Proteins</a>
-        <a href="Fruits.html" class="food-card">Fruits</a>
-        <a href="vegetables.html
-        " class="food-card">Vegetables</a>
+        <a href="fruits.html" class="food-card">Fruits</a>
+        <a href="vegetables.html" class="food-card">Vegetables</a>
     </div>
 
 </body>

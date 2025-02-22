@@ -26,6 +26,34 @@
             background: white;
             display: flex;
             flex-direction: column;
+            position: relative;
+        }
+
+        /* Back Button - Matches 'Move More' */
+        .home-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+            z-index: 10;
+        }
+
+        .home-btn img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .home-btn:hover {
+            background-color: #45a049;
         }
 
         /* Header */
@@ -39,7 +67,7 @@
             width: 100%;
             max-width: 400px;
             top: 0;
-            z-index: 10;
+            z-index: 9;
         }
 
         header h1 {
@@ -47,13 +75,6 @@
             text-align: center;
             margin: 0;
             font-size: 20px;
-        }
-
-        .back-btn {
-            text-decoration: none;
-            font-size: 24px;
-            color: black;
-            margin-right: 10px;
         }
 
         /* Form Content (Scrollable) */
@@ -109,9 +130,13 @@
 </head>
 <body>
     <div class="container">
+        <!-- 🔙 Back Button (Styled Like 'Move More') -->
+        <a href="home.html" class="home-btn">
+            <img src="/Icons/back.svg" alt="Back">
+        </a>
+
         <!-- Header -->
         <header>
-            <a href="home.html" class="back-btn">&larr;</a>
             <h1>Dietary Assessment</h1>
         </header>
 

@@ -11,32 +11,32 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #faf5f5; /* Dark background */
+            background-color: #faf5f5;
             margin: 0;
         }
         .login-container {
             background: white;
-            padding: 30px;
+            padding: 25px; 
             border-radius: 10px;
             box-shadow: 0 0 150px rgba(0, 0, 0, 0.2);
             width: 320px;
             text-align: center;
         }
         h2 {
-            margin-bottom: 20px;
-            font-size: 50px;
+            margin-bottom: 15px;
+            font-size: 40px;
         }
         input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
+            width: 259px; /* Adjust width as needed */
+            padding: 8px;
+            margin: 8px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 14px;
         }
         button {
-            width: 100%;
-            padding: 12px;
+            width: 290px;
+            padding: 10px;
             background: black;
             color: white;
             border: none;
@@ -77,10 +77,12 @@
 
     <div class="login-container">
         <h2>GluGuide</h2>
-        <input type="email" id="email" placeholder="Email" required>
+        
+        <!-- Phone number input (accepts only numbers, max 10 digits) -->
+        <input type="tel" id="phone" placeholder="Phone Number" pattern="[0-9]{11}" maxlength="11" required oninput="validatePhone()">
+
         <input type="password" id="password" placeholder="Password" required>
-        
-        
+
         <div class="forgot-password">
             <a href="forgotpassword.html">Forgot Password?</a>
         </div>
@@ -93,21 +95,30 @@
     </div>
 
     <script>
-       function login() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+        function validatePhone() {
+            let phoneInput = document.getElementById('phone');
+            phoneInput.value = phoneInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+        }
 
-    // Get stored credentials from localStorage
-    const storedEmail = localStorage.getItem("email");
-    const storedPassword = localStorage.getItem("password");
+        function login() {
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
 
-    if (email === storedEmail && password === storedPassword) {
-        window.location.href = "home.html"; // Redirect to home page
-    } else {
-        alert("Invalid email or password!");
-    }
-}
+            // Get stored credentials from localStorage
+            const storedPhone = localStorage.getItem("phone");
+            const storedPassword = localStorage.getItem("password");
 
+            if (phone.length !== 11) {
+                alert("Phone number must be exactly 11 digits!");
+                return;
+            }
+
+            if (phone === storedPhone && password === storedPassword) {
+                window.location.href = "home.html"; // Redirect to home page
+            } else {
+                alert("Invalid phone number or password!");
+            }
+        }
     </script>
 
 </body>

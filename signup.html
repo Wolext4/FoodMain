@@ -7,7 +7,7 @@
     <style>
         /* General Reset */
         * {
-            margin: 10;
+            margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Arial', sans-serif;
@@ -19,178 +19,216 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #ffffff;
+            background-color: #f4f4f4;
+            padding: 10px;
         }
 
         /* Container */
         .container {
             width: 100%;
-            max-width: 350px;
+            max-width: 400px;
             text-align: center;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            max-height: 95vh;
         }
 
         /* Logo */
         .logo {
-            font-size: 50px;
+            font-size: 30px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         /* Form Groups */
         .form-group {
             text-align: left;
-            margin-bottom: 15px;
-            position: relative;
+            margin-bottom: 10px;
         }
 
         .form-group label {
             font-size: 14px;
             font-weight: bold;
             display: block;
-            margin-bottom: 5px;
-            color: #333;
+            margin-bottom: 3px;
         }
 
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
-            padding: 12px;
-            padding-right: 40px; /* Space for the eye icon */
-            border: 1.5px solid #ccc;
-            border-radius: 8px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             font-size: 14px;
             outline: none;
-        }
-
-        /* Password Fields with Aligned Eye Icons */
-        .password-container {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        .password-container input {
-            flex: 1;
-        }
-
-        .password-container .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            width: 22px;
-            height: 22px;
-            opacity: 0.6;
-        }
-
-        .toggle-password:hover {
-            opacity: 1;
         }
 
         /* Buttons */
         .button {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             font-size: 16px;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
             transition: 0.3s;
             margin-top: 10px;
-        }
-
-        .signup-btn {
             background: black;
             color: white;
             border: none;
         }
 
-        .signup-btn:hover {
+        .button:hover {
             opacity: 0.8;
-        }
-
-        /* Login Link */
-        .login-link {
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .login-link a {
-            color: black;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- App Name -->
         <div class="logo">GluGuide</div>
 
-        <!-- Form -->
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" required>
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" required>
+            <label for="initials">Initials</label>
+            <input type="text" id="initials" placeholder="e.g., J.D." required>
         </div>
 
         <div class="form-group">
-            <label for="password">Password</label>
-            <div class="password-container">
-                <input type="password" id="password" required>
-                <img src="/Icons/eye-off.svg" alt="Toggle Password" class="toggle-password" onclick="togglePassword('password')">
-            </div>
+            <label for="name">Name / ID</label>
+            <input type="text" id="name" placeholder="e.g., John Doe" required>
         </div>
 
         <div class="form-group">
-            <label for="confirm-password">Confirm Password</label>
-            <div class="password-container">
-                <input type="password" id="confirm-password" required>
-                <img src="/Icons/eye-off.svg" alt="Toggle Password" class="toggle-password" onclick="togglePassword('confirm-password')">
-            </div>
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="e.g., 01234567890" pattern="[0-9]{11}" maxlength="11" required oninput="validatePhone()">
+        </div>
+        
+
+        <div class="form-group">
+            <label for="age">Age (years)</label>
+            <input type="number" id="age" placeholder="e.g., 45" required>
         </div>
 
-        <button class="button signup-btn" onclick="signUp()">Sign Up</button>
-
-        <div class="login-link">
-            Already have an account? <a href="login.html">Login</a>
+        <div class="form-group">
+            <label>Sex</label>
+            <select id="sex" required>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
         </div>
+
+        <div class="form-group">
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" placeholder="e.g., 70" required>
+        </div>
+
+        <div class="form-group">
+            <label for="height">Height (cm)</label>
+            <input type="number" id="height" placeholder="e.g., 175" required>
+        </div>
+
+        <div class="form-group">
+            <label for="bmi">BMI</label>
+            <input type="number" id="bmi" placeholder="e.g., 23.5" step="0.1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="waist">Waist Circumference (cm)</label>
+            <input type="number" id="waist" placeholder="e.g., 85" required>
+        </div>
+
+        <div class="form-group">
+            <label for="hip">Hip Circumference (cm)</label>
+            <input type="number" id="hip" placeholder="e.g., 95" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ratio">Waist to Hip Ratio</label>
+            <input type="number" id="ratio" placeholder="e.g., 0.89" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+            <label>Type of Diabetes</label>
+            <select id="diabetes-type" required>
+                <option value="">Select</option>
+                <option value="Type 1">Type 1</option>
+                <option value="Type 2">Type 2</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Mode of Treatment</label>
+            <select id="treatment" required>
+                <option value="">Select</option>
+                <option value="Diet">Diet</option>
+                <option value="Oral hypoglycemic drugs">Oral hypoglycemic drugs</option>
+                <option value="Diet + Oral hypoglycemic drugs">Diet + Oral hypoglycemic drugs</option>
+                <option value="Insulin">Insulin</option>
+                <option value="Oral hypoglycemic drugs + Insulin">Oral hypoglycemic drugs + Insulin</option>
+                <option value="Diet + Oral hypoglycemic drugs + Insulin">Diet + Oral hypoglycemic drugs + Insulin</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Family History of Diabetes</label>
+            <select id="family-history" required>
+                <option value="">Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="I don't know">I don't know</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fasting-sugar">Last Fasting Blood Sugar (mg/dL)</label>
+            <input type="number" id="fasting-sugar" placeholder="e.g., 110" required>
+        </div>
+
+        <div class="form-group">
+            <label for="random-sugar">Last Random Blood Sugar (mg/dL)</label>
+            <input type="number" id="random-sugar" placeholder="e.g., 140" required>
+        </div>
+
+        <div class="form-group">
+            <label for="hba1c">Last HBA1c Level (%)</label>
+            <input type="number" id="hba1c" placeholder="e.g., 6.5" step="0.1" required>
+        </div>
+
+        <button class="button" onclick="signUp()">Sign Up</button>
     </div>
 
     <script>
-        function togglePassword(fieldId) {
-            let field = document.getElementById(fieldId);
-            field.type = field.type === "password" ? "text" : "password";
-        }
-
         function signUp() {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
+            const requiredFields = document.querySelectorAll("input[required], select[required]");
+            let allFilled = true;
 
-    if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return;
-    }
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    allFilled = false;
+                    field.style.border = "1.5px solid red";
+                } else {
+                    field.style.border = "1px solid #ccc";
+                }
+            });
 
-    // Store credentials in localStorage
-    localStorage.setItem("email", email);
-    localStorage.setItem("password", password);
+            if (!allFilled) {
+                alert("Please fill in all required fields.");
+                return;
+            }
 
-    alert("Sign up successful! You can now log in.");
-    window.location.href = "login.html"; // Redirect to login page
-}
-
+            alert("Sign up successful!");
+            window.location.href = "login.html";
+        }
     </script>
+    <script>
+    function validatePhone() {
+        let phoneInput = document.getElementById('phone');
+        phoneInput.value = phoneInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+    }
+</script>
+
 
 </body>
 </html>
