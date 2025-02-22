@@ -65,6 +65,11 @@
             outline: none;
         }
 
+        .form-group input[readonly] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
         /* Buttons */
         .button {
             width: 100%;
@@ -103,7 +108,6 @@
             <label for="phone">Phone Number</label>
             <input type="tel" id="phone" placeholder="e.g., 01234567890" pattern="[0-9]{11}" maxlength="11" required oninput="validatePhone()">
         </div>
-        
 
         <div class="form-group">
             <label for="age">Age (years)</label>
@@ -121,32 +125,32 @@
 
         <div class="form-group">
             <label for="weight">Weight (kg)</label>
-            <input type="number" id="weight" placeholder="e.g., 70" required>
+            <input type="number" id="weight" placeholder="e.g., 70" required oninput="calculateBMI()">
         </div>
 
         <div class="form-group">
             <label for="height">Height (cm)</label>
-            <input type="number" id="height" placeholder="e.g., 175" required>
+            <input type="number" id="height" placeholder="e.g., 175" required oninput="calculateBMI()">
         </div>
 
         <div class="form-group">
             <label for="bmi">BMI</label>
-            <input type="number" id="bmi" placeholder="e.g., 23.5" step="0.1" required>
+            <input type="number" id="bmi" placeholder="Auto-calculated" step="0.1" readonly>
         </div>
 
         <div class="form-group">
             <label for="waist">Waist Circumference (cm)</label>
-            <input type="number" id="waist" placeholder="e.g., 85" required>
+            <input type="number" id="waist" placeholder="e.g., 85" required oninput="calculateWaistToHipRatio()">
         </div>
 
         <div class="form-group">
             <label for="hip">Hip Circumference (cm)</label>
-            <input type="number" id="hip" placeholder="e.g., 95" required>
+            <input type="number" id="hip" placeholder="e.g., 95" required oninput="calculateWaistToHipRatio()">
         </div>
 
         <div class="form-group">
             <label for="ratio">Waist to Hip Ratio</label>
-            <input type="number" id="ratio" placeholder="e.g., 0.89" step="0.01" required>
+            <input type="number" id="ratio" placeholder="Auto-calculated" step="0.01" readonly>
         </div>
 
         <div class="form-group">
@@ -172,21 +176,10 @@
         </div>
 
         <div class="form-group">
-            <label>Family History of Diabetes</label>
-            <select id="family-history" required>
-                <option value="">Select</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-                <option value="I don't know">I don't know</option>
-            </select>
-        </div>
-
-        <div class="form-group">
             <label for="fasting-sugar">Last Fasting Blood Sugar (mg/dL)</label>
             <input type="number" id="fasting-sugar" placeholder="e.g., 110" required>
         </div>
-
-        <div class="form-group">
+      <div class="form-group">
             <label for="random-sugar">Last Random Blood Sugar (mg/dL)</label>
             <input type="number" id="random-sugar" placeholder="e.g., 140" required>
         </div>
@@ -200,35 +193,39 @@
     </div>
 
     <script>
-        function signUp() {
-            const requiredFields = document.querySelectorAll("input[required], select[required]");
-            let allFilled = true;
+        function calculateBMI() {
+            let weight = parseFloat(document.getElementById("weight").value);
+            let height = parseFloat(document.getElementById("height").value) / 100;
 
-            requiredFields.forEach(field => {
-                if (!field.value) {
-                    allFilled = false;
-                    field.style.border = "1.5px solid red";
-                } else {
-                    field.style.border = "1px solid #ccc";
-                }
-            });
-
-            if (!allFilled) {
-                alert("Please fill in all required fields.");
-                return;
+            if (!isNaN(weight) && !isNaN(height) && height > 0) {
+                let bmi = (weight / (height * height)).toFixed(1);
+                document.getElementById("bmi").value = bmi;
+            } else {
+                document.getElementById("bmi").value = "";
             }
+        }
 
+        function calculateWaistToHipRatio() {
+            let waist = parseFloat(document.getElementById("waist").value);
+            let hip = parseFloat(document.getElementById("hip").value);
+
+            if (!isNaN(waist) && !isNaN(hip) && hip > 0) {
+                let ratio = (waist / hip).toFixed(2);
+                document.getElementById("ratio").value = ratio;
+            } else {
+                document.getElementById("ratio").value = "";
+            }
+        }
+
+        function validatePhone() {
+            let phoneInput = document.getElementById('phone');
+            phoneInput.value = phoneInput.value.replace(/\D/g, '');
+        }
+
+        function signUp() {
             alert("Sign up successful!");
-            window.location.href = "login.html";
         }
     </script>
-    <script>
-    function validatePhone() {
-        let phoneInput = document.getElementById('phone');
-        phoneInput.value = phoneInput.value.replace(/\D/g, ''); // Remove non-numeric characters
-    }
-</script>
-
 
 </body>
 </html>
