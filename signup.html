@@ -17,7 +17,7 @@
         }
         .signup-container {
             background: white;
-            padding: 25px; 
+            padding: 25px;
             border-radius: 10px;
             box-shadow: 0 0 150px rgba(0, 0, 0, 0.2);
             width: 320px;
@@ -66,7 +66,10 @@
         <input type="text" id="first-name" placeholder="First Name" required>
         <input type="text" id="last-name" placeholder="Last Name" required>
         <input type="email" id="email" placeholder="Email" required>
-        <input type="tel" id="phone" placeholder="Phone Number" required>
+        
+        <!-- Phone Number (Only Numbers Allowed) -->
+        <input type="tel" id="phone" placeholder="Phone Number" required pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
         <input type="password" id="password" placeholder="Password" required>
 
         <button onclick="signup()">Sign Up</button>
@@ -92,6 +95,11 @@
 
             if (!firstName || !lastName || !email || !password || !phone) {
                 alert("Please fill in all fields.");
+                return;
+            }
+
+            if (!/^\d+$/.test(phone)) {
+                alert("Phone number must contain only numbers.");
                 return;
             }
 

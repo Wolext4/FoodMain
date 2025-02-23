@@ -5,28 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <style>
+        /* General Styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #f7f7f7;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow-y: auto; /* Allows scrolling if needed */
         }
 
         .container {
-            width: 100%;
+            width: 90%;
             max-width: 400px;
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: relative;
+            max-height: 90vh; /* Prevents overflow */
+            overflow-y: auto; /* Enables scrolling inside the container */
         }
 
-        /* Back Button - Matches 'Move More' */
+        /* Back Button */
         .home-btn {
             position: absolute;
             top: 10px;
@@ -41,6 +45,7 @@
             text-decoration: none;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             transition: background 0.3s ease;
+            z-index: 10;
         }
 
         .home-btn img {
@@ -53,35 +58,12 @@
         }
 
         header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
             text-align: center;
-        }
-
-        header h1 {
-            flex-grow: 1;
-            text-align: center;
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .profile-pic {
-            width: 80px;
-            height: 80px;
-            background: gray;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 20px;
-            color: white;
-            margin: auto;
+            margin-bottom: 20px;
         }
 
         .input-group {
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         label {
@@ -90,46 +72,196 @@
             margin-bottom: 5px;
         }
 
-        input {
-            width: calc(100% - 20px);
+        input, select {
+            width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            box-sizing: border-box;
         }
+
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 45%;
+            margin: 5px;
+        }
+
+        .buttons button:hover {
+            background-color: #45a049;
+        }
+
+        .edit-btn {
+            background-color: #ff9800;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .edit-btn:hover {
+            background-color: #e68900;
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- 🔙 Back Button (Styled Like 'Move More') -->
-    <a href="settings.html" class="home-btn">
-        <img src="/Icons/back.svg" alt="Back">
-    </a>
-
     <div class="container">
-        <!-- Header -->
+        <!-- 🔙 Back Button to Settings -->
+        <a href="settings.html" class="home-btn">
+            <img src="/Icons/back.svg" alt="Back">
+        </a>
+
         <header>
             <h1>Profile</h1>
         </header>
 
-        <div style="text-align: center; margin-top: 20px;">
-            <div class="profile-pic">JO</div>
+        <div id="profile-display">
+            <p><strong>Name:</strong> <span id="display-name">Not set</span></p>
+            <p><strong>Email:</strong> <span id="display-email">Not set</span></p>
+            <p><strong>Age:</strong> <span id="display-age">Not set</span></p>
+            <p><strong>Sex:</strong> <span id="display-sex">Not set</span></p>
+            <p><strong>Weight (kg):</strong> <span id="display-weight">Not set</span></p>
+            <p><strong>Height (cm):</strong> <span id="display-height">Not set</span></p>
+            <p><strong>Waist Circumference (cm):</strong> <span id="display-waist">Not set</span></p>
+            <p><strong>Hip Circumference (cm):</strong> <span id="display-hip">Not set</span></p>
+            <p><strong>Type of Diabetes:</strong> <span id="display-diabetes">Not set</span></p>
+            <p><strong>Mode of Treatment:</strong> <span id="display-treatment">Not set</span></p>
+            <p><strong>Last Fasting Blood Sugar (mg/dL):</strong> <span id="display-fbs">Not set</span></p>
+            <p><strong>Last Random Blood Sugar (mg/dL):</strong> <span id="display-rbs">Not set</span></p>
+            <p><strong>Last HBA1c Level (%):</strong> <span id="display-hba1c">Not set</span></p>
+            
+            <div class="buttons">
+                <button class="edit-btn" onclick="toggleEditMode(true)">✏️ Edit</button>
+            </div>
         </div>
 
-        <div class="input-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" placeholder="Name">
+        <div id="profile-edit" style="display: none;">
+            <div class="input-group">
+                <label for="name">Name</label>
+                <input type="text" id="name">
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email">
+            </div>
+
+            <div class="input-group">
+                <label for="age">Age</label>
+                <input type="number" id="age">
+            </div>
+
+            <div class="input-group">
+                <label for="sex">Sex</label>
+                <select id="sex">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight">
+            </div>
+
+            <div class="input-group">
+                <label for="height">Height (cm)</label>
+                <input type="number" id="height">
+            </div>
+                        
+            <div class="input-group">
+                <label for="waist">Waist Circumference (cm)</label>
+                <input type="number" id="waist">
+            </div>
+
+            <div class="input-group">
+                <label for="hip">Hip Circumference (cm)</label>
+                <input type="number" id="hip">
+            </div>
+
+            <div class="input-group">
+                <label for="diabetes">Type of Diabetes</label>
+                <select id="diabetes">
+                    <option value="Type 1">Type 1</option>
+                    <option value="Type 2">Type 2</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="treatment">Mode of Treatment</label>
+                <select id="treatment">
+                    <option value="Insulin">Insulin</option>
+                    <option value="Oral Medication">Oral Medication</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="fbs">Last Fasting Blood Sugar (mg/dL)</label>
+                <input type="number" id="fbs">
+            </div>
+
+            <div class="input-group">
+                <label for="rbs">Last Random Blood Sugar (mg/dL)</label>
+                <input type="number" id="rbs">
+            </div>
+
+            <div class="input-group">
+                <label for="hba1c">Last HBA1c Level (%)</label>
+                <input type="number" step="0.1" id="hba1c">
+            </div>
+
+            <div class="buttons">
+                <button onclick="saveProfile()">Save</button>
+                <button onclick="toggleEditMode(false)">Cancel</button>
+            </div>
         </div>
 
-        <div class="input-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="Email">
-        </div>
-
-        <div class="input-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="*********">
-        </div>
     </div>
+
+    <script>
+        function saveProfile() {
+            let profile = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                age: document.getElementById('age').value,
+                sex: document.getElementById('sex').value,
+                weight: document.getElementById('weight').value
+            };
+
+            localStorage.setItem('profileData', JSON.stringify(profile));
+            displayProfile();
+            toggleEditMode(false);
+        }
+
+        function displayProfile() {
+            let profile = JSON.parse(localStorage.getItem('profileData')) || {};
+            Object.keys(profile).forEach(id => {
+                document.getElementById(`display-${id}`).textContent = profile[id] || "Not set";
+            });
+        }
+
+        function toggleEditMode(editMode = true) {
+            document.getElementById('profile-display').style.display = editMode ? 'none' : 'block';
+            document.getElementById('profile-edit').style.display = editMode ? 'block' : 'none';
+        }
+
+        window.onload = displayProfile;
+    </script>
 
 </body>
 </html>
