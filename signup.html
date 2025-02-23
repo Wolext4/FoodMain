@@ -66,8 +66,8 @@
         <input type="text" id="first-name" placeholder="First Name" required>
         <input type="text" id="last-name" placeholder="Last Name" required>
         <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
         <input type="tel" id="phone" placeholder="Phone Number" required>
+        <input type="password" id="password" placeholder="Password" required>
 
         <button onclick="signup()">Sign Up</button>
 
@@ -87,8 +87,8 @@
             const firstName = document.getElementById("first-name").value.trim();
             const lastName = document.getElementById("last-name").value.trim();
             const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value.trim();
             const phone = document.getElementById("phone").value.trim();
+            const password = document.getElementById("password").value.trim();
 
             if (!firstName || !lastName || !email || !password || !phone) {
                 alert("Please fill in all fields.");
