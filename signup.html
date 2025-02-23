@@ -178,6 +178,35 @@
 
             window.location.href = "details.html";
         }
+        function submitForm() {
+    let userData = {
+        firstName: document.getElementById("first-name").value.trim(),
+        lastName: document.getElementById("last-name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phoneNumber: document.getElementById("phone").value.trim(),
+        password: document.getElementById("password").value.trim(),
+        initials: document.getElementById("initials").value.trim()
+    };
+
+    fetch("http://localhost:5000/api/signup", {  // Change this to match your actual backend URL
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Signup successful! Redirecting...");
+            window.location.href = "dashboard.html";  // Redirect after signup
+        } else {
+            alert("Signup failed: " + data.message);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
     </script>
 
 </body>
