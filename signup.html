@@ -5,15 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up | GluGuide</title>
     <style>
-        /* General Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
         }
 
-        /* Body */
         body {
             display: flex;
             justify-content: center;
@@ -23,27 +21,22 @@
             padding: 10px;
         }
 
-        /* Container */
         .container {
             width: 100%;
-            max-width: 400px;
+            max-width: 350px;
             text-align: center;
             background: white;
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-            max-height: 95vh;
         }
 
-        /* Logo */
         .logo {
-            font-size: 30px;
+            font-size: 28px;
             font-weight: bold;
             margin-bottom: 15px;
         }
 
-        /* Form Groups */
         .form-group {
             text-align: left;
             margin-bottom: 10px;
@@ -53,10 +46,10 @@
             font-size: 14px;
             font-weight: bold;
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 5px;
         }
 
-        .form-group input, .form-group select {
+        .form-group input {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
@@ -65,27 +58,36 @@
             outline: none;
         }
 
-        .form-group input[readonly] {
-            background-color: #e9ecef;
-            cursor: not-allowed;
-        }
-
-        /* Buttons */
         .button {
             width: 100%;
             padding: 10px;
             font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
-            transition: 0.3s;
             margin-top: 10px;
             background: black;
             color: white;
             border: none;
+            transition: 0.3s;
         }
 
         .button:hover {
             opacity: 0.8;
+        }
+
+        .login-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -95,135 +97,64 @@
         <div class="logo">GluGuide</div>
 
         <div class="form-group">
-            <label for="initials">Initials</label>
-            <input type="text" id="initials" placeholder="e.g., J.D." required>
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" placeholder="e.g., John" required oninput="generateInitials()">
         </div>
 
         <div class="form-group">
-            <label for="name">Name / ID</label>
-            <input type="text" id="name" placeholder="e.g., John Doe" required>
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" placeholder="e.g., Doe" required oninput="generateInitials()">
         </div>
 
         <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" placeholder="e.g., 01234567890" pattern="[0-9]{11}" maxlength="11" required oninput="validatePhone()">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="e.g., example@email.com" required>
         </div>
 
         <div class="form-group">
-            <label for="age">Age (years)</label>
-            <input type="number" id="age" placeholder="e.g., 45" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter password" required>
         </div>
 
-        <div class="form-group">
-            <label>Sex</label>
-            <select id="sex" required>
-                <option value="">Select</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-        </div>
+        <!-- Hidden field to store initials -->
+        <input type="hidden" id="initials">
 
-        <div class="form-group">
-            <label for="weight">Weight (kg)</label>
-            <input type="number" id="weight" placeholder="e.g., 70" required oninput="calculateBMI()">
-        </div>
+        <button class="button" onclick="redirectToDetails()">Next</button>
 
-        <div class="form-group">
-            <label for="height">Height (cm)</label>
-            <input type="number" id="height" placeholder="e.g., 175" required oninput="calculateBMI()">
+        <div class="login-link">
+            Already have an account? <a href="login.html">Log in</a>
         </div>
-
-        <div class="form-group">
-            <label for="bmi">BMI</label>
-            <input type="number" id="bmi" placeholder="Auto-calculated" step="0.1" readonly>
-        </div>
-
-        <div class="form-group">
-            <label for="waist">Waist Circumference (cm)</label>
-            <input type="number" id="waist" placeholder="e.g., 85" required oninput="calculateWaistToHipRatio()">
-        </div>
-
-        <div class="form-group">
-            <label for="hip">Hip Circumference (cm)</label>
-            <input type="number" id="hip" placeholder="e.g., 95" required oninput="calculateWaistToHipRatio()">
-        </div>
-
-        <div class="form-group">
-            <label for="ratio">Waist to Hip Ratio</label>
-            <input type="number" id="ratio" placeholder="Auto-calculated" step="0.01" readonly>
-        </div>
-
-        <div class="form-group">
-            <label>Type of Diabetes</label>
-            <select id="diabetes-type" required>
-                <option value="">Select</option>
-                <option value="Type 1">Type 1</option>
-                <option value="Type 2">Type 2</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Mode of Treatment</label>
-            <select id="treatment" required>
-                <option value="">Select</option>
-                <option value="Diet">Diet</option>
-                <option value="Oral hypoglycemic drugs">Oral hypoglycemic drugs</option>
-                <option value="Diet + Oral hypoglycemic drugs">Diet + Oral hypoglycemic drugs</option>
-                <option value="Insulin">Insulin</option>
-                <option value="Oral hypoglycemic drugs + Insulin">Oral hypoglycemic drugs + Insulin</option>
-                <option value="Diet + Oral hypoglycemic drugs + Insulin">Diet + Oral hypoglycemic drugs + Insulin</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="fasting-sugar">Last Fasting Blood Sugar (mg/dL)</label>
-            <input type="number" id="fasting-sugar" placeholder="e.g., 110" required>
-        </div>
-      <div class="form-group">
-            <label for="random-sugar">Last Random Blood Sugar (mg/dL)</label>
-            <input type="number" id="random-sugar" placeholder="e.g., 140" required>
-        </div>
-
-        <div class="form-group">
-            <label for="hba1c">Last HBA1c Level (%)</label>
-            <input type="number" id="hba1c" placeholder="e.g., 6.5" step="0.1" required>
-        </div>
-
-        <button class="button" onclick="signUp()">Sign Up</button>
     </div>
 
     <script>
-        function calculateBMI() {
-            let weight = parseFloat(document.getElementById("weight").value);
-            let height = parseFloat(document.getElementById("height").value) / 100;
+        function generateInitials() {
+            let firstName = document.getElementById("first-name").value.trim();
+            let lastName = document.getElementById("last-name").value.trim();
+            let initials = "";
 
-            if (!isNaN(weight) && !isNaN(height) && height > 0) {
-                let bmi = (weight / (height * height)).toFixed(1);
-                document.getElementById("bmi").value = bmi;
-            } else {
-                document.getElementById("bmi").value = "";
+            if (firstName.length > 0) {
+                initials += firstName.charAt(0).toUpperCase();
             }
-        }
-
-        function calculateWaistToHipRatio() {
-            let waist = parseFloat(document.getElementById("waist").value);
-            let hip = parseFloat(document.getElementById("hip").value);
-
-            if (!isNaN(waist) && !isNaN(hip) && hip > 0) {
-                let ratio = (waist / hip).toFixed(2);
-                document.getElementById("ratio").value = ratio;
-            } else {
-                document.getElementById("ratio").value = "";
+            if (lastName.length > 0) {
+                initials += lastName.charAt(0).toUpperCase();
             }
+
+            document.getElementById("initials").value = initials;
         }
 
-        function validatePhone() {
-            let phoneInput = document.getElementById('phone');
-            phoneInput.value = phoneInput.value.replace(/\D/g, '');
-        }
+        function redirectToDetails() {
+            let firstName = document.getElementById("first-name").value.trim();
+            let lastName = document.getElementById("last-name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let password = document.getElementById("password").value.trim();
+            
+            if (!firstName || !lastName || !email || !password) {
+                alert("Please fill in all required fields.");
+                return;
+            }
 
-        function signUp() {
-            alert("Sign up successful!");
+            alert("Sign up successful! Redirecting...");
+            window.location.href = "details.html";
         }
     </script>
 
