@@ -78,8 +78,8 @@
     <div class="login-container">
         <h2>GluGuide</h2>
         
-        <!-- Phone number input (accepts only numbers, max 11 digits) -->
-        <input type="tel" id="phone" placeholder="Phone Number" pattern="[0-9]{11}" maxlength="11" required oninput="validatePhone()">
+        <!-- Email or Phone input -->
+        <input type="text" id="identifier" placeholder="Email or Phone Number" required oninput="validateInput()">
 
         <input type="password" id="password" placeholder="Password" required>
 
@@ -95,29 +95,49 @@
     </div>
 
     <script>
-        function validatePhone() {
-            let phoneInput = document.getElementById('phone');
-            phoneInput.value = phoneInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+        function validateInput() {
+            let input = document.getElementById("identifier");
+            let value = input.value.trim();
+
+            // Remove non-numeric characters if it's a phone number
+            if (/^\d+$/.test(value)) {
+                input.value = value.replace(/\D/g, ''); // Keep only numbers
+            }
+        }
+
+        function isValidEmail(email) {
+            // Simple email regex pattern
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function isValidPhone(phone) {
+            return /^\d{11}$/.test(phone);
         }
 
         function login() {
-            const phone = document.getElementById('phone').value;
-            const password = document.getElementById('password').value;
+            const identifier = document.getElementById("identifier").value.trim();
+            const password = document.getElementById("password").value.trim();
 
-            // Hardcoded credentials for instant login
-            const instantLoginPhone = "01234567891"; // Change this to your login number
-            const instantLoginPassword = "admin"; // Change this to your login password
+            // Hardcoded credentials for instant login (Modify as needed)
+            const instantLoginEmail = "admin@example.com"; 
+            const instantLoginPhone = "01234567891"; 
+            const instantLoginPassword = "admin"; 
 
-            if (phone.length !== 11) {
-                alert("Phone number must be exactly 11 digits!");
+            if (!identifier || !password) {
+                alert("Please enter your email/phone and password.");
                 return;
             }
 
-            // If the entered phone and password match the hardcoded ones, login instantly
-            if (phone === instantLoginPhone && password === instantLoginPassword) {
+            if (!isValidEmail(identifier) && !isValidPhone(identifier)) {
+                alert("Please enter a valid email or 11-digit phone number.");
+                return;
+            }
+
+            // Check if entered credentials match hardcoded ones
+            if ((identifier === instantLoginEmail || identifier === instantLoginPhone) && password === instantLoginPassword) {
                 window.location.href = "home.html"; // Redirect to home page
             } else {
-                alert("Invalid phone number or password!");
+                alert("Invalid email/phone number or password!");
             }
         }
     </script>
