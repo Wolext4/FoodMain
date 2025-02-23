@@ -68,7 +68,6 @@
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required>
         <input type="tel" id="phone" placeholder="Phone Number" required>
-        <input type="text" id="initials" placeholder="Initials" readonly>
 
         <button onclick="signup()">Sign Up</button>
 
@@ -78,20 +77,11 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const firstNameInput = document.getElementById("first-name");
-            const lastNameInput = document.getElementById("last-name");
-            const initialsInput = document.getElementById("initials");
-
-            function updateInitials() {
-                const firstInitial = firstNameInput.value.trim().charAt(0).toUpperCase();
-                const lastInitial = lastNameInput.value.trim().charAt(0).toUpperCase();
-                initialsInput.value = firstInitial + lastInitial;
-            }
-
-            firstNameInput.addEventListener("input", updateInitials);
-            lastNameInput.addEventListener("input", updateInitials);
-        });
+        function generateInitials(firstName, lastName) {
+            const firstInitial = firstName.trim().charAt(0).toUpperCase();
+            const lastInitial = lastName.trim().charAt(0).toUpperCase();
+            return firstInitial + lastInitial;
+        }
 
         function signup() {
             const firstName = document.getElementById("first-name").value.trim();
@@ -99,13 +89,13 @@
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value.trim();
             const phone = document.getElementById("phone").value.trim();
-            const initials = document.getElementById("initials").value;
 
             if (!firstName || !lastName || !email || !password || !phone) {
                 alert("Please fill in all fields.");
                 return;
             }
 
+            const initials = generateInitials(firstName, lastName);
             const userData = { firstName, lastName, email, password, phoneNumber: phone, initials };
 
             fetch("http://localhost:3000/api/signup", {
