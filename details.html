@@ -107,11 +107,6 @@
         </div>
 
         <div class="form-group">
-            <label for="bmi">BMI</label>
-            <input type="text" id="bmi" class="readonly" placeholder="Auto-calculated" readonly>
-        </div>
-
-        <div class="form-group">
             <label for="waist">Waist Circumference (cm)</label>
             <input type="number" id="waist" placeholder="e.g., 85" required oninput="calculateWaistToHipRatio()">
         </div>
@@ -120,12 +115,7 @@
             <label for="hip">Hip Circumference (cm)</label>
             <input type="number" id="hip" placeholder="e.g., 95" required oninput="calculateWaistToHipRatio()">
         </div>
-
-        <div class="form-group">
-            <label for="waistToHipRatio">Waist to Hip Ratio</label>
-            <input type="text" id="waistToHipRatio" class="readonly" placeholder="Auto-calculated" readonly>
-        </div>
-
+        
         <div class="form-group">
             <label>Type of Diabetes</label>
             <select id="diabetes-type" required>
@@ -164,29 +154,6 @@
     </div>
 
     <script>
-        function calculateBMI() {
-            let weight = document.getElementById("weight").value;
-            let height = document.getElementById("height").value / 100; // Convert to meters
-
-            if (weight && height) {
-                let bmi = (weight / (height * height)).toFixed(2);
-                document.getElementById("bmi").value = bmi;
-            } else {
-                document.getElementById("bmi").value = "Auto-calculated";
-            }
-        }
-
-        function calculateWaistToHipRatio() {
-            let waist = document.getElementById("waist").value;
-            let hip = document.getElementById("hip").value;
-
-            if (waist && hip) {
-                let ratio = (waist / hip).toFixed(2);
-                document.getElementById("waistToHipRatio").value = ratio;
-            } else {
-                document.getElementById("waistToHipRatio").value = "Auto-calculated";
-            }
-        }
 
         function submitForm() {
             let inputs = document.querySelectorAll("input[required], select[required]");
