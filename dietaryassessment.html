@@ -5,33 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dietary Assessment</title>
     <style>
-        /* General Styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #f7f7f7;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            overflow: hidden; /* Prevents unnecessary horizontal scrolling */
+            padding: 20px;
         }
 
-        /* Main Container */
-        .container {
-            width: 100%;
-            max-width: 450px;
-            height: 100vh;
+        /* Form Styling */
+        .form-container {
             background: white;
-            display: flex;
-            flex-direction: column;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 500px;
+            text-align: center;
             position: relative;
         }
 
-        /* Back Button - Matches 'Move More' */
-        .home-btn {
-            position: absolute;
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Back Button - Fixed at the Top */
+        .back-button {
+            position: fixed;
             top: 10px;
             left: 10px;
             width: 40px;
@@ -43,56 +44,29 @@
             justify-content: center;
             text-decoration: none;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: background 0.3s ease;
-            z-index: 10;
+            transition: background 0.3s ease, transform 0.2s;
+            z-index: 999;
         }
 
-        .home-btn img {
+        .back-button img {
             width: 60%;
             height: 60%;
         }
 
-        .home-btn:hover {
+        .back-button:hover {
             background-color: #45a049;
+            transform: scale(1.1);
         }
 
-        /* Header */
-        header {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background: white;
-            border-bottom: 1px solid #ddd;
-            position: fixed;
-            width: 100%;
-            max-width: 400px;
-            top: 0;
-            z-index: 9;
-        }
-
-        header h1 {
-            flex-grow: 1;
-            text-align: center;
-            margin: 0;
-            font-size: 20px;
-        }
-
-        /* Form Content (Scrollable) */
-        .content {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-            margin-top: 60px; /* Prevents overlap with fixed header */
-        }
-
-        /* Questions */
+        /* Question Styling */
         .question {
             margin-bottom: 15px;
+            text-align: left;
         }
 
         .question p {
-            margin: 0 0 5px 0;
             font-size: 16px;
+            font-weight: 500;
         }
 
         /* Checkbox Styling */
@@ -109,114 +83,139 @@
             height: 18px;
         }
 
-        /* Submit Button */
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: black;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
+        /* Notice Section */
+        .notice {
+            text-align: left;
+            background-color: #f1f1f1;
+            padding: 10px;
             border-radius: 5px;
-            margin-top: 15px;
-            cursor: pointer;
+            margin-top: 20px;
+            font-size: 14px;
         }
 
-        .submit-btn:hover {
-            background-color: #333;
+        .notice h5 {
+            margin: 5px 0;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: calc(100% - 20px);
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: black;
+            color: white;
+            transition: 0.3s;
+            display: block;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 🔙 Back Button (Styled Like 'Move More') -->
-        <a href="home.html" class="home-btn">
-            <img src="/Icons/back.svg" alt="Back">
-        </a>
 
-        <!-- Header -->
-        <header>
-            <h1>Dietary Assessment</h1>
-        </header>
+    <!-- 🔙 Back Button (Fixed & Always Visible) -->
+    <a href="home.html" class="back-button">
+        <img src="/Icons/back.svg" alt="Back">
+    </a>
 
-        <!-- Scrollable Content -->
-        <div class="content">
-            <form>
-                <div class="question">
-                    <p>1. How many times in a week did you eat fast food meals or snacks or eat at a canteen?</p>
-                    <label><input type="checkbox"> less than 3 times</label>
-                    <label><input type="checkbox"> 3 times</label>
-                    <label><input type="checkbox"> More than 4 times</label>
-                </div>
+    <!-- Form Container -->
+    <form class="form-container" onsubmit="submitForm(event)">
+        <h2>Dietary Assessment</h2>
 
-                <div class="question">
-                    <p>2. How many times did you eat at least a serving of fruits?</p>
-                    <label><input type="checkbox"> less than 3 times</label>
-                    <label><input type="checkbox"> 3 times</label>
-                    <label><input type="checkbox"> More than 4 times</label>
-                </div>
-
-                <div class="question">
-                    <p>3. How many times did you eat two to three servings of vegetables?</p>
-                    <label><input type="checkbox"> less than 3 times</label>
-                    <label><input type="checkbox"> 3 times</label>
-                    <label><input type="checkbox"> More than 4 times</label>
-                </div>
-
-                <div class="question">
-                    <p>4. How many times did you drink regular carbonated drinks (sodas), fruit juices, or glasses of sweet tea?</p>
-                    <label><input type="checkbox"> less than 3 times</label>
-                    <label><input type="checkbox"> 3 times</label>
-                    <label><input type="checkbox"> More than 4 times</label>
-                </div>
-
-                <div class="question">
-                    <p>5. How many times did you eat beans, chicken without skin, or fish?</p>
-                    <label><input type="checkbox"> less than 3 times</label>
-                    <label><input type="checkbox"> 3 times</label>
-                    <label><input type="checkbox"> More than 4 times</label>
-                </div>
-
-                <div class="question">
-                    <p>6. How many times did you eat regular chips or fried snacks (e.g., puff-puff, not low-fat)?</p>
-                    <label><input type="checkbox"> less than 3 times</label>
-                    <label><input type="checkbox"> 3 times</label>
-                    <label><input type="checkbox"> More than 4 times</label>
-                </div>
-
-                <div class="question">
-                    <p>7. How many times did you eat ice cream and other sweets?</p>
-                    <label><input type="checkbox"> less than 3 times</label>
-                    <label><input type="checkbox"> 3 times</label>
-                    <label><input type="checkbox"> More than 4 times</label>
-                </div>
-
-                <div class="question">
-                    <p>8. How much oil, butter, margarine, or meat fat do you use to season or cook or put on bread?</p>
-                    <label><input type="checkbox"> less than 3 times</label>
-                    <label><input type="checkbox"> 3 times</label>
-                    <label><input type="checkbox"> More than 4 times</label>
-                </div>
-                <div class="Notice">
-                    <h5>Eating vegetables, fruits ,beans ,chicken without skin or fish three times and more per week is good and
-                        will give you good healthy patterns.</p>
-                        <p>Eating the regular chips or fried snacks (e.g., puff puff,) oil, butter, margarine, meat fat, regular
-                        carbonated drinks (sodas), fruit juices, glasses of sweet tea, fast food meals or snacks or eating at a
-                        canteen, three times and more per week is bad and will give you unhealthy eating patterns.</p>
-
-                </div>
-
-                <button type="submit" class="submit-btn">Submit</button>
-            </form>
+        <!-- Question 1 -->
+        <div class="question">
+            <p>1. How many times in a week did you eat fast food meals or snacks or eat at a canteen?</p>
+            <label><input type="checkbox"> Less than 3 times</label>
+            <label><input type="checkbox"> 3 times</label>
+            <label><input type="checkbox"> More than 4 times</label>
         </div>
-    </div>
+
+        <!-- Question 2 -->
+        <div class="question">
+            <p>2. How many times did you eat at least a serving of fruits?</p>
+            <label><input type="checkbox"> Less than 3 times</label>
+            <label><input type="checkbox"> 3 times</label>
+            <label><input type="checkbox"> More than 4 times</label>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question">
+            <p>3. How many times did you eat two to three servings of vegetables?</p>
+            <label><input type="checkbox"> Less than 3 times</label>
+            <label><input type="checkbox"> 3 times</label>
+            <label><input type="checkbox"> More than 4 times</label>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question">
+            <p>4. How many times did you drink regular carbonated drinks (sodas), fruit juices, or glasses of sweet tea?</p>
+            <label><input type="checkbox"> Less than 3 times</label>
+            <label><input type="checkbox"> 3 times</label>
+            <label><input type="checkbox"> More than 4 times</label>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question">
+            <p>5. How many times did you eat beans, chicken without skin, or fish?</p>
+            <label><input type="checkbox"> Less than 3 times</label>
+            <label><input type="checkbox"> 3 times</label>
+            <label><input type="checkbox"> More than 4 times</label>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question">
+            <p>6. How many times did you eat regular chips or fried snacks (e.g., puff-puff, not low-fat)?</p>
+            <label><input type="checkbox"> Less than 3 times</label>
+            <label><input type="checkbox"> 3 times</label>
+            <label><input type="checkbox"> More than 4 times</label>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question">
+            <p>7. How many times did you eat ice cream and other sweets?</p>
+            <label><input type="checkbox"> Less than 3 times</label>
+            <label><input type="checkbox"> 3 times</label>
+            <label><input type="checkbox"> More than 4 times</label>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question">
+            <p>8. How much oil, butter, margarine, or meat fat do you use to season or cook or put on bread?</p>
+            <label><input type="checkbox"> Less than 3 times</label>
+            <label><input type="checkbox"> 3 times</label>
+            <label><input type="checkbox"> More than 4 times</label>
+        </div>
+
+        <!-- Notice Section -->
+        <div class="notice">
+            <h5>Healthy Eating Pattern:</h5>
+            <p>Eating vegetables, fruits, beans, chicken without skin, or fish three times or more per week is **good** for your health.</p>
+
+            <h5>Unhealthy Eating Pattern:</h5>
+            <p>Eating regular chips, fried snacks, butter, margarine, meat fat, sodas, fruit juices, or fast food three times or more per week is **unhealthy**.</p>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-submit">Submit</button>
+    </form>
+
     <script>
-        document.querySelector("form").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the default form submission
+        function submitForm(event) {
+            event.preventDefault(); // Prevent form refresh
+            alert("Form submitted successfully! Redirecting to Home Page...");
             window.location.href = "home.html"; // Redirect to home.html
-        });
+        }
     </script>
-    
+
 </body>
 </html>

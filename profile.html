@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <style>
-        /* General Styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #f7f7f7;
@@ -15,7 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow-y: auto; /* Allows scrolling if needed */
+            overflow-y: auto;
         }
 
         .container {
@@ -26,58 +25,8 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: relative;
-            max-height: 90vh; /* Prevents overflow */
-            overflow-y: auto; /* Enables scrolling inside the container */
-        }
-
-        /* Back Button */
-        .home-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 40px;
-            height: 40px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: background 0.3s ease;
-            z-index: 10;
-        }
-
-        .home-btn img {
-            width: 60%;
-            height: 60%;
-        }
-
-        .home-btn:hover {
-            background-color: #45a049;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .input-group {
-            margin-top: 10px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .buttons {
@@ -116,16 +65,23 @@
             background-color: #e68900;
         }
 
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input:read-only, select:disabled {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- 🔙 Back Button to Settings -->
-        <a href="settings.html" class="home-btn">
-            <img src="/Icons/back.svg" alt="Back">
-        </a>
-
         <header>
             <h1>Profile</h1>
         </header>
@@ -135,8 +91,8 @@
             <p><strong>Email:</strong> <span id="display-email">Not set</span></p>
             <p><strong>Age:</strong> <span id="display-age">Not set</span></p>
             <p><strong>Sex:</strong> <span id="display-sex">Not set</span></p>
-            <p><strong>Weight (kg):</strong> <span id="display-weight">Not set</span></p>
             <p><strong>Height (cm):</strong> <span id="display-height">Not set</span></p>
+            <p><strong>Weight (kg):</strong> <span id="display-weight">Not set</span></p>
             <p><strong>Waist Circumference (cm):</strong> <span id="display-waist">Not set</span></p>
             <p><strong>Hip Circumference (cm):</strong> <span id="display-hip">Not set</span></p>
             <p><strong>Type of Diabetes:</strong> <span id="display-diabetes">Not set</span></p>
@@ -175,15 +131,14 @@
             </div>
 
             <div class="input-group">
-                <label for="weight">Weight (kg)</label>
-                <input type="number" id="weight">
-            </div>
-
-            <div class="input-group">
                 <label for="height">Height (cm)</label>
                 <input type="number" id="height">
             </div>
-                        
+
+            <div class="input-group">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight">
+            </div>
             <div class="input-group">
                 <label for="waist">Waist Circumference (cm)</label>
                 <input type="number" id="waist">
@@ -224,11 +179,12 @@
                 <label for="hba1c">Last HBA1c Level (%)</label>
                 <input type="number" step="0.1" id="hba1c">
             </div>
-
+            
             <div class="buttons">
                 <button onclick="saveProfile()">Save</button>
                 <button onclick="toggleEditMode(false)">Cancel</button>
             </div>
+            
         </div>
 
     </div>
@@ -240,22 +196,41 @@
                 email: document.getElementById('email').value,
                 age: document.getElementById('age').value,
                 sex: document.getElementById('sex').value,
+                height: document.getElementById('height').value,
                 weight: document.getElementById('weight').value
             };
 
             localStorage.setItem('profileData', JSON.stringify(profile));
+            localStorage.setItem('profileLocked', true); // Lock the fields after the first save
             displayProfile();
             toggleEditMode(false);
         }
 
         function displayProfile() {
             let profile = JSON.parse(localStorage.getItem('profileData')) || {};
+            let isLocked = localStorage.getItem('profileLocked'); // Check if locked
+
             Object.keys(profile).forEach(id => {
-                document.getElementById(`display-${id}`).textContent = profile[id] || "Not set";
+                let inputElement = document.getElementById(id);
+                let displayElement = document.getElementById(`display-${id}`);
+
+                if (displayElement) {
+                    displayElement.textContent = profile[id] || "Not set";
+                }
+                
+                if (inputElement) {
+                    inputElement.value = profile[id] || "";
+                    if (isLocked && ["name", "email", "age", "sex", "height"].includes(id)) {
+                        inputElement.readOnly = true;
+                        if (inputElement.tagName === "SELECT") {
+                            inputElement.disabled = true;
+                        }
+                    }
+                }
             });
         }
 
-        function toggleEditMode(editMode = true) {
+        function toggleEditMode(editMode) {
             document.getElementById('profile-display').style.display = editMode ? 'none' : 'block';
             document.getElementById('profile-edit').style.display = editMode ? 'block' : 'none';
         }
