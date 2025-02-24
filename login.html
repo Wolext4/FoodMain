@@ -99,6 +99,8 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log("Response received:", data);
+
                 if (data.token) {
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("user", JSON.stringify(data.user));
