@@ -78,38 +78,52 @@
             return /^\d{11}$/.test(phone);
         }
 
-        function login(event) {
-    event.preventDefault();
+        function login() {
+            const identifier = document.getElementById("identifier").value.trim();
+            const password = document.getElementById("password").value.trim();
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+            if (!identifier || !password) {
+                alert("Please enter both email/phone and password.");
+                return;
+            }
 
-    fetch("https://gluguide.onrender.com/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Login Response:", data);
-        
-        if (data.success) {
-            // Save userId and token in localStorage
-            localStorage.setItem("userId", data.userId);
-            localStorage.setItem("token", data.token);
+            const loginData = {
+                email: isValidEmail(identifier) ? identifier : null,
+                phoneNumber: isValidPhone(identifier) ? identifier : null,
+                password: password
+            };
 
-            alert("Login successful! Redirecting...");
-            window.location.href = "home.html"; // Redirect to home or dashboard
-        } else {
-            alert("Login failed: " + data.message);
+            console.log("Sending login request:", loginData); // Debugging
+
+            fetch("https://gluguide.onrender.com/api/users/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(loginData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Response received:", data);
+
+                if (data.status === "success" && data.data && data.data.token) {
+                    localStorage.setItem("token", data.data.token);
+                    localStorage.setItem("user", JSON.stringify(data.data.user || {}));
+
+                    alert("Login successful! Redirecting...");
+                    window.location.href = "home.html"; // Redirect on success
+                } else {
+                    throw new Error(data.message || "Invalid credentials.");
+                }
+            })
+            .catch(error => {
+                console.error("Login Error:", error);
+                alert("Login failed: " + error.message);
+            });
         }
-    })
-    .catch(error => {
-        console.error("Login Error:", error);
-        alert("An error occurred during login.");
-    });
-}
-
 
         function logout() {
             localStorage.removeItem("token");
