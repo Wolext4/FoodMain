@@ -72,24 +72,23 @@
         <label><input type="radio" name="dairyIntake" value="Daily"> Daily</label>
         <label><input type="radio" name="dairyIntake" value="Multiple times a day"> Multiple times a day</label>
 
-        <p>6. How many times did you eat regular chips or fried snacks (e.g., puff-puff, not low-fat)?</p>
-        <label><input type="radio" name="healthyProtein" value="Never"> Never</label>
-        <label><input type="radio"> Less than 3 times</label>
-        <label><input type="radio"> 3 times</label>
-        <label><input type="radio"> More than 4 times</label>
+        <p>6. How many times did you eat regular chips or fried snacks?</p>
+        <label><input type="radio" name="friedSnacks" value="Never"> Never</label>
+        <label><input type="radio" name="friedSnacks" value="Less than 3 times"> Less than 3 times</label>
+        <label><input type="radio" name="friedSnacks" value="3 times"> 3 times</label>
+        <label><input type="radio" name="friedSnacks" value="More than 4 times"> More than 4 times</label>
 
         <p>7. How many times did you eat ice cream and other sweets?</p>
-        <label><input type="radio" name="healthyProtein" value="Never"> Never</label>
-        <label><input type="radio"> Less than 3 times</label>
-        <label><input type="radio"> 3 times</label>
-        <label><input type="radio"> More than 4 times</label>
+        <label><input type="radio" name="sweetsIntake" value="Never"> Never</label>
+        <label><input type="radio" name="sweetsIntake" value="Less than 3 times"> Less than 3 times</label>
+        <label><input type="radio" name="sweetsIntake" value="3 times"> 3 times</label>
+        <label><input type="radio" name="sweetsIntake" value="More than 4 times"> More than 4 times</label>
 
-        <p>8. How much oil, butter, margarine, or meat fat do you use to season or cook or put on bread?</p>
-        <label><input type="radio" name="healthyProtein" value="Never"> Never</label>
-        <label><input type="radio"> Less than 3 times</label>
-        <label><input type="radio"> 3 times</label>
-        <label><input type="radio"> More than 4 times</label>
-        </div>
+        <p>8. How much oil, butter, or fat do you use in cooking?</p>
+        <label><input type="radio" name="oilUsage" value="Never"> Never</label>
+        <label><input type="radio" name="oilUsage" value="Less than 3 times"> Less than 3 times</label>
+        <label><input type="radio" name="oilUsage" value="3 times"> 3 times</label>
+        <label><input type="radio" name="oilUsage" value="More than 4 times"> More than 4 times</label>
         
         <button type="submit" class="btn-submit">Submit</button>
     </form>
@@ -108,27 +107,21 @@
             }
 
             // Collecting responses
-            const fastFoodFrequency = document.querySelector('input[name="fastFood"]:checked')?.value;
-            const fruitIntake = document.querySelector('input[name="fruitIntake"]:checked')?.value;
-            const sugaryDrinks = document.querySelector('input[name="sugaryDrinks"]:checked')?.value;
-            const vegetableIntake = document.querySelector('input[name="vegetableIntake"]:checked')?.value;
-            const dairyIntake = document.querySelector('input[name="dairyIntake"]:checked')?.value;
+            const responses = {};
+            const questions = ["fastFood", "fruitIntake", "sugaryDrinks", "vegetableIntake", "dairyIntake", "friedSnacks", "sweetsIntake", "oilUsage"];
 
-            if (!fastFoodFrequency || !fruitIntake || !sugaryDrinks || !vegetableIntake || !dairyIntake) {
-                alert("Please answer all questions before submitting.");
-                return;
+            for (let question of questions) {
+                const answer = document.querySelector(`input[name="${question}"]:checked`)?.value;
+                if (!answer) {
+                    alert("Please answer all questions before submitting.");
+                    return;
+                }
+                responses[question] = answer;
             }
 
-            const requestData = { 
-                userId,
-                fastFoodFrequency, 
-                fruitIntake, 
-                sugaryDrinks,
-                vegetableIntake,
-                dairyIntake
-            };
+            responses.userId = userId;
 
-            console.log("Submitting data:", requestData); // Debugging
+            console.log("Submitting data:", responses); // Debugging
 
             fetch("https://gluguide.onrender.com/api/dietary/dietary-assessments", {
                 method: "POST",
@@ -136,15 +129,11 @@
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify(requestData)
+                body: JSON.stringify(responses)
             })
-            .then(response => {
-                console.log("Raw response:", response);
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log("API Response:", data); // Debugging
-
+                console.log("API Response:", data);
                 if (data.success) {
                     alert("Dietary assessment submitted successfully!");
                     window.location.href = "home.html";
