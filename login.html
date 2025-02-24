@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - GluGuide</title>
+    <title>Sign Up - GluGuide</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +15,7 @@
             background-color: #faf5f5;
             margin: 0;
         }
-        .login-container {
+        .signup-container {
             background: white;
             padding: 25px;
             border-radius: 10px;
@@ -45,63 +45,70 @@
         button:hover {
             background: #444;
         }
-        .signup-link {
+        .login-link {
             margin-top: 10px;
             font-size: 14px;
         }
-        .signup-link a {
+        .login-link a {
             color: #007bff;
             text-decoration: none;
         }
-        .signup-link a:hover {
+        .login-link a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <input type="text" id="identifier" placeholder="Email or Phone Number" required>
+
+    <div class="signup-container">
+        <h2>Sign Up</h2>
+
+        <input type="text" id="first-name" placeholder="First Name" required>
+        <input type="text" id="last-name" placeholder="Last Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="tel" id="phone" placeholder="Phone Number" required pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         <input type="password" id="password" placeholder="Password" required>
-        <button onclick="login()">Login</button>
-        <div class="signup-link">
-            <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+
+        <button onclick="signup()">Sign Up</button>
+
+        <div class="login-link">
+            <p>Already have an account? <a href="login.html">Log in here</a></p>
         </div>
     </div>
-    
+
     <script>
-        function isValidEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        function isValidPhone(phone) {
-            return /^\d{11}$/.test(phone);
-        }
-
-        function login() {
-            const identifier = document.getElementById("identifier").value.trim();
+        function signup() {
+            const firstName = document.getElementById("first-name").value.trim();
+            const lastName = document.getElementById("last-name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone = document.getElementById("phone").value.trim();
             const password = document.getElementById("password").value.trim();
 
-            if (!identifier || !password) {
-                alert("Please enter both email/phone and password.");
+            if (!firstName || !lastName || !email || !password || !phone) {
+                alert("Please fill in all fields.");
                 return;
             }
 
-            const loginData = {
-                email: isValidEmail(identifier) ? identifier : null,
-                phoneNumber: isValidPhone(identifier) ? identifier : null,
-                password: password
+            const userData = {
+                email: email,
+                password: password,
+                firstName: firstName,
+                lastName: lastName,
+                phoneNumber: phone
             };
 
-            console.log("Sending login request:", loginData); // Debugging
+            console.log("Sending user data:", JSON.stringify(userData)); // Debugging
 
-            fetch("https://gluguide.onrender.com/api/users/login", {
+            fetch("https://gluguide.onrender.com/api/users/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(loginData)
+                body: JSON.stringify(userData)
             })
             .then(response => {
                 if (!response.ok) {
+                    if (response.status === 409) {
+                        throw new Error("An account with this email or phone number already exists. Try logging in instead.");
+                    }
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 return response.json();
@@ -109,27 +116,20 @@
             .then(data => {
                 console.log("Response received:", data);
 
-                if (data.status === "success" && data.data && data.data.token) {
-                    localStorage.setItem("token", data.data.token);
-                    localStorage.setItem("user", JSON.stringify(data.data.user || {}));
-
-                    alert("Login successful! Redirecting...");
-                    window.location.href = "home.html"; // Redirect on success
+                if (data.success) {
+                    localStorage.setItem("token", data.token);
+                    alert("Signup successful! Redirecting...");
+                    window.location.href = "home.html"; // Redirect to home page
                 } else {
-                    throw new Error(data.message || "Invalid credentials.");
+                    throw new Error(data.message || "Signup failed.");
                 }
             })
             .catch(error => {
-                console.error("Login Error:", error);
-                alert("Login failed: " + error.message);
+                console.error("Signup Error:", error);
+                alert(error.message);
             });
         }
-
-        function logout() {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            window.location.href = "login.html";
-        }
     </script>
+
 </body>
 </html>
