@@ -114,8 +114,7 @@
         console.log("Response data:", data);
         if (data.success) {
             document.cookie = `token=${data.token}; path=/; Secure; HttpOnly`;
-            alert("Signup successful!");
-            window.location.href = "home.html"; 
+            window.location.href = "home.html"; // ✅ Auto-redirect without an alert
         } else {
             alert("Signup failed: " + data.message);
         }
@@ -125,6 +124,8 @@
         alert("An error occurred. Check the console for details.");
     });
 }
+
+
 
 
     </script>
