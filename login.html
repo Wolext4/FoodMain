@@ -74,31 +74,22 @@
     </div>
 
     <script>
-        function isValidEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        function isValidPhone(phone) {
-            return /^\d{11}$/.test(phone);
-        }
-
         function login() {
             const identifier = document.getElementById("identifier").value.trim();
             const password = document.getElementById("password").value.trim();
 
             if (!identifier || !password) {
-                console.error("Email/Phone and Password are required.");
-                alert("Please enter both email/phone and password.");
+                alert("Please fill in all fields.");
                 return;
             }
 
-            const loginData = {
-                email: isValidEmail(identifier) ? identifier : null,
-                phoneNumber: isValidPhone(identifier) ? identifier : null,
-                password: password
+            const loginData = { 
+                email: identifier.includes("@") ? identifier : null,
+                phoneNumber: /^\d{11}$/.test(identifier) ? identifier : null,
+                password
             };
 
-            console.log("Sending login request...", loginData);
+            console.log("Sending login request:", loginData);
 
             fetch("https://gluguide.onrender.com/api/users/login", {
                 method: "POST",
@@ -107,40 +98,17 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Response received:", data);
-
-                if (!data || typeof data !== "object") {
-                    console.error("Invalid response from server.");
-                    alert("Login failed: Server error.");
-                    return;
-                }
-
-                if (data.message && data.message.toLowerCase().includes("login successful")) {
-                    console.log("Login successful!");
-
-                    // ✅ Store token & user data in localStorage
-                    if (data.token) {
-                        localStorage.setItem("token", data.token);
-                        console.log("Token stored in localStorage.");
-                    } else {
-                        console.warn("No token received.");
-                    }
-
-                    if (data.user) {
-                        localStorage.setItem("user", JSON.stringify(data.user));
-                        console.log("User details stored in localStorage.");
-                    }
-
-                    // ✅ Redirect to home page
-                    window.location.href = "home.html";
+                console.log("Response:", data);
+                if (data.success) {
+                    localStorage.setItem("token", data.token);
+                    window.location.href = "home.html";  // ✅ Redirect on success
                 } else {
-                    console.error("Login failed:", data.message || "Invalid credentials.");
-                    alert("Login failed: " + (data.message || "Invalid credentials."));
+                    alert(data.message || "Login failed.");
                 }
             })
             .catch(error => {
-                console.error("Error during login:", error);
-                alert("Login failed: Network error.");
+                console.error("Error:", error);
+                alert("An error occurred during login.");
             });
         }
     </script>
