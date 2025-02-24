@@ -62,44 +62,18 @@
 
     <div class="signup-container">
         <h2>Sign Up</h2>
-
         <input type="text" id="first-name" placeholder="First Name" required>
         <input type="text" id="last-name" placeholder="Last Name" required>
         <input type="email" id="email" placeholder="Email" required>
-        
-        <!-- Phone Number (Only Numbers Allowed) -->
         <input type="tel" id="phone" placeholder="Phone Number" required pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-
         <input type="password" id="password" placeholder="Password" required>
-
         <button onclick="signup()">Sign Up</button>
-
         <div class="login-link">
             <p>Already have an account? <a href="login.html">Log in here</a></p>
         </div>
     </div>
 
     <script>
-        function generateInitials(firstName, lastName) {
-            const firstInitial = firstName.trim().charAt(0).toUpperCase();
-            const lastInitial = lastName.trim().charAt(0).toUpperCase();
-            return firstInitial + lastInitial;
-        }
-
-        function isValidPassword(password) {
-            const minLength = 8;
-            const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-
-            if (password.length < minLength || !specialCharRegex.test(password)) {
-                alert("Password must be at least 8 characters long and include at least one special character.");
-                return false;
-            }
-            return true;
-        }
-
-        function setAuthToken(token) {
-    localStorage.setItem("auth_token", token);
-}
     function signup() {
         const email = document.getElementById("email").value.trim();
         const firstName = document.getElementById("first-name").value.trim();
@@ -118,14 +92,11 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData),
+            credentials: "include" // ✅ Allows backend to set HttpOnly cookie
         })
         .then(response => response.json())
         .then(data => {
             if (data.message && data.message.toLowerCase().includes("registration successful")) {
-                if (data.token) {
-    setAuthToken(data.token);
-}
-
                 alert("Registration successful! Redirecting to home page...");
                 window.location.href = "home.html";
             } else {
