@@ -59,23 +59,18 @@
     </style>
 </head>
 <body>
-
     <div class="signup-container">
         <h2>Sign Up</h2>
-
         <input type="text" id="first-name" placeholder="First Name" required>
         <input type="text" id="last-name" placeholder="Last Name" required>
         <input type="email" id="email" placeholder="Email" required>
         <input type="tel" id="phone" placeholder="Phone Number" required pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         <input type="password" id="password" placeholder="Password" required>
-
         <button onclick="signup()">Sign Up</button>
-
         <div class="login-link">
             <p>Already have an account? <a href="login.html">Log in here</a></p>
         </div>
     </div>
-
     <script>
         function signup() {
             const firstName = document.getElementById("first-name").value.trim();
@@ -96,23 +91,28 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(userData)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log("Response:", data);
-                if (data.success) {
-                    localStorage.setItem("token", data.token); // ✅ Store token in localStorage
+                console.log("Response received:", data);
+                if (data.status === "success" && data.data && data.data.token) {
+                    localStorage.setItem("token", data.data.token);
+                    localStorage.setItem("user", JSON.stringify(data.data.user || {}));
                     alert("Signup successful! Redirecting to home...");
-                    window.location.replace("home.html"); // ✅ Instant Redirect
+                    window.location.href = "home.html";
                 } else {
-                    alert(data.message || "Signup failed.");
+                    throw new Error(data.message || "Signup failed.");
                 }
             })
             .catch(error => {
-                console.error("Error:", error);
-                alert("An error occurred during signup.");
+                console.error("Signup Error:", error);
+                alert("Signup failed: " + error.message);
             });
         }
     </script>
-
 </body>
 </html>
