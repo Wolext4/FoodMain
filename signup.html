@@ -98,11 +98,7 @@
         return;
     }
 
-    if (!/^\d+$/.test(phone)) {
-        alert("Phone number must contain only numbers.");
-        return;
-    }
-
+    console.log("Sending signup request...");
     const userData = { firstName, lastName, email, password, phoneNumber: phone };
 
     fetch("https://gluguide.onrender.com/api/users/register", {
@@ -110,18 +106,26 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData)
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log("Received response:", response);
+        return response.json();
+    })
     .then(data => {
+        console.log("Response data:", data);
         if (data.success) {
             document.cookie = `token=${data.token}; path=/; Secure; HttpOnly`;
             alert("Signup successful!");
-            window.location.href = "home.html"; // Redirect to homepage
+            window.location.href = "home.html"; 
         } else {
             alert("Signup failed: " + data.message);
         }
     })
-    .catch(error => console.error("Error:", error));
+    .catch(error => {
+        console.error("Error:", error);
+        alert("An error occurred. Check the console for details.");
+    });
 }
+
 
     </script>
 
