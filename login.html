@@ -101,9 +101,9 @@
             .then(data => {
                 console.log("Response received:", data);
 
-                if (data.token) {
-                    localStorage.setItem("token", data.token);
-                    localStorage.setItem("user", JSON.stringify(data.user));
+                if (data.status === "success" && data.data && data.data.token) {
+                    localStorage.setItem("token", data.data.token);
+                    localStorage.setItem("user", JSON.stringify(data.data.user || {}));
                     window.location.href = "home.html";
                 } else {
                     alert("Login failed: " + (data.message || "Invalid credentials."));
