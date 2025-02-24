@@ -210,11 +210,11 @@
     </form>
 
     <script>
-        function submitForm(event) {
+       function submitForm(event) {
     event.preventDefault(); // Prevent page refresh
 
     const userId = "67bbfbc2a53715febff5d708"; // Replace with actual user ID if dynamic
-    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token"); // ✅ Check both storages
 
     if (!token) {
         alert("Unauthorized! Please log in again.");
@@ -241,12 +241,13 @@
     };
 
     console.log("Submitting dietary assessment:", requestData);
+    console.log("Using token:", token); // ✅ Debug JWT
 
     fetch("https://gluguide.onrender.com/api/dietary/dietary-assessments", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}` // ✅ Adding the Auth Token
+            "Authorization": `Bearer ${token}` // ✅ Ensure token is formatted correctly
         },
         body: JSON.stringify(requestData)
     })
@@ -254,11 +255,15 @@
         if (response.status === 401) {
             throw new Error("Unauthorized! Please log in again.");
         }
+        if (response.status === 500) {
+            throw new Error("Server error! Please try again later.");
+        }
         return response.json();
     })
     .then(data => {
         console.log("Response data:", data);
         if (data.success) {
+            alert("Form submitted successfully!");
             window.location.href = "home.html"; // ✅ Redirect on success
         } else {
             alert("Submission failed: " + data.message);
@@ -269,6 +274,7 @@
         alert(error.message);
     });
 }
+
 
 
     </script>
