@@ -87,9 +87,9 @@
         }
 
         function signup() {
+            const email = document.getElementById("email").value.trim();
             const firstName = document.getElementById("first-name").value.trim();
             const lastName = document.getElementById("last-name").value.trim();
-            const email = document.getElementById("email").value.trim();
             const phone = document.getElementById("phone").value.trim();
             const password = document.getElementById("password").value.trim();
 
@@ -106,7 +106,7 @@
             const initials = generateInitials(firstName, lastName);
             const userData = { firstName, lastName, email, password, phoneNumber: phone, initials };
 
-            fetch("http://localhost:3000/api/signup", {
+            fetch("http://localhost:3000/api/users/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(userData)
