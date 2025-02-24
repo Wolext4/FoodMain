@@ -104,56 +104,11 @@
 
         <!-- Question 4 -->
         <div class="question">
-            <p>4. How many times did you drink regular carbonated drinks (sodas), fruit juices, or glasses of sweet tea?</p>
-            <label><input type="radio" name="sweetDrinks" value="Never"> Never</label>
-            <label><input type="radio" name="sweetDrinks" value="Less than 3 times"> Less than 3 times</label>
-            <label><input type="radio" name="sweetDrinks" value="3 times"> 3 times</label>
-            <label><input type="radio" name="sweetDrinks" value="More than 4 times"> More than 4 times</label>
-        </div>
-
-        <!-- Question 5 -->
-        <div class="question">
-            <p>5. How many times did you eat beans, chicken without skin, or fish?</p>
-            <label><input type="radio" name="healthyProtein" value="Never"> Never</label>
-            <label><input type="radio" name="healthyProtein" value="Less than 3 times"> Less than 3 times</label>
-            <label><input type="radio" name="healthyProtein" value="3 times"> 3 times</label>
-            <label><input type="radio" name="healthyProtein" value="More than 4 times"> More than 4 times</label>
-        </div>
-        
-        <!-- Question 6 -->
-        <div class="question">
-            <p>6. How many times did you eat regular chips or fried snacks (e.g., puff-puff, not low-fat)?</p>
-            <label><input type="radio" name="healthyProtein" value="Never"> Never</label>
-            <label><input type="radio"> Less than 3 times</label>
-            <label><input type="radio"> 3 times</label>
-            <label><input type="radio"> More than 4 times</label>
-        </div>
-
-        <!-- Question 7 -->
-        <div class="question">
-            <p>7. How many times did you eat ice cream and other sweets?</p>
-            <label><input type="radio" name="healthyProtein" value="Never"> Never</label>
-            <label><input type="radio"> Less than 3 times</label>
-            <label><input type="radio"> 3 times</label>
-            <label><input type="radio"> More than 4 times</label>
-        </div>
-
-        <!-- Question 8 -->
-        <div class="question">
-            <p>8. How much oil, butter, margarine, or meat fat do you use to season or cook or put on bread?</p>
-            <label><input type="radio" name="healthyProtein" value="Never"> Never</label>
-            <label><input type="radio"> Less than 3 times</label>
-            <label><input type="radio"> 3 times</label>
-            <label><input type="radio"> More than 4 times</label>
-        </div>
-
-        <!-- Notice Section -->
-        <div class="notice">
-            <h5>Healthy Eating Pattern:</h5>
-            <p>Eating vegetables, fruits, beans, chicken without skin, or fish three times or more per week is <b>good</b> for your health.</p>
-
-            <h5>Unhealthy Eating Pattern:</h5>
-            <p>Eating regular chips, fried snacks, butter, margarine, meat fat, sodas, fruit juices, or fast food three times or more per week is <b>unhealthy</b>.</p>
+            <p>4. How many times did you eat fried snacks?</p>
+            <label><input type="radio" name="friedSnacks" value="Never"> Never</label>
+            <label><input type="radio" name="friedSnacks" value="Less than 3 times"> Less than 3 times</label>
+            <label><input type="radio" name="friedSnacks" value="3 times"> 3 times</label>
+            <label><input type="radio" name="friedSnacks" value="More than 4 times"> More than 4 times</label>
         </div>
 
         <button type="submit" class="btn-submit">Submit</button>
@@ -164,15 +119,10 @@
             event.preventDefault(); // Prevent form refresh
 
             const token = localStorage.getItem("token"); // Get token from localStorage
-            if (!token) {
-                alert("You are not logged in. Please log in first.");
-                window.location.href = "login.html";
-                return;
-            }
+            const userId = localStorage.getItem("userId"); // Retrieve user ID
 
-            const userId = localStorage.getItem("userId"); // Retrieve user ID from localStorage
-            if (!userId) {
-                alert("User ID not found. Please log in again.");
+            if (!token || !userId) {
+                alert("You are not logged in. Please log in first.");
                 window.location.href = "login.html";
                 return;
             }
@@ -181,21 +131,19 @@
             const fastFoodFrequency = document.querySelector('input[name="fastFood"]:checked')?.value;
             const sodaFrequency = document.querySelector('input[name="soda"]:checked')?.value;
             const vegetablesFrequency = document.querySelector('input[name="vegetables"]:checked')?.value;
-            const sweetDrinksFrequency = document.querySelector('input[name="sweetDrinks"]:checked')?.value;
-            const healthyProteinFrequency = document.querySelector('input[name="healthyProtein"]:checked')?.value;
+            const friedSnacksFrequency = document.querySelector('input[name="friedSnacks"]:checked')?.value;
 
-            if (!fastFoodFrequency || !sodaFrequency || !vegetablesFrequency || !sweetDrinksFrequency || !healthyProteinFrequency) {
+            if (!fastFoodFrequency || !sodaFrequency || !vegetablesFrequency || !friedSnacksFrequency) {
                 alert("Please answer all questions before submitting.");
                 return;
             }
 
             const requestData = {
+                userId,  // Attach the logged-in user's ID
                 fastFoodFrequency,
                 sodaFrequency,
                 vegetablesFrequency,
-                sweetDrinksFrequency,
-                healthyProteinFrequency,
-                userId
+                friedSnacksFrequency
             };
 
             console.log("Submitting dietary assessment:", requestData);
