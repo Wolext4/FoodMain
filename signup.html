@@ -94,27 +94,36 @@
     const password = document.getElementById("password").value.trim();
 
     if (!firstName || !lastName || !email || !password || !phone) {
-        return; // Prevent empty submissions but no alert
+        console.error("All fields are required.");
+        return;
     }
 
     console.log("Sending signup request...");
+
     const userData = { firstName, lastName, email, password, phoneNumber: phone };
 
     fetch("https://gluguide.onrender.com/api/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData)
+        body: JSON.stringify(userData),
     })
     .then(response => response.json())
     .then(data => {
         console.log("Response data:", data);
+
         if (data.success) {
-            document.cookie = `token=${data.token}; path=/; Secure; HttpOnly`;
-            window.location.href = "home.html"; // ✅ Redirect instantly on success
+            // ✅ Store token in localStorage instead (cookies require server-side handling)
+            localStorage.setItem("token", data.token);
+
+            // ✅ Redirect to home page after successful signup
+            window.location.href = "home.html";
+        } else {
+            console.error("Signup failed:", data.message || "Unknown error");
         }
     })
-    .catch(error => console.error("Error:", error)); // Log errors without alerts
+    .catch(error => console.error("Error during signup:", error));
 }
+
 
 
 
