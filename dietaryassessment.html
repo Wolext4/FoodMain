@@ -249,6 +249,19 @@
     })
     .catch(error => console.error("Error:", error));
 }
+const token = localStorage.getItem("token"); // ✅ Auto-retrieves token
+
+fetch("https://gluguide.onrender.com/api/protected-route", {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // ✅ Uses the saved token
+    }
+})
+.then(response => response.json())
+.then(data => console.log("Data received:", data))
+.catch(error => console.error("API error:", error));
+
 
     </script>
 
