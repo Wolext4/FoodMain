@@ -75,15 +75,19 @@
     <form class="form-container" onsubmit="submitDietaryAssessment(event)">
         <h2>Dietary Assessment</h2>
 
+        <!-- Question 1 -->
         <div class="question">
             <p>1. How many times in a week did you eat fast food?</p>
+            <label><input type="radio" name="fastFood" value="Never"> Never</label>
             <label><input type="radio" name="fastFood" value="Less than 3 times"> Less than 3 times</label>
             <label><input type="radio" name="fastFood" value="3 times"> 3 times</label>
             <label><input type="radio" name="fastFood" value="More than 4 times"> More than 4 times</label>
         </div>
 
+        <!-- Question 2 -->
         <div class="question">
             <p>2. How many times did you drink soda?</p>
+            <label><input type="radio" name="soda" value="Never"> Never</label>
             <label><input type="radio" name="soda" value="Less than 3 times"> Less than 3 times</label>
             <label><input type="radio" name="soda" value="3 times"> 3 times</label>
             <label><input type="radio" name="soda" value="More than 4 times"> More than 4 times</label>
@@ -92,58 +96,37 @@
         <!-- Question 3 -->
         <div class="question">
             <p>3. How many times did you eat two to three servings of vegetables?</p>
-            <label><input type="radio"> Less than 3 times</label>
-            <label><input type="radio"> 3 times</label>
-            <label><input type="radio"> More than 4 times</label>
+            <label><input type="radio" name="vegetables" value="Never"> Never</label>
+            <label><input type="radio" name="vegetables" value="Less than 3 times"> Less than 3 times</label>
+            <label><input type="radio" name="vegetables" value="3 times"> 3 times</label>
+            <label><input type="radio" name="vegetables" value="More than 4 times"> More than 4 times</label>
         </div>
 
         <!-- Question 4 -->
         <div class="question">
             <p>4. How many times did you drink regular carbonated drinks (sodas), fruit juices, or glasses of sweet tea?</p>
-            <label><input type="radio"> Less than 3 times</label>
-            <label><input type="radio"> 3 times</label>
-            <label><input type="radio"> More than 4 times</label>
+            <label><input type="radio" name="sweetDrinks" value="Never"> Never</label>
+            <label><input type="radio" name="sweetDrinks" value="Less than 3 times"> Less than 3 times</label>
+            <label><input type="radio" name="sweetDrinks" value="3 times"> 3 times</label>
+            <label><input type="radio" name="sweetDrinks" value="More than 4 times"> More than 4 times</label>
         </div>
 
         <!-- Question 5 -->
         <div class="question">
             <p>5. How many times did you eat beans, chicken without skin, or fish?</p>
-            <label><input type="radio"> Less than 3 times</label>
-            <label><input type="radio"> 3 times</label>
-            <label><input type="radio"> More than 4 times</label>
-        </div>
-
-        <!-- Question 6 -->
-        <div class="question">
-            <p>6. How many times did you eat regular chips or fried snacks (e.g., puff-puff, not low-fat)?</p>
-            <label><input type="radio"> Less than 3 times</label>
-            <label><input type="radio"> 3 times</label>
-            <label><input type="radio"> More than 4 times</label>
-        </div>
-
-        <!-- Question 7 -->
-        <div class="question">
-            <p>7. How many times did you eat ice cream and other sweets?</p>
-            <label><input type="radio"> Less than 3 times</label>
-            <label><input type="radio"> 3 times</label>
-            <label><input type="radio"> More than 4 times</label>
-        </div>
-
-        <!-- Question 8 -->
-        <div class="question">
-            <p>8. How much oil, butter, margarine, or meat fat do you use to season or cook or put on bread?</p>
-            <label><input type="radio"> Less than 3 times</label>
-            <label><input type="radio"> 3 times</label>
-            <label><input type="radio"> More than 4 times</label>
+            <label><input type="radio" name="healthyProtein" value="Never"> Never</label>
+            <label><input type="radio" name="healthyProtein" value="Less than 3 times"> Less than 3 times</label>
+            <label><input type="radio" name="healthyProtein" value="3 times"> 3 times</label>
+            <label><input type="radio" name="healthyProtein" value="More than 4 times"> More than 4 times</label>
         </div>
 
         <!-- Notice Section -->
         <div class="notice">
             <h5>Healthy Eating Pattern:</h5>
-            <p>Eating vegetables, fruits, beans, chicken without skin, or fish three times or more per week is **good** for your health.</p>
+            <p>Eating vegetables, fruits, beans, chicken without skin, or fish three times or more per week is <b>good</b> for your health.</p>
 
             <h5>Unhealthy Eating Pattern:</h5>
-            <p>Eating regular chips, fried snacks, butter, margarine, meat fat, sodas, fruit juices, or fast food three times or more per week is **unhealthy**.</p>
+            <p>Eating regular chips, fried snacks, butter, margarine, meat fat, sodas, fruit juices, or fast food three times or more per week is <b>unhealthy</b>.</p>
         </div>
 
         <button type="submit" class="btn-submit">Submit</button>
@@ -170,8 +153,11 @@
             // Retrieve selected answers
             const fastFoodFrequency = document.querySelector('input[name="fastFood"]:checked')?.value;
             const sodaFrequency = document.querySelector('input[name="soda"]:checked')?.value;
+            const vegetablesFrequency = document.querySelector('input[name="vegetables"]:checked')?.value;
+            const sweetDrinksFrequency = document.querySelector('input[name="sweetDrinks"]:checked')?.value;
+            const healthyProteinFrequency = document.querySelector('input[name="healthyProtein"]:checked')?.value;
 
-            if (!fastFoodFrequency || !sodaFrequency) {
+            if (!fastFoodFrequency || !sodaFrequency || !vegetablesFrequency || !sweetDrinksFrequency || !healthyProteinFrequency) {
                 alert("Please answer all questions before submitting.");
                 return;
             }
@@ -179,6 +165,9 @@
             const requestData = {
                 fastFoodFrequency,
                 sodaFrequency,
+                vegetablesFrequency,
+                sweetDrinksFrequency,
+                healthyProteinFrequency,
                 userId
             };
 
@@ -188,7 +177,7 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` // Send token for authentication
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(requestData)
             })
