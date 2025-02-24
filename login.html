@@ -92,18 +92,37 @@
             return /^\d{11}$/.test(phone);
         }
 
-        function login() {
+        function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + "; path=/" + expires; // Removed 'Secure'
+}
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPhone(phone) {
+    return /^\d{11}$/.test(phone);
+}
+
+function login() {
     const identifier = document.getElementById("identifier").value.trim();
     const password = document.getElementById("password").value.trim();
 
     if (!identifier || !password) {
-        return; // Prevent empty submissions but no alert
+        console.error("Email/Phone and Password are required.");
+        return;
     }
 
-    let loginData = { 
+    const loginData = {
         email: isValidEmail(identifier) ? identifier : null,
         phoneNumber: isValidPhone(identifier) ? identifier : null,
-        password: password 
+        password: password
     };
 
     console.log("Sending login request:", loginData);
@@ -116,13 +135,25 @@
     .then(response => response.json())
     .then(data => {
         console.log("Response data:", data);
-        if (data.success) {
-            setCookie("token", data.token, 1);
-            window.location.href = "home.html"; // ✅ Redirect instantly on success
+
+        // ✅ Check if login was successful
+        if (data.message && data.message.toLowerCase().includes("login successful")) {
+            console.log("User logged in successfully.");
+
+            // ✅ Store token in localStorage if available
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+            }
+
+            // ✅ Redirect to home page
+            window.location.href = "home.html";
+        } else {
+            console.error("Login failed:", data.message || "Invalid credentials.");
         }
     })
-    .catch(error => console.error("Error:", error)); // Log errors without alerts
+    .catch(error => console.error("Error during login:", error));
 }
+
 
 
 
