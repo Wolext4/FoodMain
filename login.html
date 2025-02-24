@@ -17,7 +17,7 @@
         }
         .login-container {
             background: white;
-            padding: 25px;
+            padding: 25px; 
             border-radius: 10px;
             box-shadow: 0 0 150px rgba(0, 0, 0, 0.2);
             width: 320px;
@@ -62,9 +62,12 @@
 
     <div class="login-container">
         <h2>Login</h2>
+
         <input type="text" id="identifier" placeholder="Email or Phone Number" required>
         <input type="password" id="password" placeholder="Password" required>
+
         <button onclick="login()">Login</button>
+
         <div class="signup-link">
             <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
         </div>
@@ -84,6 +87,7 @@
             const password = document.getElementById("password").value.trim();
 
             if (!identifier || !password) {
+                console.error("Email/Phone and Password are required.");
                 alert("Please enter both email/phone and password.");
                 return;
             }
@@ -94,40 +98,49 @@
                 password: password
             };
 
+            console.log("Sending login request...", loginData);
+
             fetch("https://gluguide.onrender.com/api/users/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(loginData),
-                credentials: "include" // ✅ Allows backend to set HttpOnly cookie
+                body: JSON.stringify(loginData)
             })
             .then(response => response.json())
             .then(data => {
+                console.log("Response received:", data);
+
+                if (!data || typeof data !== "object") {
+                    console.error("Invalid response from server.");
+                    alert("Login failed: Server error.");
+                    return;
+                }
+
                 if (data.message && data.message.toLowerCase().includes("login successful")) {
-                    alert("Login successful! Redirecting to home page...");
+                    console.log("Login successful!");
+
+                    // ✅ Store token & user data in localStorage
+                    if (data.token) {
+                        localStorage.setItem("token", data.token);
+                        console.log("Token stored in localStorage.");
+                    } else {
+                        console.warn("No token received.");
+                    }
+
+                    if (data.user) {
+                        localStorage.setItem("user", JSON.stringify(data.user));
+                        console.log("User details stored in localStorage.");
+                    }
+
+                    // ✅ Redirect to home page
                     window.location.href = "home.html";
                 } else {
+                    console.error("Login failed:", data.message || "Invalid credentials.");
                     alert("Login failed: " + (data.message || "Invalid credentials."));
                 }
             })
             .catch(error => {
                 console.error("Error during login:", error);
                 alert("Login failed: Network error.");
-            });
-        }
-
-        // ✅ Fetch protected data (auth request with HttpOnly cookie)
-        function fetchProtectedData() {
-            fetch("https://your-api.com/protected-route", {
-                method: "GET",
-                credentials: "include", // ✅ Ensures HttpOnly cookie is sent
-                headers: { "Content-Type": "application/json" }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Protected data:", data);
-            })
-            .catch(error => {
-                console.error("Error fetching protected data:", error);
             });
         }
     </script>
