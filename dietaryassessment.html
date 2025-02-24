@@ -210,17 +210,10 @@
     </form>
 
     <script>
-       function submitForm(event) {
-    event.preventDefault(); // Prevent page refresh
+        function submitForm(event) {
+    event.preventDefault(); // Prevent form refresh
 
     const userId = "67bbfbc2a53715febff5d708"; // Replace with actual user ID if dynamic
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token"); // ✅ Check both storages
-
-    if (!token) {
-        alert("Unauthorized! Please log in again.");
-        window.location.href = "login.html";
-        return;
-    }
 
     const selectedOptions = document.querySelectorAll('input[type="checkbox"]:checked');
     if (selectedOptions.length < 8) {
@@ -241,41 +234,21 @@
     };
 
     console.log("Submitting dietary assessment:", requestData);
-    console.log("Using token:", token); // ✅ Debug JWT
 
     fetch("https://gluguide.onrender.com/api/dietary/dietary-assessments", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}` // ✅ Ensure token is formatted correctly
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData)
     })
-    .then(response => {
-        if (response.status === 401) {
-            throw new Error("Unauthorized! Please log in again.");
-        }
-        if (response.status === 500) {
-            throw new Error("Server error! Please try again later.");
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
         console.log("Response data:", data);
         if (data.success) {
-            alert("Form submitted successfully!");
-            window.location.href = "home.html"; // ✅ Redirect on success
-        } else {
-            alert("Submission failed: " + data.message);
+            window.location.href = "home.html"; // ✅ Redirect instantly on success
         }
     })
-    .catch(error => {
-        console.error("Error:", error);
-        alert(error.message);
-    });
+    .catch(error => console.error("Error:", error));
 }
-
-
 
     </script>
 
