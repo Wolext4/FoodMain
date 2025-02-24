@@ -68,6 +68,7 @@
             <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
         </div>
     </div>
+    
     <script>
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -104,7 +105,8 @@
                 if (data.status === "success" && data.data && data.data.token) {
                     localStorage.setItem("token", data.data.token);
                     localStorage.setItem("user", JSON.stringify(data.data.user || {}));
-                    window.location.href = "home.html";
+                    alert("Login successful!");
+                    // Removed automatic redirection, user stays on the page
                 } else {
                     alert("Login failed: " + (data.message || "Invalid credentials."));
                 }
@@ -124,12 +126,6 @@
             const token = localStorage.getItem("token");
             return token ? { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" } : { "Content-Type": "application/json" };
         }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            if (localStorage.getItem("token")) {
-                window.location.href = "home.html";
-            }
-        });
     </script>
 </body>
 </html>
