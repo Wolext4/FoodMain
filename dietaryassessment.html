@@ -211,10 +211,45 @@
 
     <script>
         function submitForm(event) {
-            event.preventDefault(); // Prevent form refresh
-            alert("Form submitted successfully! Redirecting to Home Page...");
-            window.location.href = "home.html"; // Redirect to home.html
+    event.preventDefault(); // Prevent form refresh
+
+    const userId = "67bbfbc2a53715febff5d708"; // Replace with actual user ID if dynamic
+
+    const selectedOptions = document.querySelectorAll('input[type="checkbox"]:checked');
+    if (selectedOptions.length < 8) {
+        alert("Please answer all questions before submitting.");
+        return;
+    }
+
+    const requestData = {
+        fastFoodFrequency: selectedOptions[0].nextSibling.textContent.trim(),
+        sodaFrequency: selectedOptions[1].nextSibling.textContent.trim(),
+        fruitsVegetablesFrequency: selectedOptions[2].nextSibling.textContent.trim(),
+        sugarDrinksFrequency: selectedOptions[3].nextSibling.textContent.trim(),
+        leanMeatFrequency: selectedOptions[4].nextSibling.textContent.trim(),
+        wholeGrainsFrequency: selectedOptions[5].nextSibling.textContent.trim(),
+        iceCreamFrequency: selectedOptions[6].nextSibling.textContent.trim(),
+        veganOptionsFrequency: selectedOptions[7].nextSibling.textContent.trim(),
+        userId: userId
+    };
+
+    console.log("Submitting dietary assessment:", requestData);
+
+    fetch("https://gluguide.onrender.com/api/dietary/dietary-assessments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Response data:", data);
+        if (data.success) {
+            window.location.href = "home.html"; // ✅ Redirect instantly on success
         }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
     </script>
 
 </body>
