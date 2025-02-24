@@ -94,8 +94,7 @@
     const password = document.getElementById("password").value.trim();
 
     if (!firstName || !lastName || !email || !password || !phone) {
-        alert("Please fill in all fields.");
-        return;
+        return; // Prevent empty submissions but no alert
     }
 
     console.log("Sending signup request...");
@@ -106,24 +105,17 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData)
     })
-    .then(response => {
-        console.log("Received response:", response);
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
         console.log("Response data:", data);
         if (data.success) {
             document.cookie = `token=${data.token}; path=/; Secure; HttpOnly`;
-            window.location.href = "home.html"; // ✅ Auto-redirect without an alert
-        } else {
-            alert("Signup failed: " + data.message);
+            window.location.href = "home.html"; // ✅ Redirect instantly on success
         }
     })
-    .catch(error => {
-        console.error("Error:", error);
-        alert("An error occurred. Check the console for details.");
-    });
+    .catch(error => console.error("Error:", error)); // Log errors without alerts
 }
+
 
 
 
