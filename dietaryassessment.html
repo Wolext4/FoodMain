@@ -13,7 +13,6 @@
             padding: 20px;
         }
 
-        /* Form Styling */
         .form-container {
             background: white;
             padding: 20px;
@@ -22,7 +21,6 @@
             max-width: 500px;
             width: 500px;
             text-align: center;
-            position: relative;
         }
 
         .form-container h2 {
@@ -30,35 +28,6 @@
             margin-bottom: 30px;
         }
 
-        /* Back Button - Fixed at the Top */
-        .back-button {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            width: 40px;
-            height: 40px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: background 0.3s ease, transform 0.2s;
-            z-index: 999;
-        }
-
-        .back-button img {
-            width: 60%;
-            height: 60%;
-        }
-
-        .back-button:hover {
-            background-color: #45a049;
-            transform: scale(1.1);
-        }
-
-        /* Question Styling */
         .question {
             margin-bottom: 15px;
             text-align: left;
@@ -69,7 +38,6 @@
             font-weight: 500;
         }
 
-        /* Checkbox Styling */
         label {
             display: flex;
             align-items: center;
@@ -83,23 +51,6 @@
             height: 18px;
         }
 
-        /* Notice Section */
-        .notice {
-            text-align: left;
-            background-color: #f1f1f1;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-
-        .notice h5 {
-            margin: 5px 0;
-            font-size: 15px;
-            font-weight: bold;
-        }
-
-        /* Submit Button */
         .btn-submit {
             width: calc(100% - 20px);
             padding: 12px;
@@ -112,8 +63,6 @@
             transition: 0.3s;
             display: block;
             margin-top: 20px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .btn-submit:hover {
@@ -123,31 +72,23 @@
 </head>
 <body>
 
-    <!-- 🔙 Back Button (Fixed & Always Visible) -->
-    <a href="home.html" class="back-button">
-        <img src="/Icons/back.svg" alt="Back">
-    </a>
-
-    <!-- Form Container -->
-    <form class="form-container" onsubmit="submitForm(event)">
+    <form class="form-container" onsubmit="submitDietaryAssessment(event)">
         <h2>Dietary Assessment</h2>
 
-        <!-- Question 1 -->
         <div class="question">
-            <p>1. How many times in a week did you eat fast food meals or snacks or eat at a canteen?</p>
-            <label><input type="checkbox"> Less than 3 times</label>
-            <label><input type="checkbox"> 3 times</label>
-            <label><input type="checkbox"> More than 4 times</label>
+            <p>1. How many times in a week did you eat fast food?</p>
+            <label><input type="radio" name="fastFood" value="Less than 3 times"> Less than 3 times</label>
+            <label><input type="radio" name="fastFood" value="3 times"> 3 times</label>
+            <label><input type="radio" name="fastFood" value="More than 4 times"> More than 4 times</label>
         </div>
 
-        <!-- Question 2 -->
         <div class="question">
-            <p>2. How many times did you eat at least a serving of fruits?</p>
-            <label><input type="checkbox"> Less than 3 times</label>
-            <label><input type="checkbox"> 3 times</label>
-            <label><input type="checkbox"> More than 4 times</label>
+            <p>2. How many times did you drink soda?</p>
+            <label><input type="radio" name="soda" value="Less than 3 times"> Less than 3 times</label>
+            <label><input type="radio" name="soda" value="3 times"> 3 times</label>
+            <label><input type="radio" name="soda" value="More than 4 times"> More than 4 times</label>
         </div>
-
+        
         <!-- Question 3 -->
         <div class="question">
             <p>3. How many times did you eat two to three servings of vegetables?</p>
@@ -205,52 +146,67 @@
             <p>Eating regular chips, fried snacks, butter, margarine, meat fat, sodas, fruit juices, or fast food three times or more per week is **unhealthy**.</p>
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" class="btn-submit">Submit</button>
     </form>
 
     <script>
-        function submitForm(event) {
-    event.preventDefault(); // Prevent form refresh
+        function submitDietaryAssessment(event) {
+            event.preventDefault(); // Prevent form refresh
 
-    const userId = "67bbfbc2a53715febff5d708"; // Replace with actual user ID if dynamic
+            const token = localStorage.getItem("token"); // Get token from localStorage
+            if (!token) {
+                alert("You are not logged in. Please log in first.");
+                window.location.href = "login.html";
+                return;
+            }
 
-    const selectedOptions = document.querySelectorAll('input[type="checkbox"]:checked');
-    if (selectedOptions.length < 8) {
-        alert("Please answer all questions before submitting.");
-        return;
-    }
+            const userId = localStorage.getItem("userId"); // Retrieve user ID from localStorage
+            if (!userId) {
+                alert("User ID not found. Please log in again.");
+                window.location.href = "login.html";
+                return;
+            }
 
-    const requestData = {
-        fastFoodFrequency: selectedOptions[0].nextSibling.textContent.trim(),
-        sodaFrequency: selectedOptions[1].nextSibling.textContent.trim(),
-        fruitsVegetablesFrequency: selectedOptions[2].nextSibling.textContent.trim(),
-        sugarDrinksFrequency: selectedOptions[3].nextSibling.textContent.trim(),
-        leanMeatFrequency: selectedOptions[4].nextSibling.textContent.trim(),
-        wholeGrainsFrequency: selectedOptions[5].nextSibling.textContent.trim(),
-        iceCreamFrequency: selectedOptions[6].nextSibling.textContent.trim(),
-        veganOptionsFrequency: selectedOptions[7].nextSibling.textContent.trim(),
-        userId: userId
-    };
+            // Retrieve selected answers
+            const fastFoodFrequency = document.querySelector('input[name="fastFood"]:checked')?.value;
+            const sodaFrequency = document.querySelector('input[name="soda"]:checked')?.value;
 
-    console.log("Submitting dietary assessment:", requestData);
+            if (!fastFoodFrequency || !sodaFrequency) {
+                alert("Please answer all questions before submitting.");
+                return;
+            }
 
-    fetch("https://gluguide.onrender.com/api/dietary/dietary-assessments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Response data:", data);
-        if (data.success) {
-            window.location.href = "home.html"; // ✅ Redirect instantly on success
+            const requestData = {
+                fastFoodFrequency,
+                sodaFrequency,
+                userId
+            };
+
+            console.log("Submitting dietary assessment:", requestData);
+
+            fetch("https://gluguide.onrender.com/api/dietary/dietary-assessments", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` // Send token for authentication
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response data:", data);
+                if (data.success) {
+                    alert("Dietary assessment submitted successfully!");
+                    window.location.href = "home.html"; // Redirect on success
+                } else {
+                    alert("Submission failed: " + (data.message || "Unknown error."));
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while submitting the assessment.");
+            });
         }
-    })
-    .catch(error => console.error("Error:", error));
-}
-
-
     </script>
 
 </body>
