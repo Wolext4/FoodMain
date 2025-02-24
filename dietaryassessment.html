@@ -53,13 +53,13 @@
         <label><input type="radio" name="fruitIntake" value="1-2 servings"> 1-2 servings</label>
         <label><input type="radio" name="fruitIntake" value="3-4 servings"> 3-4 servings</label>
         <label><input type="radio" name="fruitIntake" value="More than 4 servings"> More than 4 servings</label>
-
+        
         <p>3. How often do you drink sugary beverages?</p>
         <label><input type="radio" name="sugaryDrinks" value="Never"> Never</label>
         <label><input type="radio" name="sugaryDrinks" value="Occasionally"> Occasionally</label>
         <label><input type="radio" name="sugaryDrinks" value="Daily"> Daily</label>
         <label><input type="radio" name="sugaryDrinks" value="Multiple times a day"> Multiple times a day</label>
-
+        
         <p>4. How often do you consume vegetables?</p>
         <label><input type="radio" name="vegetableIntake" value="Never"> Never</label>
         <label><input type="radio" name="vegetableIntake" value="1-2 times a week"> 1-2 times a week</label>
@@ -72,17 +72,19 @@
     <script>
         function submitDietaryAssessment(event) {
             event.preventDefault();
-            
-            const token = localStorage.getItem("token");
 
-            if (!token) {
+            // Retrieve the stored token and user ID
+            const token = localStorage.getItem("token");
+            const userId = localStorage.getItem("userId");
+
+            if (!token || !userId) {
                 alert("Session expired. Please log in again.");
                 window.location.href = "login.html";
                 return;
             }
 
             // Collecting responses
-            const responses = {};
+            const responses = { userId }; // ✅ Ensures userId is included
             const questions = ["fastFood", "fruitIntake", "sugaryDrinks", "vegetableIntake"];
 
             for (let question of questions) {
@@ -108,8 +110,9 @@
             .then(data => {
                 console.log("API Response:", data);
                 if (data.success) {
+                    // ✅ No need to wait for user to click OK
                     alert("Dietary assessment submitted successfully!");
-                    window.location.href = "home.html"; // ✅ Redirect to home
+                    window.location.href = "home.html"; 
                 } else {
                     alert("Submission failed: " + (data.message || "Unknown error."));
                 }
