@@ -211,9 +211,16 @@
 
     <script>
         function submitForm(event) {
-    event.preventDefault(); // Prevent form refresh
+    event.preventDefault(); // Prevent page refresh
 
     const userId = "67bbfbc2a53715febff5d708"; // Replace with actual user ID if dynamic
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+
+    if (!token) {
+        alert("Unauthorized! Please log in again.");
+        window.location.href = "login.html";
+        return;
+    }
 
     const selectedOptions = document.querySelectorAll('input[type="checkbox"]:checked');
     if (selectedOptions.length < 8) {
@@ -235,20 +242,34 @@
 
     console.log("Submitting dietary assessment:", requestData);
 
-    fetch("https://gluguide.onrender.com/api/dietary/dietary-assessments", {
+    fetch("https://gluguide.onrender.com/api/dietary-assessment", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}` // ✅ Adding the Auth Token
+        },
         body: JSON.stringify(requestData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (response.status === 401) {
+            throw new Error("Unauthorized! Please log in again.");
+        }
+        return response.json();
+    })
     .then(data => {
         console.log("Response data:", data);
         if (data.success) {
-            window.location.href = "home.html"; // ✅ Redirect instantly on success
+            window.location.href = "home.html"; // ✅ Redirect on success
+        } else {
+            alert("Submission failed: " + data.message);
         }
     })
-    .catch(error => console.error("Error:", error));
+    .catch(error => {
+        console.error("Error:", error);
+        alert(error.message);
+    });
 }
+
 
     </script>
 
