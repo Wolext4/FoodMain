@@ -86,55 +86,64 @@
             return firstInitial + lastInitial;
         }
 
+        function isValidPassword(password) {
+            const minLength = 8;
+            const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+            if (password.length < minLength || !specialCharRegex.test(password)) {
+                alert("Password must be at least 8 characters long and include at least one special character.");
+                return false;
+            }
+            return true;
+        }
+
         function signup() {
-    const email = document.getElementById("email").value.trim();
-    const firstName = document.getElementById("first-name").value.trim();
-    const lastName = document.getElementById("last-name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const password = document.getElementById("password").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const firstName = document.getElementById("first-name").value.trim();
+            const lastName = document.getElementById("last-name").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const password = document.getElementById("password").value.trim();
 
-    if (!firstName || !lastName || !email || !password || !phone) {
-        console.error("All fields are required.");
-        return;
-    }
-
-    console.log("Sending signup request...");
-
-    const userData = { firstName, lastName, email, password, phoneNumber: phone };
-
-    fetch("https://gluguide.onrender.com/api/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Response data:", data);
-
-        // ✅ Check if the response contains "Registration successful"
-        if (data.message && data.message.toLowerCase().includes("registration successful")) {
-            console.log("User registered successfully.");
-
-            // If the API provides a token, store it
-            if (data.token) {
-                localStorage.setItem("token", data.token);
+            if (!firstName || !lastName || !email || !password || !phone) {
+                alert("All fields are required.");
+                return;
             }
 
-            // ✅ Redirect to home page after successful signup
-            window.location.href = "home.html";
-        } else {
-            console.error("Signup failed:", data.message || "Unknown error");
+            if (!isValidPassword(password)) {
+                return; // Stop signup if the password is invalid
+            }
+
+            console.log("Sending signup request...");
+
+            const userData = { firstName, lastName, email, password, phoneNumber: phone };
+
+            fetch("https://gluguide.onrender.com/api/users/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response data:", data);
+
+                if (data.message && data.message.toLowerCase().includes("registration successful")) {
+                    console.log("User registered successfully.");
+
+                    if (data.token) {
+                        localStorage.setItem("token", data.token);
+                    }
+
+                    alert("Registration successful! Redirecting to home page...");
+                    window.location.href = "home.html";
+                } else {
+                    alert("Signup failed: " + (data.message || "Unknown error"));
+                }
+            })
+            .catch(error => {
+                console.error("Error during signup:", error);
+                alert("Signup failed: Network error.");
+            });
         }
-    })
-    .catch(error => console.error("Error during signup:", error));
-}
-
-
-
-
-
-
-
     </script>
 
 </body>
