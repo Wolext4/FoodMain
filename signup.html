@@ -102,9 +102,7 @@
                 if (data.success) {
                     localStorage.setItem("token", data.token); // ✅ Store token in localStorage
                     alert("Signup successful! Redirecting to home...");
-                    setTimeout(() => {
-                        window.location.href = "home.html"; // ✅ Redirect automatically
-                    }, 1000); // 1-second delay for alert visibility
+                    window.location.replace("home.html"); // ✅ Instant Redirect
                 } else {
                     alert(data.message || "Signup failed.");
                 }
