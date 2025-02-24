@@ -87,42 +87,42 @@
         }
 
         function signup() {
-            const email = document.getElementById("email").value.trim();
-            const firstName = document.getElementById("first-name").value.trim();
-            const lastName = document.getElementById("last-name").value.trim();
-            const phone = document.getElementById("phone").value.trim();
-            const password = document.getElementById("password").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const firstName = document.getElementById("first-name").value.trim();
+    const lastName = document.getElementById("last-name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-            if (!firstName || !lastName || !email || !password || !phone) {
-                alert("Please fill in all fields.");
-                return;
-            }
+    if (!firstName || !lastName || !email || !password || !phone) {
+        alert("Please fill in all fields.");
+        return;
+    }
 
-            if (!/^\d+$/.test(phone)) {
-                alert("Phone number must contain only numbers.");
-                return;
-            }
+    if (!/^\d+$/.test(phone)) {
+        alert("Phone number must contain only numbers.");
+        return;
+    }
 
-            const initials = generateInitials(firstName, lastName);
-            const userData = { firstName, lastName, email, password, phoneNumber: phone, initials };
+    const userData = { firstName, lastName, email, password, phoneNumber: phone };
 
-            fetch("http://localhost:3000/api/users/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.cookie = `token=${data.token}; path=/; Secure; HttpOnly`;
-                    alert("Signup successful!");
-                    window.location.href = "home.html"; // Redirect to homepage
-                } else {
-                    alert("Signup failed: " + data.message);
-                }
-            })
-            .catch(error => console.error("Error:", error));
+    fetch("http://localhost:3000/api/users/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.cookie = `token=${data.token}; path=/; Secure; HttpOnly`;
+            alert("Signup successful!");
+            window.location.href = "home.html"; // Redirect to homepage
+        } else {
+            alert("Signup failed: " + data.message);
         }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
     </script>
 
 </body>
