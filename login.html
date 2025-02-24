@@ -105,8 +105,9 @@
                 if (data.status === "success" && data.data && data.data.token) {
                     localStorage.setItem("token", data.data.token);
                     localStorage.setItem("user", JSON.stringify(data.data.user || {}));
-                    alert("Login successful!");
-                    // Removed automatic redirection, user stays on the page
+                    alert("Login successful!").then(() => {
+                        window.location.href = "home.html"; // Redirect after alert is closed
+                    });
                 } else {
                     alert("Login failed: " + (data.message || "Invalid credentials."));
                 }
