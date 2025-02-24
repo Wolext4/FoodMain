@@ -97,53 +97,53 @@
             return true;
         }
 
-        function signup() {
-            const email = document.getElementById("email").value.trim();
-            const firstName = document.getElementById("first-name").value.trim();
-            const lastName = document.getElementById("last-name").value.trim();
-            const phone = document.getElementById("phone").value.trim();
-            const password = document.getElementById("password").value.trim();
-
-            if (!firstName || !lastName || !email || !password || !phone) {
-                alert("All fields are required.");
-                return;
-            }
-
-            if (!isValidPassword(password)) {
-                return; // Stop signup if the password is invalid
-            }
-
-            console.log("Sending signup request...");
-
-            const userData = { firstName, lastName, email, password, phoneNumber: phone };
-
-            fetch("https://gluguide.onrender.com/api/users/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Response data:", data);
-
-                if (data.message && data.message.toLowerCase().includes("registration successful")) {
-                    console.log("User registered successfully.");
-
-                    if (data.token) {
-                        localStorage.setItem("token", data.token);
-                    }
-
-                    alert("Registration successful! Redirecting to home page...");
-                    window.location.href = "home.html";
-                } else {
-                    alert("Signup failed: " + (data.message || "Unknown error"));
-                }
-            })
-            .catch(error => {
-                console.error("Error during signup:", error);
-                alert("Signup failed: Network error.");
-            });
+        function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
         }
+        document.cookie = name + "=" + value + "; path=/; Secure; HttpOnly" + expires;
+    }
+
+    function signup() {
+        const email = document.getElementById("email").value.trim();
+        const firstName = document.getElementById("first-name").value.trim();
+        const lastName = document.getElementById("last-name").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        if (!firstName || !lastName || !email || !password || !phone) {
+            alert("All fields are required.");
+            return;
+        }
+
+        const userData = { firstName, lastName, email, password, phoneNumber: phone };
+
+        fetch("https://gluguide.onrender.com/api/users/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message && data.message.toLowerCase().includes("registration successful")) {
+                if (data.token) {
+                    setCookie("auth_token", data.token, 7); // Store token in cookie for 7 days
+                }
+
+                alert("Registration successful! Redirecting to home page...");
+                window.location.href = "home.html";
+            } else {
+                alert("Signup failed: " + (data.message || "Unknown error"));
+            }
+        })
+        .catch(error => {
+            console.error("Error during signup:", error);
+            alert("Signup failed: Network error.");
+        });
+    }
     </script>
 
 </body>
