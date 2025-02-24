@@ -12,7 +12,6 @@
             justify-content: center;
             padding: 20px;
         }
-
         .form-container {
             background: white;
             padding: 20px;
@@ -22,35 +21,6 @@
             width: 500px;
             text-align: center;
         }
-
-        .form-container h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .question {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .question p {
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        label {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            gap: 10px;
-            padding: 5px 0;
-        }
-
-        input[type="radio"] {
-            width: 18px;
-            height: 18px;
-        }
-
         .btn-submit {
             width: calc(100% - 20px);
             padding: 12px;
@@ -64,18 +34,14 @@
             display: block;
             margin-top: 20px;
         }
-
         .btn-submit:hover {
             opacity: 0.8;
         }
     </style>
 </head>
 <body>
-
     <form class="form-container" onsubmit="submitDietaryAssessment(event)">
         <h2>Dietary Assessment</h2>
-
-        <!-- Question 1 -->
         <div class="question">
             <p>1. How many times in a week did you eat fast food?</p>
             <label><input type="radio" name="fastFood" value="Never"> Never</label>
@@ -83,7 +49,15 @@
             <label><input type="radio" name="fastFood" value="3 times"> 3 times</label>
             <label><input type="radio" name="fastFood" value="More than 4 times"> More than 4 times</label>
         </div>
-
+                <!-- Question 2 -->
+                <div class="question">
+                    <p>2. How many times did you drink soda?</p>
+                    <label><input type="radio" name="soda" value="Never"> Never</label>
+                    <label><input type="radio" name="soda" value="Less than 3 times"> Less than 3 times</label>
+                    <label><input type="radio" name="soda" value="3 times"> 3 times</label>
+                    <label><input type="radio" name="soda" value="More than 4 times"> More than 4 times</label>
+                </div>
+        
         <!-- Question 2 -->
         <div class="question">
             <p>2. How many times did you drink soda?</p>
@@ -147,58 +121,34 @@
             <label><input type="radio"> More than 4 times</label>
         </div>
         
-        <!-- Notice Section -->
-        <div class="notice">
-            <h5>Healthy Eating Pattern:</h5>
-            <p>Eating vegetables, fruits, beans, chicken without skin, or fish three times or more per week is <b>good</b> for your health.</p>
-
-            <h5>Unhealthy Eating Pattern:</h5>
-            <p>Eating regular chips, fried snacks, butter, margarine, meat fat, sodas, fruit juices, or fast food three times or more per week is <b>unhealthy</b>.</p>
-        </div>
-
         <button type="submit" class="btn-submit">Submit</button>
     </form>
-
     <script>
         function submitDietaryAssessment(event) {
             event.preventDefault(); // Prevent form refresh
 
-            const token = localStorage.getItem("token"); // Get token from localStorage
-            const userData = localStorage.getItem("user"); // Retrieve user data
-            if (!token || !userData) {
-                alert("Session expired. Please log in again.");
+            const token = localStorage.getItem("token");
+            const userId = localStorage.getItem("userId");
+
+            if (!token || !userId) {
+                alert("Authentication error. Please log in again.");
                 window.location.href = "login.html";
                 return;
             }
 
-            const user = JSON.parse(userData); // Parse user data
-            const userId = user._id || user.id; // Extract user ID
-
-            // Ensure user ID exists
-            if (!userId) {
-                alert("User ID not found. Please log in again.");
-                window.location.href = "login.html";
-                return;
-            }
-
-            // Retrieve selected answers
             const fastFoodFrequency = document.querySelector('input[name="fastFood"]:checked')?.value;
-            const sodaFrequency = document.querySelector('input[name="soda"]:checked')?.value;
-            const vegetablesFrequency = document.querySelector('input[name="vegetables"]:checked')?.value;
-
-            if (!fastFoodFrequency || !sodaFrequency || !vegetablesFrequency) {
+            if (!fastFoodFrequency) {
                 alert("Please answer all questions before submitting.");
                 return;
             }
 
             const requestData = {
-                userId, // Automatically added
                 fastFoodFrequency,
-                sodaFrequency,
-                vegetablesFrequency
+                userId
             };
 
-            console.log("Submitting dietary assessment:", requestData);
+            console.log("Submitting request:", requestData);
+            console.log("Token:", token);
 
             fetch("https://gluguide.onrender.com/api/dietary/dietary-assessments", {
                 method: "POST",
@@ -210,7 +160,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Response data:", data);
+                console.log("Response:", data);
                 if (data.success) {
                     alert("Dietary assessment submitted successfully!");
                     window.location.href = "home.html"; // Redirect on success
@@ -224,6 +174,5 @@
             });
         }
     </script>
-
 </body>
 </html>
