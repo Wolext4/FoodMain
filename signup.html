@@ -97,16 +97,9 @@
             return true;
         }
 
-        function setCookie(name, value, days) {
-        let expires = "";
-        if (days) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + value + "; path=/; Secure; HttpOnly" + expires;
-    }
-
+        function setAuthToken(token) {
+    localStorage.setItem("auth_token", token);
+}
     function signup() {
         const email = document.getElementById("email").value.trim();
         const firstName = document.getElementById("first-name").value.trim();
@@ -130,8 +123,8 @@
         .then(data => {
             if (data.message && data.message.toLowerCase().includes("registration successful")) {
                 if (data.token) {
-                    setCookie("auth_token", data.token, 7); // Store token in cookie for 7 days
-                }
+    setAuthToken(data.token);
+}
 
                 alert("Registration successful! Redirecting to home page...");
                 window.location.href = "home.html";

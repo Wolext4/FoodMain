@@ -17,7 +17,7 @@
         }
         .login-container {
             background: white;
-            padding: 25px; 
+            padding: 25px;
             border-radius: 10px;
             box-shadow: 0 0 150px rgba(0, 0, 0, 0.2);
             width: 320px;
@@ -62,28 +62,15 @@
 
     <div class="login-container">
         <h2>Login</h2>
-
         <input type="text" id="identifier" placeholder="Email or Phone Number" required>
         <input type="password" id="password" placeholder="Password" required>
-
         <button onclick="login()">Login</button>
-
         <div class="signup-link">
             <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
         </div>
     </div>
 
     <script>
-        function setCookie(name, value, days) {
-            let expires = "";
-            if (days) {
-                const date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + value + "; path=/" + expires + "; Secure";
-        }
-
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
@@ -92,100 +79,68 @@
             return /^\d{11}$/.test(phone);
         }
 
-        function setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + value + "; path=/" + expires; // Removed 'Secure'
-}
+        function login() {
+            const identifier = document.getElementById("identifier").value.trim();
+            const password = document.getElementById("password").value.trim();
 
-function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function isValidPhone(phone) {
-    return /^\d{11}$/.test(phone);
-}
-
-function setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + value + "; path=/" + expires;
-}
-
-function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function isValidPhone(phone) {
-    return /^\d{11}$/.test(phone);
-}
-
-function login() {
-    const identifier = document.getElementById("identifier").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    if (!identifier || !password) {
-        console.error("Email/Phone and Password are required.");
-        alert("Please enter both email/phone and password.");
-        return;
-    }
-
-    const loginData = {
-        email: isValidEmail(identifier) ? identifier : null,
-        phoneNumber: isValidPhone(identifier) ? identifier : null,
-        password: password
-    };
-
-    console.log("Sending login request...", loginData);
-
-    fetch("https://gluguide.onrender.com/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Response received:", data);
-
-        // ✅ Log API Response to see actual response
-        if (!data || typeof data !== "object") {
-            console.error("Invalid response from server.");
-            alert("Login failed: Server error.");
-            return;
-        }
-
-        // ✅ Check if the API message contains "Login successful"
-        if (data.message && data.message.toLowerCase().includes("login successful")) {
-            console.log("Login successful!");
-
-            // ✅ Store the token if available
-            if (data.token) {
-                localStorage.setItem("token", data.token);
-                console.log("Token stored successfully.");
-            } else {
-                console.warn("No token provided in response.");
+            if (!identifier || !password) {
+                alert("Please enter both email/phone and password.");
+                return;
             }
 
-            // ✅ Redirect to home page
-            window.location.href = "home.html";
-        } else {
-            console.error("Login failed:", data.message || "Invalid credentials.");
-            alert("Login failed: " + (data.message || "Invalid credentials."));
+            const loginData = {
+                email: isValidEmail(identifier) ? identifier : null,
+                phoneNumber: isValidPhone(identifier) ? identifier : null,
+                password: password
+            };
+
+            fetch("https://gluguide.onrender.com/api/users/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(loginData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message && data.message.toLowerCase().includes("login successful")) {
+                    if (data.token) {
+                        localStorage.setItem("auth_token", data.token);
+                        alert("Login successful! Redirecting to home page...");
+                        window.location.href = "home.html";
+                    } else {
+                        alert("Login failed: No token received.");
+                    }
+                } else {
+                    alert("Login failed: " + (data.message || "Invalid credentials."));
+                }
+            })
+            .catch(error => {
+                console.error("Error during login:", error);
+                alert("Login failed: Network error.");
+            });
         }
-    })
-    .catch(error => {
-        console.error("Error during login:", error);
-        alert("Login failed: Network error.");
-    });
-}
+
+        // ✅ Authentication request after login
+        function fetchProtectedData() {
+            const token = localStorage.getItem("auth_token");
+            if (!token) {
+                alert("You are not authenticated. Please log in.");
+                return;
+            }
+
+            fetch("https://your-api.com/protected-route", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Protected data:", data);
+            })
+            .catch(error => {
+                console.error("Error fetching protected data:", error);
+            });
+        }
     </script>
 
 </body>
