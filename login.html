@@ -90,29 +90,27 @@
             console.log("Sending login data:", JSON.stringify(userData));
 
             fetch("https://gluguide.onrender.com/api/users/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Response received:", data);
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(userData)
+})
+.then(response => response.json())
+.then(data => {
+    console.log("Response received:", data);
+    if (data && data.success) {
+        alert("Login successful! Redirecting to home...");
+        setTimeout(() => {
+            window.location.href = "home.html";
+        }, 500);
+    } else {
+        alert(data.message || "Login failed. Please try again.");
+    }
+})
+.catch(error => {
+    console.error("Login Error:", error);
+    alert("An error occurred. Please try again.");
+});
 
-                if (data.success) {
-                    alert("Login successful! Redirecting to home...");
-                    
-                    // Wait a moment for user to click OK, then redirect
-                    setTimeout(() => {
-                        window.location.href = "home.html";
-                    }, 100); 
-                } else {
-                    alert(data.message || "Login failed. Please try again.");
-                }
-            })
-            .catch(error => {
-                console.error("Login Error:", error);
-                alert("An error occurred. Please try again.");
-            });
         }
     </script>
 
