@@ -66,6 +66,7 @@
         <input type="text" id="identifier" placeholder="Email or Phone Number" required>
         <input type="password" id="password" placeholder="Password" required>
 
+        <!-- Fix: Added type="button" to prevent default form submission -->
         <button type="button" onclick="login()">Log In</button>
 
         <div class="signup-link">
@@ -75,6 +76,8 @@
 
     <script>
         function login() {
+            console.log("Login button clicked!"); // Debugging check
+            
             const identifier = document.getElementById("identifier").value.trim();
             const password = document.getElementById("password").value.trim();
 
@@ -83,34 +86,35 @@
                 return;
             }
 
-            // Determine if the identifier is an email or phone number
+            // Determine if identifier is an email or phone number
             const isEmail = identifier.includes("@");
             const userData = isEmail ? { email: identifier, password } : { phoneNumber: identifier, password };
 
-            console.log("Sending login data:", JSON.stringify(userData));
+            console.log("Sending login data:", JSON.stringify(userData)); // Debugging check
 
             fetch("https://gluguide.onrender.com/api/users/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userData)
-})
-.then(response => response.json())
-.then(data => {
-    console.log("Response received:", data);
-    if (data && data.success) {
-        alert("Login successful! Redirecting to home...");
-        setTimeout(() => {
-            window.location.href = "home.html";
-        }, 500);
-    } else {
-        alert(data.message || "Login failed. Please try again.");
-    }
-})
-.catch(error => {
-    console.error("Login Error:", error);
-    alert("An error occurred. Please try again.");
-});
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response received:", data); // Debugging check
 
+                if (data && data.success) {
+                    alert("Login successful! Redirecting to home...");
+                    
+                    setTimeout(() => {
+                        window.location.replace("home.html"); // Fix: Use replace() for better redirection
+                    }, 500);
+                } else {
+                    alert(data.message || "Login failed. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Login Error:", error);
+                alert("An error occurred. Please try again.");
+            });
         }
     </script>
 
