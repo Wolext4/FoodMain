@@ -83,10 +83,11 @@
                 return;
             }
 
-            const loginData = { 
-                phoneNumber: identifier, 
-                password: password 
-            };
+            const loginData = {
+    identifier: identifier, // Change key name if required by API
+    password: password
+};
+
 
             fetch("https://gluguide.onrender.com/api/users/login", {
                 method: "POST",
