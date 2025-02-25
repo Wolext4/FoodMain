@@ -50,7 +50,7 @@
         </div>
 
         <!-- ❤️ Dietary Assessment -->
-        <div class="feature-card" onclick="navigateTo('dietaryassessment.html')">
+        <div class="feature-card" onclick="navigateToDietaryAssessment()">
             <img src="/Icons/heart.svg" alt="Dietary Assessment">
             <div>
                 <h2>Dietary Assessment</h2>
@@ -99,6 +99,10 @@
 
         function showLogoutModal() {
             window.location.href = "logout.html"; 
+        }
+
+        function navigateToDietaryAssessment() {
+            window.open("https://forms.gle/xNc94k9AnmyJna9L8", "_blank");
         }
     </script>
 
