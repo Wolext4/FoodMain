@@ -99,7 +99,12 @@
                 console.log("Response received:", data);
 
                 if (data.success) {
-                    window.location.href = "home.html"; // Redirect to home page immediately
+                    alert("Login successful! Redirecting to home...");
+                    
+                    // Wait a moment for user to click OK, then redirect
+                    setTimeout(() => {
+                        window.location.href = "home.html";
+                    }, 100); 
                 } else {
                     alert(data.message || "Login failed. Please try again.");
                 }
