@@ -84,14 +84,14 @@
             }
 
             const loginData = {
-    identifier: identifier, // Change key name if required by API
+    emailOrPhone: identifier, // Check API docs for correct field name
     password: password
 };
 
 
             fetch("https://gluguide.onrender.com/api/users/login", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", "Accept": "application/json"},
                 body: JSON.stringify(loginData)
             })
             .then(response => response.json())
