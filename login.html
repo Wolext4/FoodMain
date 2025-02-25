@@ -63,7 +63,7 @@
     <div class="login-container">
         <h2>Log In</h2>
 
-        <input type="email" id="email" placeholder="Email" required>
+        <input type="tel" id="phoneNumber" placeholder="Phone Number" required pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         <input type="password" id="password" placeholder="Password" required>
 
         <button onclick="login()">Log In</button>
@@ -75,15 +75,15 @@
 
     <script>
         function login() {
-            const email = document.getElementById("email").value.trim();
+            const phoneNumber = document.getElementById("phoneNumber").value.trim();
             const password = document.getElementById("password").value.trim();
 
-            if (!email || !password) {
+            if (!phoneNumber || !password) {
                 alert("Please fill in all fields.");
                 return;
             }
 
-            const userData = { email, password };
+            const userData = { phoneNumber, password };
 
             console.log("Sending login data:", JSON.stringify(userData));
 
@@ -92,30 +92,20 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(userData)
             })
-            .then(response => {
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        throw new Error("Invalid email or password. Please try again.");
-                    }
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 console.log("Response received:", data);
 
                 if (data.success) {
-                    localStorage.setItem("token", data.token);
                     alert("Login successful! Redirecting...");
                     window.location.href = "home.html"; // Redirect to home page
                 } else {
-                    console.error("Unexpected response:", data);
-                    alert("Unexpected error. Please try again.");
+                    alert(data.message || "Login failed. Please try again.");
                 }
             })
             .catch(error => {
                 console.error("Login Error:", error);
-                alert(error.message);
+                alert("An error occurred. Please try again.");
             });
         }
     </script>
