@@ -63,7 +63,7 @@
     <div class="login-container">
         <h2>Log In</h2>
 
-        <input type="tel" id="phoneNumber" placeholder="Phone Number" required pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+        <input type="text" id="identifier" placeholder="Email or Phone Number" required>
         <input type="password" id="password" placeholder="Password" required>
 
         <button onclick="login()">Log In</button>
@@ -75,15 +75,17 @@
 
     <script>
         function login() {
-            const phoneNumber = document.getElementById("phoneNumber").value.trim();
+            const identifier = document.getElementById("identifier").value.trim();
             const password = document.getElementById("password").value.trim();
 
-            if (!phoneNumber || !password) {
+            if (!identifier || !password) {
                 alert("Please fill in all fields.");
                 return;
             }
 
-            const userData = { phoneNumber, password };
+            // Determine if the identifier is an email or phone number
+            const isEmail = identifier.includes("@");
+            const userData = isEmail ? { email: identifier, password } : { phoneNumber: identifier, password };
 
             console.log("Sending login data:", JSON.stringify(userData));
 
@@ -97,8 +99,7 @@
                 console.log("Response received:", data);
 
                 if (data.success) {
-                    alert("Login successful! Redirecting...");
-                    window.location.href = "home.html"; // Redirect to home page
+                    window.location.href = "home.html"; // Redirect to home page immediately
                 } else {
                     alert(data.message || "Login failed. Please try again.");
                 }
