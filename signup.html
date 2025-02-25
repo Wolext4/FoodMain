@@ -71,6 +71,7 @@
             <p>Already have an account? <a href="login.html">Log in here</a></p>
         </div>
     </div>
+
     <script>
         function signup() {
             const firstName = document.getElementById("first-name").value.trim();
@@ -91,17 +92,10 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(userData)
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 console.log("Response received:", data);
-                if (data.status === "success" && data.data && data.data.token) {
-                    localStorage.setItem("token", data.data.token);
-                    localStorage.setItem("user", JSON.stringify(data.data.user || {}));
+                if (data.status === "success") {
                     alert("Signup successful! Redirecting to home...");
                     window.location.href = "home.html";
                 } else {
