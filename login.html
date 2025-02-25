@@ -83,12 +83,9 @@
                 return;
             }
 
-            const userData = {
-                email: email,
-                password: password
-            };
+            const userData = { email, password };
 
-            console.log("Sending login data:", JSON.stringify(userData)); // Debugging
+            console.log("Sending login data:", JSON.stringify(userData));
 
             fetch("https://gluguide.onrender.com/api/users/login", {
                 method: "POST",
@@ -112,7 +109,8 @@
                     alert("Login successful! Redirecting...");
                     window.location.href = "home.html"; // Redirect to home page
                 } else {
-                    throw new Error(data.message || "Login failed.");
+                    console.error("Unexpected response:", data);
+                    alert("Unexpected error. Please try again.");
                 }
             })
             .catch(error => {
