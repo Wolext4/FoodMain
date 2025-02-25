@@ -75,40 +75,45 @@
 
     <script>
         function login() {
-            const identifier = document.getElementById("login-identifier").value.trim();
-            const password = document.getElementById("password").value.trim();
+    const identifier = document.getElementById("login-identifier").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-            if (!identifier || !password) {
-                alert("Please fill in all fields.");
-                return;
-            }
+    if (!identifier || !password) {
+        alert("Please fill in all fields.");
+        return;
+    }
 
-            const loginData = {
-    emailOrPhone: identifier, // Check API docs for correct field name
-    password: password
-};
+    // Determine if the input is an email or phone number
+    const isPhone = /^\d+$/.test(identifier); // Checks if input is only digits
 
+    const loginData = isPhone
+        ? { phoneNumber: identifier, password: password } // Send phoneNumber if digits only
+        : { email: identifier, password: password }; // Send email otherwise
 
-            fetch("https://gluguide.onrender.com/api/users/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "Accept": "application/json"},
-                body: JSON.stringify(loginData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Response received:", data);
-                if (data.status === "success") {
-                    alert("Login successful! Redirecting...");
-                    window.location.href = "home.html";
-                } else {
-                    throw new Error(data.message || "Login failed.");
-                }
-            })
-            .catch(error => {
-                console.error("Login Error:", error);
-                alert("Login failed: " + error.message);
-            });
+    fetch("https://gluguide.onrender.com/api/users/login", {
+        method: "POST",
+        headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(loginData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Response received:", data);
+        if (data.status === "success") {
+            alert("Login successful! Redirecting...");
+            window.location.href = "home.html";
+        } else {
+            throw new Error(data.message || "Invalid login credentials.");
         }
+    })
+    .catch(error => {
+        console.error("Login Error:", error);
+        alert("Login failed: " + error.message);
+    });
+}
+
 
         function goToSignup() {
             window.location.href = "signup.html"; // Redirect to the signup page
