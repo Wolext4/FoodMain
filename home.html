@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <!-- 🏃‍♂️ Activity Tracker (Updated) -->
+        <!-- 🏃‍♂️ Activity Tracker -->
         <div class="feature-card" onclick="navigateToActivityTracker()">
             <img src="/Icons/activity.svg" alt="Activity Tracker">
             <div>
@@ -86,6 +86,11 @@
 
     </div> <!-- End of Feature Cards Container -->
 
+    <!-- 🔹 "Activity Book" Button (Above Move More) -->
+    <a href="https://forms.gle/e1CkmKBcJvLGJghC9" class="activity-book-btn" target="_blank">
+        <img src="/Icons/book.svg" alt="Activity Book">
+    </a>
+
     <!-- 🔹 "Move More" Button (Bottom Right) -->
     <a href="MoveMore.html" class="move-more-btn">
         <img src="/Icons/movemore.svg" alt="Move More">
@@ -106,12 +111,36 @@
         }
 
         function navigateToActivityTracker() {
-            window.open("https://forms.gle/EzqLMeXnXZ54ZawS8", "_blank");
+            window.open("https://forms.gle/YS3esvQL2bbpfmM79", "_blank");
         }
     </script>
 
     <!-- 🔹 CSS (Inline for Quick Changes) -->
     <style>
+        .activity-book-btn {
+            position: fixed;
+            bottom: 80px; /* Positioned above Move More */
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #FF9800; /* Orange background */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .activity-book-btn img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .activity-book-btn:hover {
+            background-color: #e68900; /* Slightly darker orange */
+        }
+
         .move-more-btn {
             position: fixed;
             bottom: 20px;
