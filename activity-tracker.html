@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="home.css">
+    <title>GluGuide</title>
+    <style>
+        button {
+            outline: none;
+            border: none;
+        }
+
+        #page-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: normal;
+        }
+
+        .activity-tracker-controls {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 36px;
+
+
+        }
+
+        #question-container {
+            max-width: 500px;
+            width: 90%;
+            margin: 0 auto
+        }
+
+        .progress-bar {
+            background-color: red;
+        }
+
+        .activity-tracker-controls .activity-tracker-action {
+            border-radius: 10px;
+            outline: none;
+            border: none;
+            background-color: white;
+            cursor: pointer;
+            padding: 24px 75px;
+            box-shadow: 10px 10px 10px 10px #D4D5D6;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%
+        }
+
+        .popup-overlay {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: white;
+            opacity: 70%;
+            z-index: 999
+        }
+
+        .popup-modal {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            max-width: 500px;
+            width: 100%;
+            z-index: 1000;
+            background-color: #EDF7FF;
+            border-radius: 10px;
+            padding: 10px;
+
+        }
+
+        .popup-modal img {
+            width: 80px;
+
+        }
+
+        .popup-modal p {
+            font-weight: 600
+        }
+
+        .popup-modal button {
+            background-color: white;
+            border-radius: 4px;
+            width: 100px;
+            padding: 12px 16px;
+            cursor: pointer;
+        }
+
+        .question-actions {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .previous-button,
+        .next-button {
+            background-color: #E8F5FF;
+            width: 150px;
+            padding: 12px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .next-button {
+            margin-left: auto;
+        }
+    </style>
+</head>
+
+<body class="body">
+    <div id="home-section" style="display: block;">
+        <!-- 📌 Header -->
+        <header class="page-head">GluGuide</header>
+        <h1 id="page-title">ACTIVITY TRACKER</h1>
+        <div class="activity-tracker-controls">
+            <button class="activity-tracker-action" onclick="navigateToQuestionPage(1)">Take a New Physical Activity
+                Test</button>
+            <button class="activity-tracker-action">View Previous Activity Test Score</button>
+            <button class="activity-tracker-action">View Activities to Improve Score</button>
+            <button class="activity-tracker-action">View Previous Activity Test Score</button>
+            <button class="activity-tracker-action">Exit</button>
+        </div>
+    </div>
+    <div id="question-container" style="display: none;">
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+    <script defer>
+        const questions = [
+            {
+                id: 1, number: "one", question: "During the last 7 days, how many days did you do vigorous physical activities like heavy lifting, digging, pounding, or fast bicycling for?",
+                popoverContent: "Think about all the vigorous activities that you did in the last 7 days. Vigorous physical activities refer to activities that take hard physical effort and make you breathe much harder than normal recreation, exercise or sport.. Think only about those physical activities that you did for at least 10 minutes at a time."
+                , imageUrl: [],
+            },
+            { id: 2, number: "two", question: "During the last 7 days, on how many days did you do moderate physical activity like carrying light loads, dancing, or household chores", popoverContent: "", imageUrl: [], },
+            { id: 3, number: "three", question: "During the last 7 days, on how many days did you walk for at least 30 minutes at a time?", popoverContent: "", imageUrl: [], },
+            { id: 4, number: "four", question: "During the last 7 days, how much time did you spend sitting on a week day for at least 30 minutes at a time?", popoverContent: "", imageUrl: [], }
+        ]
+
+        //functions
+        const getDataFromLocalStorage = () => {
+            const data = localStorage.getItem("food-main")
+            if (data) {
+                return JSON.parse(data)
+            }
+            return {}
+        }
+        const renderPopUp = (questionNumber) => {
+            //functions
+            const closePopUp = () => {
+                const popUpOverlay = document.querySelector(".popup-overlay")
+                const popUpModal = document.querySelector(".popup-modal")
+                body.removeChild(popUpOverlay)
+                body.removeChild(popUpModal)
+            }
+            const body = document.querySelector(".body")
+            const popupOverlay = document.createElement("div")
+            const popupModal = document.createElement("div")
+
+            //modal content
+            const image = document.createElement("img")
+            const content = document.createElement("p")
+            const action = document.createElement("button")
+            //attribute setting
+            image.src = "./images/face-emoji.png"
+            action.textContent = "Done"
+            content.textContent = questions[questionNumber - 1].popoverContent //we use minus one because the first index number is 0
+            popupOverlay.classList.add("popup-overlay")
+            popupModal.classList.add("popup-modal")
+            //event listeners
+            popupOverlay.addEventListener("click", closePopUp)
+            action.addEventListener("click", closePopUp)
+            //appending
+            popupModal.append(image, content, action)
+            body.append(popupOverlay, popupModal)
+        }
+        const renderQuestionPage = (questionNumber) => {
+            renderPopUp(questionNumber)
+            const currentQuestionSection = document.querySelector(`.question-section .question-${questionNumber}-section`)
+            const allQuestionsSection = document.querySelectorAll(".question-section")
+            if (allQuestionsSection && allQuestionsSection.length > 0) {
+                for (let index = 0; index < allQuestionsSection.length; index++) {
+                    const child = allQuestionsSection[index]
+                    console.log({ child })
+                    // if (child.className.includes(`question-${questionNumber}-section`)) {
+                    //     child.style.display = "block"
+                    // }
+                    child.style.display = "none"
+                }
+
+            }
+
+            if (currentQuestionSection) {
+                return
+            }
+
+            const questionContainer = document.querySelector("#question-container")
+            const questionSection = document.createElement("div")
+            const questionTitle = document.createElement("h1")
+            const questionContent = document.createElement("p")
+            const questionActions = document.createElement("div")
+            const nextButton = document.createElement("button")
+            const previousButton = document.createElement("button")
+
+            //STYLES
+            questionActions.classList.add("question-actions")
+            nextButton.classList.add("next-button")
+            previousButton.classList.add("previous-button")
+            questionSection.classList.add(`question-section`)
+            questionSection.classList.add(`question-${questionNumber}-section`)
+            //content
+            questionTitle.textContent = `Question ${questions[questionNumber - 1].number}`
+            questionContent.textContent = questions[questionNumber - 1].question
+            nextButton.textContent = "Next"
+            previousButton.textContent = "Previous"
+            //event listeners
+            nextButton.addEventListener("click", () => navigateToQuestionPage(questionNumber + 1))
+            previousButton.addEventListener("click", () => navigateToQuestionPage(questionNumber - 1))
+            //appending
+            questionActions.append(previousButton, nextButton)
+            questionSection.append(questionTitle, questionContent, questionActions)
+            questionContainer.append(questionSection)
+
+
+            if (questionNumber === 1) {
+                previousButton.style.display = "none"
+            }
+
+        }
+        const navigateToQuestionPage = (questionNumber) => {
+            const dataFromLocalStorage = getDataFromLocalStorage()
+            if (questionNumber === 1) {
+                //make the home section invisible after click on take a physical activity
+                const homeSection = document.querySelector("#home-section").style.display = "none"
+                const questionContainer = document.querySelector("#question-container").style.display = "block"
+                const previousButton = document.querySelector(".previous-button")
+                if (previousButton) {
+                    previousButton.style.display = "none"
+                }
+            }
+            else if (questionNumber === questions.length) {
+                const nextButton = document.querySelector("#next-button")
+                if (nextButton) {
+                    nextButton.disabled = true
+                }
+            }
+
+
+
+            if (questionNumber !== dataFromLocalStorage.currentQuestionNumber) {
+                //save state to local storage
+                localStorage.setItem("food-main", JSON.stringify({ ...dataFromLocalStorage, currentQuestionNumber: questionNumber }))
+            }
+
+            //build elements for the first page 
+            renderQuestionPage(questionNumber)
+        }
+
+
+        // get saved state from local storage
+        const initialData = getDataFromLocalStorage()
+        if (initialData.currentQuestionNumber) {
+            navigateToQuestionPage(initialData.currentQuestionNumber)
+        }
+    </script>
+</body>
+
+</html>
