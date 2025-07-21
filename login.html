@@ -83,10 +83,18 @@
     </div>
 
     <script>
+        const getDataFromLocalStorage = () => {
+            const data = localStorage.getItem("food-main")
+            if (data) {
+                return JSON.parse(data)
+            }
+            return {}
+        }
         function login() {
+
             const devBackendURL = "http://localhost:3000"
             const prodBackendURL = "https://gluguide.onrender.com"
-            const URL = window.location.origin === "http://127.0.0.1:3000" ? devBackendURL : prodBackendURL
+            const URL = window.location.origin.includes("http://127.0.0.1:") ? devBackendURL : prodBackendURL
             const identifier = document.getElementById("login-identifier").value.trim();
             const password = document.getElementById("password").value.trim();
 
@@ -114,8 +122,20 @@
                 .then(data => {
                     console.log("Response received:", data);
                     if (data.status === "success") {
-                        alert("Login successful! Redirecting...");
-                        window.location.href = "home.html";
+                        const { data: responseData } = data
+                        const dataFromLocalStorage = getDataFromLocalStorage()
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const redirectTo = urlParams.get("redirect") || "/home.html"; // fallback if none
+                        if (data.status === "success") {
+                            localStorage.setItem("food-main", JSON.stringify({
+                                ...dataFromLocalStorage,
+                                token: responseData.token,
+                                user: responseData.user
+                            }));
+                            alert("Login successful! Redirecting...");
+                            window.location.href = redirectTo;
+                        }
+
                     } else {
                         throw new Error(data.message || "Invalid login credentials.");
                     }

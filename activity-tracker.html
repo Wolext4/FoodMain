@@ -27,13 +27,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 36px;
+            gap: 25px;
 
 
         }
-
-
-
 
 
         .activity-tracker-controls .activity-tracker-action {
@@ -175,9 +172,11 @@
 
         .text-paragraph {
             margin: 0;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
+
+        }
+
+        .text-paragraph span {
+            display: inline;
         }
 
         .duration-container {
@@ -198,7 +197,34 @@
         .duration-option:hover {
             background-color: #f0f0f0;
         }
+
+
+
+
+        .questions .images-container {
+            position: absolute;
+            bottom: 0;
+        }
     </style>
+    <script>
+        //check the login state of the user, if user is logged in, allow access to the page
+        const getDataFromLocalStorage = () => {
+            const data = localStorage.getItem("food-main")
+            if (data) {
+                return JSON.parse(data)
+            }
+            return {}
+        }
+
+        //<---------- check login state ---------->
+        const data = getDataFromLocalStorage();
+        const token = data?.token;
+
+        if (!token) {
+            const currentPath = window.location.pathname + window.location.search;
+            window.location.href = `/login.html?redirect=${encodeURIComponent(currentPath)}`;
+        }
+    </script>
 </head>
 
 <body class="body">
@@ -212,7 +238,7 @@
             <button class="activity-tracker-action">View Previous Activity Test Score</button>
             <button class="activity-tracker-action">View Activities to Improve Score</button>
             <button class="activity-tracker-action">View Previous Activity Test Score</button>
-            <button class="activity-tracker-action">Exit</button>
+            <button class="activity-tracker-action" onclick="navigateToHomePage()">Exit</button>
         </div>
     </div>
     <div id="question-container" style="display: none;">
@@ -222,13 +248,22 @@
         <div class="questions">
         </div>
         <div class="question-actions"></div>
+
     </div>
+
     <script defer>
+
+     
+
+        const navigateToHomePage = () => {
+            window.location.href = "home.html"
+        }
+
         const questions = [
             {
                 id: 1, number: "one", questionText1: "During the last 7 days, how many days did you do vigorous physical activities like heavy lifting, digging, pounding, or fast bicycling for?",
                 questionText2: "How much do you usually spend doing moderate physical activities on one of those says?", popoverContent: "Think about all the vigorous activities that you did in the last 7 days. Vigorous physical activities refer to activities that take hard physical effort and make you breathe much harder than normal recreation, exercise or sport.. Think only about those physical activities that you did for at least 10 minutes at a time."
-                , imageUrl: [],
+                , imageUrl: ["./images/activity-tracker/question-1-image-1.png"],
             },
             {
                 id: 2, number: "two", questionText1: "During the last 7 days, on how many days did you do moderate physical activity like carrying light loads, dancing, or household chores", popoverContent: "Think about the time you spent walking in the last 7 days. This includes at work and at home, walking to travel from place to place, and any other walking that you have done solely for recreation, sport, exercise, or leisure.",
@@ -261,13 +296,6 @@
             }
         }
         const submitQuestions = () => { }
-        const getDataFromLocalStorage = () => {
-            const data = localStorage.getItem("food-main")
-            if (data) {
-                return JSON.parse(data)
-            }
-            return {}
-        }
         const renderPopUp = (questionNumber) => {
             //functions
             const closePopUp = () => {
@@ -370,12 +398,12 @@
                 className: "duration-container"
             });
 
-            let max = 0;
+            let max = 1;
             if (type === "days") max = 31;
             else if (type === "hours") max = 24;
-            else if (type === "minutes") max = 59;
+            else if (type === "minutes") max = 60;
 
-            for (let i = (type === "days" ? 1 : 0); i <= max; i++) {
+            for (let i = 1; i <= max; i++) {
                 const option = document.createElement("div");
                 option.className = "duration-option";
                 option.textContent = i;
