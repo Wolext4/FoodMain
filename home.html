@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="home.css">
     <title>GluGuide</title>
 </head>
+
 <body>
     <!-- 📌 Header -->
     <header class="page-head">GluGuide</header>
@@ -21,7 +24,7 @@
 
     <!-- 🏷 Feature Cards Container -->
     <div class="feature-container">
-        
+
         <!-- 🍲 Food Classes -->
         <div class="feature-card" onclick="navigateTo('foodclasses.html')">
             <img src="/Icons/food.svg" alt="Food Classes">
@@ -103,7 +106,7 @@
         }
 
         function showLogoutModal() {
-            window.location.href = "logout.html"; 
+            window.location.href = "logout.html";
         }
 
         function navigateToDietaryAssessment() {
@@ -111,7 +114,7 @@
         }
 
         function navigateToActivityTracker() {
-            window.open("https://forms.gle/YS3esvQL2bbpfmM79", "_blank");
+            window.location.href = "activity-tracker.html"
         }
     </script>
 
@@ -119,11 +122,13 @@
     <style>
         .activity-book-btn {
             position: fixed;
-            bottom: 80px; /* Positioned above Move More */
+            bottom: 80px;
+            /* Positioned above Move More */
             right: 20px;
             width: 50px;
             height: 50px;
-            background-color: #FF9800; /* Orange background */
+            background-color: #FF9800;
+            /* Orange background */
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -138,7 +143,8 @@
         }
 
         .activity-book-btn:hover {
-            background-color: #e68900; /* Slightly darker orange */
+            background-color: #e68900;
+            /* Slightly darker orange */
         }
 
         .move-more-btn {
@@ -147,7 +153,8 @@
             right: 20px;
             width: 50px;
             height: 50px;
-            background-color: #4CAF50; /* Green background */
+            background-color: #4CAF50;
+            /* Green background */
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -162,9 +169,11 @@
         }
 
         .move-more-btn:hover {
-            background-color: #45a049; /* Slightly darker green */
+            background-color: #45a049;
+            /* Slightly darker green */
         }
     </style>
 
 </body>
+
 </html>
