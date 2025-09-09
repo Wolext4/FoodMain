@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - GluGuide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #faf5f5;
+            margin: 0;
+        }
+
+        .signup-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 150px rgba(0, 0, 0, 0.2);
+            width: 320px;
+            text-align: center;
+        }
+
+        input {
+            width: 259px;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 290px;
+            padding: 10px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        .login-link {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .login-link button {
+            background: none;
+            border: none;
+            color: #007bff;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+
+        .login-link button:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="signup-container">
+        <h2>Sign Up</h2>
+        <input type="text" id="first-name" placeholder="First Name" required>
+        <input type="text" id="last-name" placeholder="Last Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="tel" id="phone" placeholder="Phone Number" required pattern="[0-9]*" inputmode="numeric"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="signup()">Sign Up</button>
+        <div class="login-link">
+            <p>Already have an account? <button onclick="goToLogin()">Log in here</button></p>
+        </div>
+    </div>
+
+    <script>
+        function signup() {
+            const devBackendURL = "http://localhost:3000"
+            const prodBackendURL = "https://gluguide.onrender.com"
+            const URL = window.location.origin === "http://127.0.0.1:3000" ? devBackendURL : prodBackendURL
+
+            const emailMatch = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+
+            const firstName = document.getElementById("first-name").value.trim();
+            const lastName = document.getElementById("last-name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            if (!firstName || !lastName || !email || !password || !phone) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            else if (!emailMatch.test(email)) {
+                alert("Please provide a valid email address");
+                return;
+            }
+
+
+            const userData = { firstName, lastName, email, password, phoneNumber: phone };
+
+            fetch(`${URL}/api/users/register`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Response received:", data);
+                    if (data.status === "success") {
+                        alert("Signup successful! Redirecting to home...");
+                        window.location.href = "home.html";
+                    } else {
+                        throw new Error(data.message || "Signup failed.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Signup Error:", error);
+                    alert("Signup failed: " + error.message);
+                });
+        }
+
+        function goToLogin() {
+            window.location.href = "login.html"; // Redirect to the login page
+        }
+    </script>
+</body>
+
+</html>

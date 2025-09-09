@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgba(0, 0, 0, 0.8); /* Dark overlay effect */
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Modal Container */
+        .modal {
+            background: white;
+            width: 90%;
+            max-width: 350px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Logout Heading */
+        .modal h2 {
+            color: red;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        /* Message */
+        .modal p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            width: 45%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+        }
+
+        /* No Button */
+        .btn.no {
+            background: white;
+            border: 2px solid black;
+            color: black;
+        }
+
+        .btn.no:hover {
+            background: #f0f0f0;
+        }
+
+        /* Yes Button */
+        .btn.yes {
+            background: red;
+            color: white;
+        }
+
+        .btn.yes:hover {
+            background: darkred;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal">
+        <h2>Logout</h2>
+        <p>Are you sure you want to logout of your account?</p>
+        <div class="button-container">
+            <button class="btn no" onclick="cancelLogout()">No</button>
+            <button class="btn yes" onclick="confirmLogout()">Yes</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to cancel logout and go back to the homepage
+        function cancelLogout() {
+            window.location.href = "home.html"; // Redirect back to home
+        }
+
+        // Function to confirm logout and go to login page
+        function confirmLogout() {
+            localStorage.removeItem("email"); // Clear user data if needed
+            localStorage.removeItem("password");
+            window.location.href = "login.html"; // Redirect to login page
+        }
+    </script>
+
+</body>
+</html>

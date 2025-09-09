@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Back Button */
+        .home-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+            z-index: 10;
+        }
+
+        .home-btn img {
+            width: 60%;
+            height: 60%;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+        }
+
+        /* Profile Display */
+        #profile-display p {
+            font-size: 16px;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Buttons */
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .buttons button:hover {
+            background-color: #45a049;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input:read-only, select:disabled {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 🔙 Back Button -->
+        <a href="settings.html" class="home-btn">
+            <img src="/Icons/back.svg" alt="Back">
+        </a>
+
+        <header>
+            <h1>Profile</h1>
+        </header>
+
+        <div id="profile-display">
+            <p><strong>Name:</strong> <span id="display-name">Not set</span></p>
+            <p><strong>Email:</strong> <span id="display-email">Not set</span></p>
+            <p><strong>Age:</strong> <span id="display-age">Not set</span></p>
+            <p><strong>Sex:</strong> <span id="display-sex">Not set</span></p>
+            <p><strong>Height (cm):</strong> <span id="display-height">Not set</span></p>
+            <p><strong>Weight (kg):</strong> <span id="display-weight">Not set</span></p>
+            <p><strong>Waist Circumference (cm):</strong> <span id="display-waist">Not set</span></p>
+            <p><strong>Hip Circumference (cm):</strong> <span id="display-hip">Not set</span></p>
+            <p><strong>Type of Diabetes:</strong> <span id="display-diabetes">Not set</span></p>
+            <p><strong>Mode of Treatment:</strong> <span id="display-treatment">Not set</span></p>
+            <p><strong>Last Fasting Blood Sugar (mg/dL):</strong> <span id="display-fbs">Not set</span></p>
+            <p><strong>Last Random Blood Sugar (mg/dL):</strong> <span id="display-rbs">Not set</span></p>
+            <p><strong>Last HBA1c Level (%):</strong> <span id="display-hba1c">Not set</span></p>
+            
+            <div class="buttons">
+                <button onclick="toggleEditMode(true)">✏️ Edit</button>
+            </div>
+        </div>
+
+        <div id="profile-edit" style="display: none;">
+            <!-- Editable only once -->
+            <label>Name: <input type="text" id="name"></label>
+            <label>Email: <input type="email" id="email"></label>
+            <label>Age: <input type="number" id="age"></label>
+            <label>Sex: 
+                <select id="sex">
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </label>
+            <label>Height (cm): <input type="number" id="height"></label>
+            <label>Weight (kg): <input type="number" id="weight"></label>
+
+            <!-- Editable anytime -->
+            <label>Waist Circumference (cm): <input type="number" id="waist"></label>
+            <label>Hip Circumference (cm): <input type="number" id="hip"></label>
+            <label>Type of Diabetes: <input type="text" id="diabetes"></label>
+            <label>Mode of Treatment: <input type="text" id="treatment"></label>
+            <label>Last Fasting Blood Sugar (mg/dL): <input type="number" id="fbs"></label>
+            <label>Last Random Blood Sugar (mg/dL): <input type="number" id="rbs"></label>
+            <label>Last HBA1c Level (%): <input type="number" id="hba1c"></label>
+
+            <div class="buttons">
+                <button onclick="saveProfile()">Save</button>
+                <button onclick="toggleEditMode(false)">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function saveProfile() {
+            let profile = JSON.parse(localStorage.getItem('profileData')) || {};
+
+            // Fields that can only be set once
+            let lockedFields = ['name', 'email', 'age', 'sex', 'height', 'weight'];
+
+            document.querySelectorAll('#profile-edit input, #profile-edit select').forEach(input => {
+                if (!lockedFields.includes(input.id) || !profile[input.id]) {
+                    profile[input.id] = input.value;
+                }
+            });
+
+            localStorage.setItem('profileData', JSON.stringify(profile));
+            displayProfile();
+            toggleEditMode(false);
+        }
+
+        function displayProfile() {
+            let profile = JSON.parse(localStorage.getItem('profileData')) || {};
+            Object.keys(profile).forEach(id => {
+                document.getElementById(`display-${id}`).textContent = profile[id] || "Not set";
+                if (document.getElementById(id)) document.getElementById(id).value = profile[id] || "";
+            });
+
+            // Disable fields that have been edited once
+            ['name', 'email', 'age', 'sex', 'height', 'weight'].forEach(id => {
+                if (profile[id]) {
+                    document.getElementById(id).readOnly = true;
+                    document.getElementById(id).disabled = true;
+                }
+            });
+        }
+
+        function toggleEditMode(editMode) {
+            document.getElementById('profile-display').style.display = editMode ? 'none' : 'block';
+            document.getElementById('profile-edit').style.display = editMode ? 'block' : 'none';
+        }
+
+        window.onload = displayProfile;
+    </script>
+
+</body>
+</html>

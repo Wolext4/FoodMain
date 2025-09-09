@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dietary Assessment</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 500px;
+            text-align: center;
+        }
+
+        .btn-submit {
+            width: calc(100% - 20px);
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: black;
+            color: white;
+            transition: 0.3s;
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <form class="form-container" onsubmit="submitDietaryAssessment(event)">
+        <h2>Dietary Assessment</h2>
+
+        <p>1. How many times in a week did you eat fast food?</p>
+        <label><input type="radio" name="fastFood" value="Never"> Never</label>
+        <label><input type="radio" name="fastFood" value="Less than 3 times"> Less than 3 times</label>
+        <label><input type="radio" name="fastFood" value="3 times"> 3 times</label>
+        <label><input type="radio" name="fastFood" value="More than 4 times"> More than 4 times</label>
+        
+        <p>2. How many servings of fruits do you eat daily?</p>
+        <label><input type="radio" name="fruitIntake" value="None"> None</label>
+        <label><input type="radio" name="fruitIntake" value="1-2 servings"> 1-2 servings</label>
+        <label><input type="radio" name="fruitIntake" value="3-4 servings"> 3-4 servings</label>
+        <label><input type="radio" name="fruitIntake" value="More than 4 servings"> More than 4 servings</label>
+        
+        <p>3. How often do you drink sugary beverages?</p>
+        <label><input type="radio" name="sugaryDrinks" value="Never"> Never</label>
+        <label><input type="radio" name="sugaryDrinks" value="Occasionally"> Occasionally</label>
+        <label><input type="radio" name="sugaryDrinks" value="Daily"> Daily</label>
+        <label><input type="radio" name="sugaryDrinks" value="Multiple times a day"> Multiple times a day</label>
+        
+        <p>4. How often do you consume vegetables?</p>
+        <label><input type="radio" name="vegetableIntake" value="Never"> Never</label>
+        <label><input type="radio" name="vegetableIntake" value="1-2 times a week"> 1-2 times a week</label>
+        <label><input type="radio" name="vegetableIntake" value="Daily"> Daily</label>
+        <label><input type="radio" name="vegetableIntake" value="Every meal"> Every meal</label>
+
+        <p>5. How often do you consume dairy products?</p>
+        <label><input type="radio" name="dairyIntake" value="Never"> Never</label>
+        <label><input type="radio" name="dairyIntake" value="Occasionally"> Occasionally</label>
+        <label><input type="radio" name="dairyIntake" value="Daily"> Daily</label>
+        <label><input type="radio" name="dairyIntake" value="Multiple times a day"> Multiple times a day</label>
+
+        <p>6. How many times did you eat regular chips or fried snacks?</p>
+        <label><input type="radio" name="friedSnacks" value="Never"> Never</label>
+        <label><input type="radio" name="friedSnacks" value="Less than 3 times"> Less than 3 times</label>
+        <label><input type="radio" name="friedSnacks" value="3 times"> 3 times</label>
+        <label><input type="radio" name="friedSnacks" value="More than 4 times"> More than 4 times</label>
+
+        <p>7. How many times did you eat ice cream and other sweets?</p>
+        <label><input type="radio" name="sweetsIntake" value="Never"> Never</label>
+        <label><input type="radio" name="sweetsIntake" value="Less than 3 times"> Less than 3 times</label>
+        <label><input type="radio" name="sweetsIntake" value="3 times"> 3 times</label>
+        <label><input type="radio" name="sweetsIntake" value="More than 4 times"> More than 4 times</label>
+
+        <p>8. How much oil, butter, or fat do you use in cooking?</p>
+        <label><input type="radio" name="oilUsage" value="Never"> Never</label>
+        <label><input type="radio" name="oilUsage" value="Less than 3 times"> Less than 3 times</label>
+        <label><input type="radio" name="oilUsage" value="3 times"> 3 times</label>
+        <label><input type="radio" name="oilUsage" value="More than 4 times"> More than 4 times</label>
+        
+        <button type="submit" class="btn-submit">Submit</button>
+    </form>
+
+    <script>
+        function submitDietaryAssessment(event) {
+            event.preventDefault();
+            
+            const token = localStorage.getItem("token");
+            const userId = localStorage.getItem("userId");
+
+            // If userId or token is missing, redirect to login
+            if (!token || !userId) {
+                alert("Session expired. Please log in again.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Prepare request body
+            const responses = { userId };
+            const questions = [
+                "fastFood",
+                "fruitIntake",
+                "sugaryDrinks",
+                "vegetableIntake",
+                "dairyIntake",
+                "friedSnacks",
+                "sweetsIntake",
+                "oilUsage"
+            ];
+
+            // Collect user answers
+            for (let question of questions) {
+                const answer = document.querySelector(`input[name="${question}"]:checked`)?.value;
+                if (!answer) {
+                    alert("Please answer all questions before submitting.");
+                    return;
+                }
+                responses[question] = answer;
+            }
+
+            console.log("Submitting data:", responses);
+
+            fetch("https://gluguide.onrender.com/api/dietary/dietary-assessments", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(responses)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("API Response:", data);
+                if (data.success) {
+                    alert("Dietary assessment submitted successfully!");
+                    window.location.href = "home.html";
+                } else {
+                    alert("Submission failed: " + (data.message || "Unknown error."));
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while submitting the assessment.");
+            });
+        }
+    </script>
+</body>
+</html>

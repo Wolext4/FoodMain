@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Info</title>
+    <link rel="stylesheet" href="settings.css">
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            text-align: center;
+        }
+
+        /* Back Button - Matches 'Move More' */
+        .home-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+            z-index: 10;
+        }
+
+        .home-btn img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .home-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        header h1 {
+            flex-grow: 1;
+            text-align: center;
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .app-info {
+            margin-top: 20px;
+        }
+
+        .app-info h2 {
+            margin-bottom: 10px;
+        }
+
+        .app-info p {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🔙 Back Button (Styled Like 'Move More') -->
+    <a href="settings.html" class="home-btn">
+        <img src="/Icons/back.svg" alt="Back">
+    </a>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>App Info</h1>
+        </header>
+
+        <div class="app-info">
+            <h2>App Name</h2>
+            <p>App Description</p>
+            <p>Version: 1.0.0</p>
+            <p>Last Updated: 2022-01-01</p>
+        </div>
+    </div>
+
+</body>
+</html>

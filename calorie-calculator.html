@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Calculator</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        /* Back Button - Matches 'Move More' */
+        .back-button {
+            position: absolute;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .back-button img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin-top: 15px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Dropdown List */
+        .dropdown {
+            position: absolute;
+            width: 100%;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .dropdown div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .dropdown div:hover {
+            background: #f0f0f0;
+        }
+
+        /* Food List */
+        .food-list {
+            margin-top: 20px;
+        }
+
+        .food-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .food-item:hover {
+            background: #f4f4f4;
+            transform: scale(1.03);
+        }
+
+        /* Ensures consistent layout */
+        .food-name {
+            flex: 1;
+            text-align: left;
+        }
+
+        /* Quantity Controls */
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px; /* Fixed width to ensure alignment */
+            min-height: 40px;
+        }
+
+        .quantity-control img {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .quantity-value {
+            margin: 0 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* Calorie Display */
+        .calorie-value {
+            font-weight: bold;
+            text-align: right;
+            min-width: 80px;
+        }
+
+        /* Total Calories */
+        .total-container {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <!-- 🔙 Back Button (Styled Like 'Move More') -->
+        <a href="home.html" class="back-button">
+            <img src="/Icons/back.svg" alt="Back">
+        </a>
+        <span style="margin-left: 50px;">Calorie Calculator</span>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="Search food" onclick="showDropdown()" oninput="filterDropdown()">
+        <div class="dropdown" id="dropdown"></div>
+    </div>
+
+    <!-- Selected Food List -->
+    <div class="food-list" id="food-list"></div>
+
+    <!-- Total Calories -->
+    <div class="total-container">
+        Total: <span id="totalCalories">0</span> kcal
+    </div>
+
+    <script>
+        // Food Data (Name and Calories per serving)
+        const foodData = [
+            { name: "Garden Egg Small (109g)", calories: 161.32 },
+            { name: "Garden Egg Medium (125g)", calories: 185.00 },
+            { name: "Garden Egg Large (192g)", calories: 284.16 },
+            { name: "Orange Small  (85g)", calories: 203.46 },
+            { name: "Orange Medium (169g)", calories: 404.54 },
+            { name: "Orange Large (280g)", calories: 670.24 },
+            { name: "Carrot Small (33g)", calories: 68.97 },
+            { name: "Carrot Medium (62g)", calories: 121.77 },
+            { name: "Carrot Large (142g)", calories: 298.13 },
+            { name: "Cucumber Small (190g)", calories: 153.58 },
+            { name: "Cucumber Medium (308g)", calories: 248.96 },
+            { name: "Cucumber Large (407g)", calories: 328.98 },
+            { name: "1 Starch (132g)", calories: 130.0 },
+            { name: "2 Starch (275g)", calories: 303.60 },
+            { name: "3 Starch (398g)", calories: 439.39 },
+            { name: "1 Jollof Rice (100g)", calories: 110.04 },
+            { name: "2 Jollof Rice (206g)", calories: 226.68 },
+            { name: "3 Jollof Rice (312g)", calories: 343.32 },
+            { name: "1 Beans (96g)", calories: 82.72 },
+            { name: "2 Beans (197g)", calories: 169.58 },
+            { name: "3 Beans (300g)", calories: 258.24 },
+            { name: "1 White Rice (75g)", calories: 88.92 },
+            { name: "2 White Rice (156g)", calories: 184.95 },
+            { name: "3 White Rice (234g)", calories: 277.43 },
+            { name: "1 Semo (181g)", calories: 160.8 },
+            { name: "2 Semo (365g)", calories: 322.66 },
+            { name: "3 Semo (560g)", calories: 495.04 },
+            { name: "1 Eba (175g)", calories: 160.3 },
+            { name: "2 Eba (350g)", calories: 320.6 },
+            { name: "3 Eba (530g)", calories: 485.48 },
+            { name: "1 Pounded Yam (181g)", calories: 176.58 },
+            { name: "2 Pounded Yam (365g)", calories: 356.09 },
+            { name: "3 Pounded Yam (560g)", calories: 546.34 },
+            { name: "1 Amala (150g)", calories: 123.18 },
+            { name: "2 Amala (242g)", calories: 198.73 },
+            { name: "3 Amala (364g)", calories: 298.92 },
+        ];
+
+        let selectedFoods = {}; // Track selected food and quantity
+
+        // Show Dropdown List
+        function showDropdown() {
+            const dropdown = document.getElementById("dropdown");
+            dropdown.style.display = "block";
+            dropdown.innerHTML = "";
+
+            foodData.forEach(food => {
+                let div = document.createElement("div");
+                div.textContent = food.name;
+                div.onclick = () => addFood(food.name, food.calories);
+                dropdown.appendChild(div);
+            });
+        }
+
+        // Filter Dropdown Items based on input
+        function filterDropdown() {
+            const searchValue = document.querySelector(".search-bar").value.toLowerCase();
+            const dropdown = document.getElementById("dropdown");
+            dropdown.innerHTML = "";
+
+            foodData
+                .filter(food => food.name.toLowerCase().includes(searchValue))
+                .forEach(food => {
+                    let div = document.createElement("div");
+                    div.textContent = food.name;
+                    div.onclick = () => addFood(food.name, food.calories);
+                    dropdown.appendChild(div);
+                });
+        }
+
+        // Add Food to List
+        function addFood(foodName, foodCalories) {
+            if (!selectedFoods[foodName]) {
+                selectedFoods[foodName] = { quantity: 1, calories: foodCalories };
+
+                let foodItem = document.createElement("div");
+                foodItem.className = "food-item";
+                foodItem.id = `item-${foodName}`;
+
+                foodItem.innerHTML = `
+                    <span class="food-name">${foodName}</span>
+                    <div class="quantity-control">
+                        <img src="/Icons/minus-icon.svg" onclick="updateQuantity('${foodName}', -1)">
+                        <span class="quantity-value" id="quantity-${foodName}">1</span>
+                        <img src="/Icons/plus-icon.svg" onclick="updateQuantity('${foodName}', 1)">
+                    </div>
+                    <span class="calorie-value" id="calories-${foodName}">${foodCalories.toFixed(2)} kcal</span>
+                `;
+
+                document.getElementById("food-list").appendChild(foodItem);
+            } else {
+                updateQuantity(foodName, 1);
+            }
+
+            updateTotal();
+            document.getElementById("dropdown").style.display = "none"; // Hide dropdown after selecting
+        }
+
+        // Update Quantity
+        function updateQuantity(foodName, change) {
+            if (selectedFoods[foodName]) {
+                selectedFoods[foodName].quantity += change;
+
+                if (selectedFoods[foodName].quantity <= 0) {
+                    delete selectedFoods[foodName];
+                    document.getElementById(`item-${foodName}`).remove();
+                } else {
+                    document.getElementById(`quantity-${foodName}`).textContent = selectedFoods[foodName].quantity;
+                    document.getElementById(`calories-${foodName}`).textContent = 
+                        (selectedFoods[foodName].quantity * selectedFoods[foodName].calories).toFixed(2) + " kcal";
+                }
+            }
+
+            updateTotal();
+        }
+
+        // Update Total Calories
+        function updateTotal() {
+            let total = 0;
+            Object.values(selectedFoods).forEach(food => {
+                total += food.quantity * food.calories;
+            });
+            document.getElementById("totalCalories").textContent = total.toFixed(2);
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Starch</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin-top: 24px;
+            padding: 0;
+            background-color: #fff;
+            color: #000;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Back Button - Fixed at the Top */
+        .back-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.2s;
+            z-index: 999;
+        }
+
+        .back-button img {
+            width: 60%;
+            height: 60%;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+
+        .container {
+            text-align: center;
+            padding: 16px;
+            margin-top: 50px;
+        }
+
+        .item {
+            margin-bottom: 32px;
+        }
+
+        .item img {
+            width: 200px;
+            height: 200px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 16px;
+        }
+
+        .item .serving-info {
+            background-color: #e5e5e5;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🔙 Back Button (Fixed & Always Visible) -->
+    <a href="/carbohydrates.html" class="back-button">
+        <img src="/Icons/back.svg" alt="Back">
+    </a>
+
+    <header>
+        <h1>Starch</h1>
+    </header>
+
+    <div class="container">
+        <div class="item">
+            <img src="/Images/StarchSmall.png" alt="1 Serving of Starch">
+            <div class="serving-info">1 Serving = 145.73kcal</div>
+        </div>
+        <div class="item">
+            <img src="/Images/StarchMedium.png" alt="2 Servings of Starch">
+            <div class="serving-info">2 Servings = 303.60kcal</div>
+        </div>
+        <div class="item">
+            <img src="/Images/StarchLarge.png" alt="3 Servings of Starch">
+            <div class="serving-info">3 Servings = 439.39kcal</div>
+        </div>
+    </div>
+
+</body>
+</html>

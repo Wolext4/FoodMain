@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="home.css">
+    <title>GluGuide</title>
+    <style>
+        button {
+            outline: none;
+            border: none;
+        }
+
+        #page-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: normal;
+        }
+
+        .activity-tracker-controls {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+
+
+        }
+
+
+        .activity-tracker-controls .activity-tracker-action {
+            border-radius: 10px;
+            outline: none;
+            border: none;
+            background-color: white;
+            cursor: pointer;
+            padding: 24px 75px;
+            box-shadow: 10px 10px 10px 10px #D4D5D6;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%
+        }
+
+        .popup-overlay {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: white;
+            opacity: 70%;
+            z-index: 999
+        }
+
+        .popup-modal {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            max-width: 500px;
+            width: 100%;
+            z-index: 1000;
+            background-color: #EDF7FF;
+            border-radius: 10px;
+            padding: 10px;
+
+        }
+
+        .popup-modal img {
+            width: 80px;
+
+        }
+
+        .popup-modal p {
+            font-weight: 600
+        }
+
+        .popup-modal button {
+            background-color: white;
+            border-radius: 4px;
+            width: 100px;
+            padding: 12px 16px;
+            cursor: pointer;
+        }
+
+
+        .questions,
+        .question-actions {
+            max-width: 500px;
+            width: 90%;
+            margin: 0 auto
+        }
+
+        .question-actions {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .question-section {
+            display: block
+        }
+
+        .question-section.hide {
+            display: none;
+        }
+
+        .previous-button,
+        .next-button,
+        .submit-button {
+            display: block;
+            cursor: pointer;
+            background-color: #E8F5FF;
+            width: 150px;
+            padding: 12px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .next-button,
+        .submit-button {
+            margin-left: auto;
+        }
+
+        .previous-button.hide,
+        .next-button.hide,
+        .submit-button.hide {
+            display: none
+        }
+
+
+        .progress-bar {
+            width: 100vw;
+            height: 20px;
+            outline-width: 4px;
+            outline-style: solid;
+            outline-color: #40ACFF;
+            overflow: hidden;
+
+        }
+
+        .progress-bar .progress {
+            background-color: #418BFB;
+            height: 100%;
+            width: 0%;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            transition: 0.3s ease-in;
+        }
+
+
+        .inline-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 2px 6px;
+            display: inline;
+            font-weight: bolder;
+            font-size: 20px;
+        }
+
+        .text-wrapper {
+            margin-bottom: 1rem;
+        }
+
+        .text-paragraph {
+            margin: 0;
+
+        }
+
+        .text-paragraph span {
+            display: inline;
+        }
+
+        .duration-container {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .duration-option {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .duration-option:hover {
+            background-color: #f0f0f0;
+        }
+
+
+
+
+        .questions .images-container {
+            position: absolute;
+            bottom: 0;
+        }
+    </style>
+    <script>
+        //check the login state of the user, if user is logged in, allow access to the page
+        const getDataFromLocalStorage = () => {
+            const data = localStorage.getItem("food-main")
+            if (data) {
+                return JSON.parse(data)
+            }
+            return {}
+        }
+
+        //<---------- check login state ---------->
+        const data = getDataFromLocalStorage();
+        const token = data?.token;
+
+        if (!token) {
+            const currentPath = window.location.pathname + window.location.search;
+            window.location.href = `/login.html?redirect=${encodeURIComponent(currentPath)}`;
+        }
+    </script>
+</head>
+
+<body class="body">
+    <div id="home-section" style="display: block;">
+        <!-- 📌 Header -->
+        <header class="page-head">GluGuide</header>
+        <h1 id="page-title">ACTIVITY TRACKER</h1>
+        <div class="activity-tracker-controls">
+            <button class="activity-tracker-action" onclick="navigateToQuestionPage(1)">Take a New Physical Activity
+                Test</button>
+            <button class="activity-tracker-action">View Previous Activity Test Score</button>
+            <button class="activity-tracker-action">View Activities to Improve Score</button>
+            <button class="activity-tracker-action">View Previous Activity Test Score</button>
+            <button class="activity-tracker-action" onclick="navigateToHomePage()">Exit</button>
+        </div>
+    </div>
+    <div id="question-container" style="display: none;">
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <div class="questions">
+        </div>
+        <div class="question-actions"></div>
+
+    </div>
+
+    <script defer>
+
+     
+
+        const navigateToHomePage = () => {
+            window.location.href = "home.html"
+        }
+
+        const questions = [
+            {
+                id: 1, number: "one", questionText1: "During the last 7 days, how many days did you do vigorous physical activities like heavy lifting, digging, pounding, or fast bicycling for?",
+                questionText2: "How much do you usually spend doing moderate physical activities on one of those says?", popoverContent: "Think about all the vigorous activities that you did in the last 7 days. Vigorous physical activities refer to activities that take hard physical effort and make you breathe much harder than normal recreation, exercise or sport.. Think only about those physical activities that you did for at least 10 minutes at a time."
+                , imageUrl: ["./images/activity-tracker/question-1-image-1.png"],
+            },
+            {
+                id: 2, number: "two", questionText1: "During the last 7 days, on how many days did you do moderate physical activity like carrying light loads, dancing, or household chores", popoverContent: "Think about the time you spent walking in the last 7 days. This includes at work and at home, walking to travel from place to place, and any other walking that you have done solely for recreation, sport, exercise, or leisure.",
+                questionText2: "How much do you usually spend doing moderate physical activities on one of those says?", imageUrl: [],
+            },
+            { id: 3, number: "three", questionText1: "During the last 7 days, on how many days did you walk for at least 30 minutes at a time?", questionText2: "How much time do you usually spend walking on one of those days? ", popoverContent: "Think about all the moderate activities that you did in the last 7 days. Moderate activities refer to activities that take moderate physical effort and make you breathe somewhat harder than normal. Think only about those physical activities that you did for at least 10 minutes at a time.", imageUrl: [], },
+            { id: 4, number: "four", questionText1: "During the last 7 days, on how many days did you sit for at least 10 minutes at a time? ", questionText2: "How much time do you usually spend sitting on one of those days?", popoverContent: "Think about all the vigorous activities that you did in the last 7 days. Vigorous physical activities refer to activities that take hard physical effort and make you breathe much harder than normal recreation, exercise or sport.. Think only about those physical activities that you did for at least 10 minutes at a time.", imageUrl: [], }
+        ]
+
+        let activeButtonForDropdown = null;
+
+        const submitQuestionsHandler = () => {
+            console.log("submit button")
+        }
+
+        //functions
+        const toggleButtonVisibility = (questionNumber, previousButton, nextButton, submitButton) => {
+            if (!previousButton || !nextButton || !submitButton) return;
+
+            previousButton.classList.remove("hide")
+            nextButton.classList.remove("hide")
+            submitButton.classList.add("hide")
+
+            if (questionNumber === 1) {
+                previousButton.classList.add("hide")
+            }
+            else if (questionNumber === questions.length) {
+                nextButton.classList.add("hide")
+                submitButton.classList.remove("hide")
+            }
+        }
+        const submitQuestions = () => { }
+        const renderPopUp = (questionNumber) => {
+            //functions
+            const closePopUp = () => {
+                const popUpOverlay = document.querySelector(".popup-overlay")
+                const popUpModal = document.querySelector(".popup-modal")
+                body.removeChild(popUpOverlay)
+                body.removeChild(popUpModal)
+            }
+            const body = document.querySelector(".body")
+            const popupOverlay = document.createElement("div")
+            const popupModal = document.createElement("div")
+
+            //modal content
+            const image = document.createElement("img")
+            const content = document.createElement("p")
+            const action = document.createElement("button")
+            //attribute setting
+            image.src = "./images/face-emoji.png"
+            action.textContent = "Done"
+            content.textContent = questions[questionNumber - 1].popoverContent //we use minus one because the first index number is 0
+            popupOverlay.classList.add("popup-overlay")
+            popupModal.classList.add("popup-modal")
+            //event listeners
+            popupOverlay.addEventListener("click", closePopUp)
+            action.addEventListener("click", closePopUp)
+            //appending
+            popupModal.append(image, content, action)
+            body.append(popupOverlay, popupModal)
+        }
+
+
+        const addEventListenerToButton = (questionNumber, previousButton, nextButton, submitButton) => {
+            if (previousButton) {
+                previousButton.addEventListener("click", () => {
+                    document.querySelector(".duration-container")?.remove();
+                    navigateToQuestionPage(questionNumber - 1, "previous")
+                })
+            }
+            if (nextButton) {
+                nextButton.addEventListener("click", () => { document.querySelector(".duration-container")?.remove(); navigateToQuestionPage(questionNumber + 1, "next") })
+            }
+            if (submitButton) {
+                submitButton.addEventListener("click", () => {
+                    document.querySelector(".duration-container")?.remove();
+                    submitQuestionsHandler()
+                })
+            }
+        }
+        const updateQuestionButtonActions = (questionNumber) => {
+            const questionActions = document.querySelector(".question-actions")
+            //<---------- check if question actions exist, if not create a new one ---------->
+            if (questionActions.children.length > 0) {
+                let nextButton = questionActions.querySelector(".next-button")
+                let previousButton = questionActions.querySelector(".previous-button")
+                let submitButton = questionActions.querySelector(".submit-button")
+                //deep clone the buttons
+                const newNextButton = nextButton.cloneNode(true)
+                const newPreviousButton = previousButton.cloneNode(true)
+                const newSubmitButton = submitButton.cloneNode(true)
+                toggleButtonVisibility(questionNumber, newPreviousButton, newNextButton, newSubmitButton)
+                addEventListenerToButton(questionNumber, newPreviousButton, newNextButton, newSubmitButton)
+                //replace the button
+                nextButton.replaceWith(newNextButton)
+                previousButton.replaceWith(newPreviousButton)
+                submitButton.replaceWith(newSubmitButton)
+            }
+            else {
+                const nextButton = document.createElement("button")
+                const submitButton = document.createElement("button")
+                const previousButton = document.createElement("button")
+                //STYLES
+                nextButton.classList.add("next-button")
+                submitButton.classList.add("submit-button", "hide")
+                previousButton.classList.add("previous-button")
+
+                nextButton.textContent = "Next"
+                submitButton.textContent = "Submit"
+                previousButton.textContent = "Previous"
+
+                toggleButtonVisibility(questionNumber, previousButton, nextButton, submitButton)
+                //event listeners
+                addEventListenerToButton(questionNumber, previousButton, nextButton, submitButton)
+                questionActions.append(previousButton, nextButton, submitButton)
+            }
+
+        }
+
+        const updateProgressBar = (questionNumber) => {
+            const progressBar = document.querySelector(".progress-bar")
+            const progress = progressBar.querySelector(".progress")
+            if (progress) {
+                //update the width based on the question number
+                progress.style.width = `${(questionNumber / questions.length) * 100}%`
+            }
+        }
+
+
+        const durationDropdown = (type) => {
+            const durationContainer = Object.assign(document.createElement("div"), {
+                className: "duration-container"
+            });
+
+            let max = 1;
+            if (type === "days") max = 31;
+            else if (type === "hours") max = 24;
+            else if (type === "minutes") max = 60;
+
+            for (let i = 1; i <= max; i++) {
+                const option = document.createElement("div");
+                option.className = "duration-option";
+                option.textContent = i;
+
+                option.addEventListener("click", () => {
+                    // Replace the text of the active button
+                    if (activeButtonForDropdown) {
+                        activeButtonForDropdown.textContent = i;
+                    }
+
+                    // Remove dropdown from DOM
+                    durationContainer.remove();
+                });
+
+                durationContainer.appendChild(option);
+            }
+
+            return durationContainer;
+        };
+
+
+        const openDurationDropDown = (type, event) => {
+            // Close any existing dropdown
+            document.querySelector(".duration-container")?.remove();
+
+            const dropdown = durationDropdown(type);
+            activeButtonForDropdown = event.target;
+
+            // Position the dropdown below the button
+            const rect = event.target.getBoundingClientRect();
+            dropdown.style.position = "absolute";
+            dropdown.style.top = `${rect.bottom + window.scrollY}px`;
+            dropdown.style.left = `${rect.left + window.scrollX}px`;
+            dropdown.style.zIndex = 999;
+
+            document.body.appendChild(dropdown);
+        };
+        const renderQuestionPage = (questionNumber, action) => {
+
+            updateProgressBar(questionNumber)
+            renderPopUp(questionNumber)
+
+            const currentQuestionSection = document.querySelector(`.question-${questionNumber}-section`)
+            const previousQuestionSection = document.querySelector(`.question-${action === "previous" ? questionNumber + 1 : questionNumber - 1}-section`)
+
+            if (action && currentQuestionSection && previousQuestionSection) {
+                //do not render the page again if it has been rendered before
+                currentQuestionSection.classList.remove("hide")
+                previousQuestionSection.classList.add("hide")
+                updateQuestionButtonActions(questionNumber)
+                return
+            }
+            else {
+                updateQuestionButtonActions(questionNumber)
+                if (previousQuestionSection) {
+                    previousQuestionSection.classList.add("hide")
+                }
+            }
+
+            //<---------- Question Content ---------->
+            const { number, questionText1, questionText2 } = questions[questionNumber - 1];
+
+            const questionsContainer = document.querySelector(".questions");
+
+            const questionSection = Object.assign(document.createElement("div"), {
+                className: `question-${questionNumber}-section question-section`
+            });
+
+            const questionTitle = Object.assign(document.createElement("h1"), {
+                textContent: `Question ${number}`
+            });
+
+            const questionTextsContainer = Object.assign(document.createElement("div"), {
+                className: "question-text-container"
+            });
+
+
+            const createDaysButtonBlock = (type) => {
+                let labelAfter;
+
+                if (type === "days") {
+                    labelAfter = " days per week";
+                } else if (type === "hours") {
+                    labelAfter = " hours per day,";
+                } else if (type === "minutes") {
+                    labelAfter = " minutes per day.";
+                }
+
+                const span = document.createElement("span");
+
+                const button = Object.assign(document.createElement("button"), {
+                    className: "inline-button",
+                    textContent: "_____"
+                });
+
+                button.addEventListener("click", (event) => openDurationDropDown(type, event));
+
+                span.append(button, ` ${labelAfter}`);
+                return span;
+            };
+
+            const createTextBlock = (text, source) => {
+                const wrapper = Object.assign(document.createElement("div"), {
+                    className: "text-wrapper",
+                });
+
+                const paragraph = Object.assign(document.createElement("p"), {
+                    className: "text-paragraph",
+                });
+
+                // Add the text before buttons
+                paragraph.textContent = text + " ";
+
+                if (source === "first-text") {
+                    const daysSpan = createDaysButtonBlock("days");
+                    paragraph.append(daysSpan);
+                    wrapper.append(paragraph);
+                } else if (source === "second-text") {
+                    const hoursSpan = createDaysButtonBlock("hours");
+                    const minutesSpan = createDaysButtonBlock("minutes");
+
+                    paragraph.append(hoursSpan, " ", minutesSpan);
+                    wrapper.append(paragraph);
+                }
+
+                return wrapper;
+            };
+
+            questionTextsContainer.append(
+                createTextBlock(questionText1, "first-text"),
+                createTextBlock(questionText2, "second-text")
+            );
+            questionSection.append(questionTitle, questionTextsContainer);
+            questionsContainer.append(questionSection);
+        }
+
+
+        const navigateToQuestionPage = (questionNumber, action) => {
+            // const questionNumber = action === "next" ? currentQuestionNumber + 1 : currentQuestionNumber - 1
+            // console.log({ questionNumber })
+            const dataFromLocalStorage = getDataFromLocalStorage()
+            //check if the home section is still visible, if not, then display the questions
+            const homeSection = document.querySelector("#home-section")
+
+            if (homeSection && homeSection.style.display === "block") {
+                //make the home section invisible after click on take a physical activity button
+                homeSection.style.display = "none"
+                const questionContainer = document.querySelector("#question-container").style.display = "block"
+            }
+
+
+            if (questionNumber !== dataFromLocalStorage.currentQuestionNumber) {
+                //save state to local storage
+                localStorage.setItem("food-main", JSON.stringify({ ...dataFromLocalStorage, currentQuestionNumber: questionNumber }))
+            }
+
+            //build elements for the first page 
+            renderQuestionPage(questionNumber, action)
+        }
+
+        // get saved state from local storage
+        const initialData = getDataFromLocalStorage()
+        const currentQuestionNumber = initialData.currentQuestionNumber
+
+        if (currentQuestionNumber) {
+            //navigate to the current question number if user refreshes the page
+            navigateToQuestionPage(currentQuestionNumber)
+        }
+    </script>
+</body>
+
+</html>
